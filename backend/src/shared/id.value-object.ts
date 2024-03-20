@@ -12,7 +12,7 @@ export abstract class IdValueObject extends StringValueObject {
 	 * @param {string} value El valor que se está almacenando.
 	 * @protected
 	 */
-	protected constructor(value: string) {
+	constructor(value: string) {
 		super(value);
 		this.validate(value);
 	}

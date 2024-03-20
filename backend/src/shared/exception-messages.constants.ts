@@ -4,6 +4,11 @@
  */
 export enum ExceptionMessagesConstants {
 	/**
+	 * Se utiliza cuando las credenciales de inicio de sesión de un usuario no
+	 * son válidas.
+	 */
+	INVALID_CREDENTIALS_ERROR = 'INVALID_CREDENTIALS_ERROR',
+	/**
 	 * Se utiliza cuando la contraseña de un usuario no cumple con
 	 * las características requeridas por el sistema.
 	 */
@@ -23,4 +28,8 @@ export enum ExceptionMessagesConstants {
 	 * el archivo de constantes.
 	 */
 	INVALID_USER_STATUS_ERROR = 'INVALID_USER_STATUS_ERROR',
+	/**
+	 * Se utiliza cuando se solicita un usuario que no existe.
+	 */
+	USER_NOT_FOUND_ERROR = 'USER_NOT_FOUND_ERROR',
 }

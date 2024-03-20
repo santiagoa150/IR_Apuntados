@@ -1,5 +1,7 @@
 import { Controller } from '@nestjs/common';
-import { UserService } from './user.service';
+import { UserService } from '../user.service';
+import { UserControllerConstants } from './user.controller.constants';
+import { ApiTags } from '@nestjs/swagger';
 
 /**
  * Clase que contiene los puntos de entrada a la aplicación
@@ -7,7 +9,8 @@ import { UserService } from './user.service';
  *
  * @class
  */
-@Controller()
+@Controller(UserControllerConstants.CONTROLLER_PREFIX)
+@ApiTags(UserControllerConstants.CONTROLLER_TAG)
 export class UserController {
 
 	/**

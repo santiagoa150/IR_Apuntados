@@ -26,8 +26,8 @@ export class UserDTO {
  * @extends {DomainBase<UserDTO>}
  */
 export class User extends DomainBase<UserDTO> {
+	public readonly password: UserPassword;
 	private readonly userId: UserId;
-	private readonly password: UserPassword;
 	private readonly status: UserStatus;
 	private readonly username: string;
 	private readonly icon: string;
@@ -61,6 +61,25 @@ export class User extends DomainBase<UserDTO> {
 		this.icon = icon;
 		this.currentDesignId = currentDesignId;
 		this.tokens = tokens;
+	}
+
+	/**
+	 * Convierte el objeto de transferencia de un usuario al modelo
+	 * de dominio.
+	 * @param {UserDTO} dto El objeto de transferencia.
+	 * @returns {User} El modelo de dominio.
+	 * @static
+	 */
+	static fromDTO(dto: UserDTO): User {
+		return new User(
+			new UserId(dto.userId),
+			new UserPassword(dto.password),
+			new UserStatus(dto.status),
+			dto.username,
+			dto.icon,
+			dto.currentDesignId,
+			dto.tokens,
+		);
 	}
 
 	/**

@@ -13,7 +13,7 @@ export abstract class StatusValueObject<T extends string> extends StringValueObj
 	 * @param {string} value El valor que se está almacenando.
 	 * @protected
 	 */
-	protected constructor(value: string) {
+	constructor(value: string) {
 		super(value);
 		this.validate(value);
 	}
