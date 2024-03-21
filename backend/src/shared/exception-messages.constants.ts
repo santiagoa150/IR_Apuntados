@@ -14,6 +14,10 @@ export enum ExceptionMessagesConstants {
 	 */
 	INVALID_PASSWORD_ERROR = 'INVALID_PASSWORD_ERROR',
 	/**
+	 * Se utiliza cuando el token de refresco de un usuario no es válido.
+	 */
+	INVALID_REFRESH_TOKEN = 'INVALID_REFRESH_TOKEN',
+	/**
 	 * Se utiliza cuando se quiere expresar un error del servidor que
 	 * no debe ser comunicado al usuario final.
 	 */

@@ -16,4 +16,8 @@ export enum SessionControllerConstants {
 	 * Url utilizada para el controlador del login.
 	 */
 	LOGIN_URL = 'login',
+	/**
+	 * Url utilizada para el controlador que refresca el token del usuario.
+	 */
+	REFRESH_TOKEN_URL = 'refresh-token',
 }

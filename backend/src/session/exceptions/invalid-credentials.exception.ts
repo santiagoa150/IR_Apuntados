@@ -9,10 +9,12 @@ import { HttpStatus } from '@nestjs/common';
  * @extends {Exception}
  */
 export class InvalidCredentialsException extends Exception {
-	constructor() {
-		super(
-			ExceptionMessagesConstants.INVALID_CREDENTIALS_ERROR,
-			HttpStatus.BAD_REQUEST,
-		);
+
+	/**
+	 * @param {ExceptionMessagesConstants} [message=ExceptionMessagesConstants.INVALID_CREDENTIALS_ERROR]
+	 * Mensaje de error en la excepción.
+	 */
+	constructor(message: ExceptionMessagesConstants = ExceptionMessagesConstants.INVALID_CREDENTIALS_ERROR) {
+		super(message, HttpStatus.UNAUTHORIZED);
 	}
 }

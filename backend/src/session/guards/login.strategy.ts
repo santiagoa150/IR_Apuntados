@@ -27,14 +27,9 @@ export class LoginStrategy extends PassportStrategy(Strategy) {
 	 *
 	 * @param {string} username El nombre de usuario de quién inicia sesión.
 	 * @param {string} password La contraseña de quién inicia sesión.
-	 * @returns {Promise<UserDTO | undefined>} Retorna el usuario si las credenciales son válidas, por
-	 * el contrário retorna undefined.
+	 * @returns {Promise<UserDTO | undefined>} Retorna el usuario si las credenciales son válidas.
 	 */
-	async validate(username: string, password: string): Promise<UserDTO | undefined> {
-		try {
-			return (await this.service.login(username, password)).toDTO();
-		} catch (e) {
-			return undefined;
-		}
+	async validate(username: string, password: string): Promise<UserDTO> {
+		return (await this.service.login(username, password)).toDTO();
 	}
 }

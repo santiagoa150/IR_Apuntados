@@ -1,14 +1,16 @@
-import { Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { LoginGuard } from '../guards/login.guard';
 import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LoginControllerRequest } from './requests/login-controller.request';
-import { LoginControllerResponse } from './responses/login-controller.response';
+import { LoginControllerRequest } from './requests/login.controller.request';
+import { LoginControllerResponse } from './responses/login.controller.response';
 import { ExceptionResponseDTO } from '../../shared/exception.response';
 import { SessionControllerConstants } from './session.controller.constants';
 import { SessionService } from '../session.service';
 import { UserDecorator } from '../user.decorator';
 import { UserDTO } from '../../user/user';
 import { UserId } from '../../user/user-id';
+import { RefreshTokenControllerRequest } from './requests/refresh-token.controller.request';
+import { RefreshTokenControllerResponse } from './responses/refresh-token.controller.response';
 
 /**
  * Clase que contiene los puntos de entrada a la aplicación
@@ -43,6 +45,21 @@ export class SessionController {
 		const userId: UserId = new UserId(user.userId);
 		response.accessToken = this.service.generateAccessToken(userId);
 		response.refreshToken = this.service.generateRefreshToken(userId);
+		return response;
+	}
+
+	/**
+	 * Controlador POST que permite a un usuario refrescar su token de inicio de sesión.
+	 * @param {RefreshTokenControllerRequest} body Los datos necesarios para refrescar el
+	 * token de acceso del usuario.
+	 * @returns {RefreshTokenControllerResponse} Retorna el nuevo token de acceso.
+	 */
+	@Post(SessionControllerConstants.REFRESH_TOKEN_URL)
+	@ApiOkResponse({ type: RefreshTokenControllerResponse })
+	@ApiResponse({ type: ExceptionResponseDTO })
+	async refreshToken(@Body() body: RefreshTokenControllerRequest): Promise<RefreshTokenControllerResponse> {
+		const response: RefreshTokenControllerResponse = new RefreshTokenControllerResponse();
+		response.accessToken = this.service.refreshAccessToken(body.refreshToken);
 		return response;
 	}
 }

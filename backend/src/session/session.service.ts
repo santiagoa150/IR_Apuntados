@@ -5,6 +5,7 @@ import { InvalidCredentialsException } from './exceptions/invalid-credentials.ex
 import { UserId } from '../user/user-id';
 import { JwtService } from '@nestjs/jwt';
 import { UserDecoratorType } from './user.decorator';
+import { ExceptionMessagesConstants } from '../shared/exception-messages.constants';
 
 /**
  * Clase que contiene los servicios para interactuar con las
@@ -50,6 +51,22 @@ export class SessionService {
 			secret: process.env.JWT_REFRESH_SECRET,
 			expiresIn: process.env.JWT_REFRESH_EXPIRATION_TIME,
 		});
+	}
+
+	/**
+	 * Método que permite refrescar el token de acceso de un usuario.
+	 * @param {string} refreshToken El token que permite al usuario refrescar su token de acceso.
+	 * @return {string} El nuevo token de acceso.
+	 */
+	refreshAccessToken(refreshToken: string): string {
+		try {
+			const decoded: UserDecoratorType = this.jwtService.verify(refreshToken, {
+				secret: process.env.JWT_REFRESH_SECRET,
+			});
+			return this.generateAccessToken(new UserId(decoded.userId));
+		} catch (e) {
+			throw new InvalidCredentialsException(ExceptionMessagesConstants.INVALID_REFRESH_TOKEN);
+		}
 	}
 
 	/**
