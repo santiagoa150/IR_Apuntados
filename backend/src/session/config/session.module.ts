@@ -3,8 +3,8 @@ import { UserModule } from '../../user/config/user.module';
 import { SessionController } from '../controller/session.controller';
 import { SessionService } from '../session.service';
 import { LoginStrategy } from '../guards/login.strategy';
-import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from '../guards/jwt.strategy';
 
 /**
  * Clase que representa el módulo de las sesiones y sus
@@ -17,12 +17,13 @@ import { JwtModule } from '@nestjs/jwt';
  */
 @Module({
 	imports: [
-		JwtModule.register({}),
+		JwtModule.register({ global: true }),
 		UserModule,
 	],
 	controllers: [SessionController],
 	providers: [
 		LoginStrategy,
+		JwtStrategy,
 		SessionService,
 	],
 })

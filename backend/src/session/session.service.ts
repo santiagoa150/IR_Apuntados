@@ -80,7 +80,7 @@ export class SessionService {
 	 */
 	async login(username: string, password: string): Promise<User> {
 		this.logger.log(`[${this.login.name}] INIT :: username: ${username}`);
-		const user: User = await this.userService.findByUsername(username);
+		const user: User = await this.userService.getByUsername(username);
 		if (!user.password.compare(password)) throw new InvalidCredentialsException();
 		this.logger.log(`[${this.login.name}] FINISH ::`);
 		return user;

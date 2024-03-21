@@ -1,6 +1,6 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
+import { ClassSerializerInterceptor, INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { AppExceptionFilter } from './shared/app.exception-filter';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import * as process from 'process';
@@ -21,6 +21,7 @@ async function bootstrap(): Promise<void> {
 	app.setGlobalPrefix(process.env.APP_GLOBAL_PREFIX);
 	app.useGlobalPipes(new ValidationPipe());
 	app.useGlobalFilters(new AppExceptionFilter());
+	app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
 	const config = new DocumentBuilder()
 		.setTitle('Apuntado Requisitos')
