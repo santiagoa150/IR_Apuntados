@@ -13,11 +13,6 @@ export type GameDocument = HydratedDocument<GameDTO>;
  * Representa la definición completa de un juego en mongodb.
  */
 const definition: Required<SchemaDefinition<GameDTO>> = {
-	code: {
-		type: String,
-		required: true,
-		index: true,
-	},
 	name: {
 		type: String,
 		required: true,

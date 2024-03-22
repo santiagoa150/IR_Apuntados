@@ -107,12 +107,26 @@ export class UserService {
 	}
 
 	/**
+	 * Método que permite actualizar toda la información de un usuario.
+	 * @param {User} user El usuario que se está actualizando
+	 * @return {User} El usuario actualizado.
+	 * @throws {UserNotUpdatedException} Se lanza cuando la solicitud de actualización no se
+	 * pudo realizar.
+	 */
+	async update(user: User): Promise<User> {
+		this.logger.log(`[${this.update.name}] INIT :: updating: ${user.userId.toString()}`);
+		const updated: UserDTO = await this.model.findOneAndUpdate({ userId: user.userId.toString() }, user.toDTO(), { new: true });
+		const mapped: User = updated ? User.fromDTO(updated) : undefined;
+		if (!mapped) throw new UserNotUpdatedException();
+		this.logger.log(`[${this.update.name}] FINISH :: `);
+		return mapped;
+	}
+
+	/**
 	 * Método que permite actualizar el diseño de carta de un usuario.
 	 * @param {UserId} userId El usuario que se quiere actualizar.
 	 * @param {CardDesignId} cardDesignId El diseño de carta que se quiere actualizar.
 	 * @returns {Promise<User>} El usuario actualizado.
-	 * @throws {UserNotUpdatedException} Se lanza cuando la solicitud de actualización no se
-	 * pudo actualizar.
 	 */
 	async updateCardDesign(userId: UserId, cardDesignId: CardDesignId): Promise<User> {
 		this.logger.log(`[${this.updateCardDesign.name}] INIT :: userId: ${userId.toString()}`);
@@ -122,10 +136,8 @@ export class UserService {
 			throw new CardDesignWithoutPurchasingException();
 		}
 		user.currentDesignId = cardDesign.cardDesignId;
-		const updated: UserDTO = await this.model.findOneAndUpdate({ userId: userId.toString() }, user.toDTO(), { new: true });
-		const mapped: User = updated ? User.fromDTO(updated) : undefined;
-		if (!mapped) throw new UserNotUpdatedException();
+		const updated: User = await this.update(user);
 		this.logger.log(`[${this.updateCardDesign.name}] FINISH ::`);
-		return mapped;
+		return updated;
 	}
 }

@@ -4,6 +4,19 @@
  */
 export enum ExceptionMessagesConstants {
 	/**
+	 * Se utiliza cuando se solicita el parámetro "betByPlayer" y no se envía.
+	 */
+	BET_BY_PLAYER_IS_REQUIRED_ERROR = 'BET_BY_PLAYER_IS_REQUIRED_ERROR',
+	/**
+	 * Se utiliza cuando se valida el parámetro "betByPlayer" y no es un número válido.
+	 */
+	BET_BY_PLAYER_MUST_BE_A_INTEGER_ERROR = 'BET_BY_PLAYER_MUST_BE_A_INTEGER_ERROR',
+	/**
+	 * Se utiliza cuando se valida el parámetro "betByPlayer" y no cumple con el
+	 * rango especificado por el sistema.
+	 */
+	BET_BY_PLAYER_MUST_BE_GREATER_THAN_0_ERROR = 'BET_BY_PLAYER_MUST_BE_GREATER_THAN_0_ERROR',
+	/**
 	 * Se utiliza cuando se solicita el parámetro "cardDesignId" y no se envía.
 	 */
 	CARD_DESIGN_ID_IS_REQUIRED_ERROR = 'CARD_DESIGN_ID_IS_REQUIRED_ERROR',
@@ -11,7 +24,7 @@ export enum ExceptionMessagesConstants {
 	 * Se utiliza cuando el ID de un diseño de carta y no es
 	 * de tipo string.
 	 */
-	CARD_DESIGN_ID_MUST_BE_STRING_ERROR = 'CARD_DESIGN_ID_MUST_BE_STRING_ERROR',
+	CARD_DESIGN_ID_MUST_BE_A_STRING_ERROR = 'CARD_DESIGN_ID_MUST_BE_A_STRING_ERROR',
 	/**
 	 * Se utiliza cuando se solicita un diseño de carta que no existe.
 	 */
@@ -25,6 +38,14 @@ export enum ExceptionMessagesConstants {
 	 * Se utiliza cuando se solicita el diseño de cartas que no existe.
 	 */
 	DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR = 'DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR',
+	/**
+	 * Se utiliza cuando se solicita el nombre de un juego y no se envía.
+	 */
+	GAME_NAME_IS_REQUIRED_ERROR = 'GAME_NAME_IS_REQUIRED_ERROR',
+	/**
+	 * Se utiliza cuando se valida el nombre de un juego y no es un string.
+	 */
+	GAME_NAME_MUST_BE_A_STRING_ERROR = 'GAME_NAME_MUST_BE_A_STRING_ERROR',
 	/**
 	 * Se utiliza cuando un ID de diseño de carta no cumple con las características
 	 * requeridas por el sistema.
@@ -40,6 +61,11 @@ export enum ExceptionMessagesConstants {
 	 * características requeridas por el sistema.
 	 */
 	INVALID_GAME_ID_ERROR = 'INVALID_GAME_ID_ERROR',
+	/**
+	 * Se utiliza cuando la cantidad de jugadores requeridos
+	 * para un juego no es válida.
+	 */
+	INVALID_GAME_REQUIRED_PLAYERS_ERROR = 'INVALID_GAME_REQUIRED_PLAYERS_ERROR',
 	/**
 	 * Se utiliza cuando el estado de un juego no se encuentra en
 	 * el archivo de constantes.
@@ -75,13 +101,26 @@ export enum ExceptionMessagesConstants {
 	 */
 	INVALID_USER_STATUS_ERROR = 'INVALID_USER_STATUS_ERROR',
 	/**
+	 * Se utiliza cuando se solicita el parámetro "isPublic" y no se envía.
+	 */
+	IS_PUBLIC_IS_REQUIRED_ERROR = 'IS_PUBLIC_IS_REQUIRED_ERROR',
+	/**
+	 * Se utiliza cuando se valida el parámetro "isPublic" y no es un boolean.
+	 */
+	IS_PUBLIC_MUST_BE_A_BOOLEAN_ERROR = 'IS_PUBLIC_MUST_BE_A_BOOLEAN_ERROR',
+	/**
+	 * Se utiliza cuando un usuario intenta realizar una operación con tokens
+	 * y no hay suficientes.
+	 */
+	NOT_ENOUGH_TOKENS_ERROR = 'NOT_ENOUGH_TOKENS_ERROR',
+	/**
 	 * Se utiliza cuando se solicita una contraseña y no se envía.
 	 */
 	PASSWORD_IS_REQUIRED_ERROR = 'PASSWORD_IS_REQUIRED_ERROR',
 	/**
 	 * Se utiliza cuando se valida una contraseña y no es de tipo string.
 	 */
-	PASSWORD_MUST_BE_STRING_ERROR = 'PASSWORD_MUST_BE_STRING_ERROR',
+	PASSWORD_MUST_BE_A_STRING_ERROR = 'PASSWORD_MUST_BE_A_STRING_ERROR',
 	/**
 	 * Se utiliza cuando se solicita un token de refresco y no se envía.
 	 */
@@ -89,11 +128,29 @@ export enum ExceptionMessagesConstants {
 	/**
 	 * Se utiliza cuando se valida un token de refresco y no es de tipo string.
 	 */
-	REFRESH_TOKEN_MUST_BE_STRING_ERROR = 'REFRESH_TOKEN_MUST_BE_STRING_ERROR',
+	REFRESH_TOKEN_MUST_BE_A_STRING_ERROR = 'REFRESH_TOKEN_MUST_BE_A_STRING_ERROR',
+	/**
+	 * Se utiliza cuando se solicita el parámetro "requiredPlayers" y no se envía.
+	 */
+	REQUIRED_PLAYERS_IS_REQUIRED_ERROR = 'REQUIRED_PLAYERS_IS_REQUIRED_ERROR',
+	/**
+	 * Se utiliza cando se valida el parámetro "requiredPlayers" y no es un número válido
+	 */
+	REQUIRED_PLAYERS_MUST_BE_A_INTEGER_ERROR = 'REQUIRED_PLAYERS_MUST_BE_A_INTEGER_ERROR',
+	/**
+	 * Se utiliza cuando se valida el parámetro "requiredPlayers" y no está
+	 * en el rango definido por el sistema.
+	 */
+	REQUIRED_PLAYERS_MUST_BE_IN_RANGE_ERROR = 'REQUIRED_PLAYERS_MUST_BE_IN_RANGE_ERROR',
 	/**
 	 * Se utiliza cuando se intenta crear un usuario que ya existe.
 	 */
 	USER_ALREADY_EXISTS_ERROR = 'USER_ALREADY_EXISTS_ERROR',
+	/**
+	 * Se utiliza cuando se intenta cambiar el estado de un usuario a jugando,
+	 * cuando ya está jugando.
+	 */
+	USER_IS_ALREADY_PLAYING_ERROR = 'USER_IS_ALREADY_PLAYING_ERROR',
 	/**
 	 * Se utiliza cuando se solicita un usuario que no existe.
 	 */
@@ -110,6 +167,6 @@ export enum ExceptionMessagesConstants {
 	/**
 	 * Se utiliza cuando se valida un nombre de usuario y no es de tipo string.
 	 */
-	USERNAME_MUST_BE_STRING_ERROR = 'USERNAME_MUST_BE_STRING_ERROR',
+	USERNAME_MUST_BE_A_STRING_ERROR = 'USERNAME_MUST_BE_A_STRING_ERROR',
 
 }

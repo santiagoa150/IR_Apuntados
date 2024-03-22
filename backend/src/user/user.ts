@@ -5,6 +5,9 @@ import { DomainBase } from '../shared/domain.base';
 import { ApiProperty } from '@nestjs/swagger';
 import { CardDesignId } from '../card-design/card-design-id';
 import { UserIcon } from './user-icon';
+import { UserStatusConstants } from './user-status.constants';
+import { UserIsAlreadyPlayingException } from './exceptions/user-is-already-playing.exception';
+import { NotEnoughTokensException } from './exceptions/not-enough-tokens.exception';
 
 /**
  * Clase que representa el objeto de transferencia
@@ -36,7 +39,7 @@ export class User extends DomainBase<UserDTO> {
 	private readonly status: UserStatus;
 	private readonly username: string;
 	private readonly icon: UserIcon;
-	private readonly tokens: number;
+	private tokens: number;
 
 	/**
 	 * @param {User} userId El ID del usuario.
@@ -105,4 +108,37 @@ export class User extends DomainBase<UserDTO> {
 			username: this.username,
 		};
 	}
+
+	/**
+	 * Método que permite cambiar el estado de un usuario, haciendo las
+	 * respectivas validaciones.
+	 * @param {UserStatusConstants} status El nuevo estado del usuario.
+	 * @throws {UserIsAlreadyPlayingException} Si lanza si un usuario ya está jugando y se intenta ingresar a un juego.
+	 */
+	changeStatus(
+		status: UserStatusConstants,
+	): void {
+		switch (status) {
+		case UserStatusConstants.PLAYING: {
+			if (this.status.is(UserStatusConstants.PLAYING)) throw new UserIsAlreadyPlayingException();
+			break;
+		}
+		}
+		this.status.change(status);
+	}
+
+	/**
+	 * Método que permite restar tokens a un usuario, haciendo las
+	 * respectivas validaciones.
+	 * @param {number} value La cantidad de tokens a restar.
+	 * @throws {NotEnoughTokensException} Se lanza si la cantidad que se desea restar
+	 * supera la cantidad de tokens disponibles.
+	 */
+	removeTokens(value: number): void {
+		if (value < 0) value = -value;
+		value = Math.trunc(value);
+		if (value > this.tokens) throw new NotEnoughTokensException();
+		this.tokens -= value;
+	}
+
 }

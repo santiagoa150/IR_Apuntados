@@ -3,7 +3,6 @@ import { DomainBase } from '../shared/domain.base';
 import { GameId } from './game-id';
 import { UserId } from '../user/user-id';
 import { GameStatus } from './game-status';
-import { GameCode } from './game-code';
 
 /**
  * Clase que representa el objeto de transferencia de un juego.
@@ -14,7 +13,6 @@ export class GameDTO {
 	@ApiProperty() creatorId: string;
 	@ApiProperty() status: string;
 	@ApiProperty() name: string;
-	@ApiProperty() code: string;
 	@ApiProperty() requiredPlayers: number;
 	@ApiProperty() currentPlayers: number;
 	@ApiProperty() betByPlayer: number;
@@ -32,7 +30,6 @@ export class Game extends DomainBase<GameDTO> {
 	private readonly gameId: GameId;
 	private readonly creatorId: UserId;
 	private readonly status: GameStatus;
-	private readonly code: GameCode;
 	private readonly name: string;
 	private readonly requiredPlayers: number;
 	private readonly currentPlayers: number;
@@ -43,7 +40,6 @@ export class Game extends DomainBase<GameDTO> {
 	 * @param {GameId} gameId El ID del juego.
 	 * @param {UserId} creatorId El ID del creador del juego.
 	 * @param {GameStatus} status El estado del juego.
-	 * @param {GameCode} code El código del juego.
 	 * @param {string} name El nombre del juego.
 	 * @param {number} requiredPlayers El total de jugadores requeridos
 	 * para iniciar el juego.
@@ -55,7 +51,6 @@ export class Game extends DomainBase<GameDTO> {
 		gameId: GameId,
 		creatorId: UserId,
 		status: GameStatus,
-		code: GameCode,
 		name: string,
 		requiredPlayers: number,
 		currentPlayers: number,
@@ -66,7 +61,6 @@ export class Game extends DomainBase<GameDTO> {
 		this.gameId = gameId;
 		this.creatorId = creatorId;
 		this.status = status;
-		this.code = code;
 		this.name = name;
 		this.requiredPlayers = requiredPlayers;
 		this.currentPlayers = currentPlayers;
@@ -85,7 +79,6 @@ export class Game extends DomainBase<GameDTO> {
 			new GameId(dto.gameId),
 			new UserId(dto.creatorId),
 			new GameStatus(dto.status),
-			new GameCode(dto.code),
 			dto.name,
 			dto.requiredPlayers,
 			dto.currentPlayers,
@@ -101,7 +94,6 @@ export class Game extends DomainBase<GameDTO> {
 	toDTO(): GameDTO {
 		return {
 			gameId: this.gameId.toString(),
-			code: this.code.toString(),
 			status: this.status.toString(),
 			betByPlayer: this.betByPlayer,
 			creatorId: this.creatorId.toString(),

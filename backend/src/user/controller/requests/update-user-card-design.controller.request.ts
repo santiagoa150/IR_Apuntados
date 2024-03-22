@@ -10,7 +10,7 @@ import { ExceptionMessagesConstants } from '../../../shared/exception-messages.c
 export class UpdateUserCardDesignControllerRequest {
 
 	@ApiProperty({ required: true })
-	@IsString({ message: ExceptionMessagesConstants.CARD_DESIGN_ID_MUST_BE_STRING_ERROR })
+	@IsString({ message: ExceptionMessagesConstants.CARD_DESIGN_ID_MUST_BE_A_STRING_ERROR })
 	@IsNotEmpty({ message: ExceptionMessagesConstants.CARD_DESIGN_ID_IS_REQUIRED_ERROR })
 		cardDesignId: string;
 }

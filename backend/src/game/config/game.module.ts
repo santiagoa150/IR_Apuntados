@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../../database/database.module';
 import { GameService } from '../game.service';
 import { GameController } from '../controller/game.controller';
+import { UserModule } from '../../user/config/user.module';
 
 /**
  * Clase que representa el módulo de los juegos y sus respectivas
@@ -12,7 +13,7 @@ import { GameController } from '../controller/game.controller';
  * @class
  */
 @Module({
-	imports: [DatabaseModule],
+	imports: [DatabaseModule, UserModule],
 	controllers: [GameController],
 	providers: [GameService],
 })

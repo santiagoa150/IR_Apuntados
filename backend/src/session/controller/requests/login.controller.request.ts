@@ -10,12 +10,12 @@ import { ExceptionMessagesConstants } from '../../../shared/exception-messages.c
  */
 export class LoginControllerRequest {
 	@ApiProperty()
-	@IsString({ message: ExceptionMessagesConstants.USERNAME_MUST_BE_STRING_ERROR })
+	@IsString({ message: ExceptionMessagesConstants.USERNAME_MUST_BE_A_STRING_ERROR })
 	@IsNotEmpty({ message: ExceptionMessagesConstants.USERNAME_IS_REQUIRED_ERROR })
 		username: string;
 
 	@ApiProperty()
-	@IsString({ message: ExceptionMessagesConstants.PASSWORD_MUST_BE_STRING_ERROR })
+	@IsString({ message: ExceptionMessagesConstants.PASSWORD_MUST_BE_A_STRING_ERROR })
 	@IsNotEmpty({ message: ExceptionMessagesConstants.PASSWORD_IS_REQUIRED_ERROR })
 		password: string;
 }

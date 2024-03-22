@@ -10,7 +10,7 @@ import { ExceptionMessagesConstants } from '../../../shared/exception-messages.c
  */
 export class RefreshTokenControllerRequest {
 	@ApiProperty()
-	@IsString({ message: ExceptionMessagesConstants.REFRESH_TOKEN_MUST_BE_STRING_ERROR })
+	@IsString({ message: ExceptionMessagesConstants.REFRESH_TOKEN_MUST_BE_A_STRING_ERROR })
 	@IsNotEmpty({ message: ExceptionMessagesConstants.REFRESH_TOKEN_IS_REQUIRED_ERROR})
 		refreshToken: string;
 }

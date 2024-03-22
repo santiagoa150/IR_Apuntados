@@ -18,11 +18,21 @@ export abstract class StatusValueObject<T extends string> extends DiscreteValueO
 	}
 
 	/**
+	 * Método que permite validar si el estado corresponde a un
+	 * valor cualquiera.
+	 * @param {T} value El valor a comparar.
+	 * @returns {boolean} Determina si el valor es válido.
+	 */
+	is(value: T): boolean {
+		return this.value === value;
+	}
+
+	/**
 	 * Método que se encarga de cambiar el estado de un objeto
 	 * por otro.
 	 * @param {T} value El nuevo estado.
 	 */
-	public change(value: T): void {
+	change(value: T): void {
 		this.value = value;
 	}
 }
