@@ -141,6 +141,10 @@ export enum ExceptionMessagesConstants {
 	 */
 	PASSWORD_MUST_BE_A_STRING_ERROR = 'PASSWORD_MUST_BE_A_STRING_ERROR',
 	/**
+	 * Se utiliza cuando se solicita un jugador que no existe.
+	 */
+	PLAYER_NOT_FOUND_ERROR = 'PLAYER_NOT_FOUND_ERROR',
+	/**
 	 * Se utiliza cuando se solicita un token de refresco y no se envía.
 	 */
 	REFRESH_TOKEN_IS_REQUIRED_ERROR = 'REFRESH_TOKEN_IS_REQUIRED_ERROR',

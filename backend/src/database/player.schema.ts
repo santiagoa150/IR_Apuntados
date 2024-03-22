@@ -39,8 +39,8 @@ const definition: Required<SchemaDefinition<PlayerDTO>> = {
 	},
 	quads: {
 		type: [CardSchema],
-		maxlength: 4,
-		required: true,
+		length: 4,
+		required: false,
 	},
 	position: {
 		type: Number,
@@ -48,13 +48,13 @@ const definition: Required<SchemaDefinition<PlayerDTO>> = {
 	},
 	trips2: {
 		type: [CardSchema],
-		maxlength: 3,
-		required: true,
+		length: 3,
+		required: false,
 	},
 	trips1: {
 		type: [CardSchema],
-		maxlength: 3,
-		required: true,
+		length: 3,
+		required: false,
 	},
 	playerId: {
 		type: String,

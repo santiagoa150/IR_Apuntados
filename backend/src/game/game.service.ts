@@ -10,6 +10,7 @@ import { UserStatusConstants } from '../user/user-status.constants';
 import { InvalidGameRequiredPlayersException } from './exceptions/invalid-game-required-players.exception';
 import { GameId } from './game-id';
 import { GameStatusConstants } from './game-status.constants';
+import { PlayerService } from '../player/player.service';
 
 /**
  * Clase que contiene los servicios para interactuar con los
@@ -23,11 +24,13 @@ export class GameService {
 
 	/**
 	 * @param {UserService} userService Servicios para interactuar con los usuarios.
+	 * @param {PlayerService} playerService Servicios para interactuar con los jugadores.
 	 * @param {Model<GameDocument>} model Modelo para interactuar con la base de
 	 * datos de los juegos.
 	 */
 	constructor(
 		private readonly userService: UserService,
+		private readonly playerService: PlayerService,
 		@Inject(DatabaseConstants.GAME_PROVIDER) private readonly model: Model<GameDocument>,
 	) {
 	}
@@ -58,7 +61,7 @@ export class GameService {
 			name: request.name,
 		});
 		await new this.model(game.toDTO()).save();
-		// TODO: Crear jugador
+		await this.playerService.create(request.creatorId, game.gameId, false);
 		await this.userService.update(user);
 		this.logger.log(`[${this.create.name}] FINISH ::`);
 		return game;

@@ -27,7 +27,7 @@ export class GameDTO {
  */
 export class Game extends DomainBase<GameDTO> {
 
-	private readonly gameId: GameId;
+	public readonly gameId: GameId;
 	private readonly creatorId: UserId;
 	private readonly status: GameStatus;
 	private readonly name: string;
