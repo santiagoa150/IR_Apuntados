@@ -1,4 +1,4 @@
-import { StringValueObject } from './string.value-object';
+import { DiscreteValueObject } from './discrete.value-object';
 
 /**
  * Clase que representa los estados de algún objeto de la aplicación.
@@ -7,7 +7,7 @@ import { StringValueObject } from './string.value-object';
  * @template T Representa las constantes de los estados.
  * @extends StringValueObject
  */
-export abstract class StatusValueObject<T extends string> extends StringValueObject {
+export abstract class StatusValueObject<T extends string> extends DiscreteValueObject {
 
 	/**
 	 * @param {string} value El valor que se está almacenando.
@@ -15,7 +15,6 @@ export abstract class StatusValueObject<T extends string> extends StringValueObj
 	 */
 	constructor(value: string) {
 		super(value);
-		this.validate(value);
 	}
 
 	/**
@@ -26,10 +25,4 @@ export abstract class StatusValueObject<T extends string> extends StringValueObj
 	public change(value: T): void {
 		this.value = value;
 	}
-
-	/**
-	 * Método encargado de validar si el estado de un objeto es válido.
-	 * @param {string} value El estado para validar.
-	 */
-	protected abstract validate(value: string): void;
 }

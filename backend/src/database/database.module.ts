@@ -5,6 +5,7 @@ import { UserSchema } from './user.schema';
 import { ConfigModule } from '@nestjs/config';
 import * as process from 'process';
 import { CardDesignSchema } from './card-design.schema';
+import { GameSchema } from './game.schema';
 
 /**
  * Clase en dónde se deben colocar las configuraciones relacionadas con
@@ -13,6 +14,7 @@ import { CardDesignSchema } from './card-design.schema';
  * - La conexión a la base de datos.
  * - El esquema de los usuarios.
  * - El esquema de diseño de cartas.
+ * - El esquema de los juegos.
  * @class
  */
 @Module({
@@ -22,8 +24,17 @@ import { CardDesignSchema } from './card-design.schema';
 			connectionName: DatabaseConstants.DATABASE_CONNECTION_NAME,
 		}),
 	],
-	providers: [UserSchema, CardDesignSchema],
-	exports: [MongooseModule, UserSchema, CardDesignSchema],
+	providers: [
+		UserSchema,
+		CardDesignSchema,
+		GameSchema,
+	],
+	exports: [
+		MongooseModule,
+		UserSchema,
+		CardDesignSchema,
+		GameSchema,
+	],
 })
 export class DatabaseModule {
 }

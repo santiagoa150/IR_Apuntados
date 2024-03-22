@@ -1,18 +1,13 @@
-import { StringValueObject } from '../shared/string.value-object';
 import { UserIconConstants } from './user-icon.constants';
 import { InvalidUserIconException } from './exceptions/invalid-user-icon.exception';
+import { DiscreteValueObject } from '../shared/discrete.value-object';
 
 /**
  * Clase que representa el icono de un usuario.
  * @class
  * @extends StringValueObject
  */
-export class UserIcon extends StringValueObject {
-
-	constructor(value: string) {
-		super(value);
-		this.validate(value);
-	}
+export class UserIcon extends DiscreteValueObject {
 
 	/**
 	 * Método que permite seleccionar un icono de usuario aleatoriamente
@@ -27,10 +22,10 @@ export class UserIcon extends StringValueObject {
 	/**
 	 * Método que determina si el icono de un usuario no es válido.
 	 * @param {string} value El icono de un usuario.
-	 * @private
+	 * @protected
 	 * @throws {InvalidUserIconException} Se lanza si el icono del usuario no es válido.
 	 */
-	private validate(value: string): void {
+	protected validate(value: string): void {
 		if (!(value in UserIconConstants)) throw new InvalidUserIconException();
 	}
 }

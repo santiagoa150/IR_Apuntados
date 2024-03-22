@@ -1,16 +1,16 @@
 import { IdValueObject } from '../shared/id.value-object';
-import { InvalidUserIdException } from './exceptions/invalid-user-id.exception';
 import { v4, validate } from 'uuid';
+import { InvalidGameIdException } from './exceptions/invalid-game-id.exception';
 
 /**
- * Clase que representa el ID de un usuario.
+ * Clase que representa el ID de un juego.
  * @class
  * @extends {IdValueObject}
  */
-export class UserId extends IdValueObject {
+export class GameId extends IdValueObject {
 
 	/**
-	 * Método encargado de generar los IDS de los usuarios.
+	 * Método encargado de generar los IDS de los juegos.
 	 * @returns {string} El ID generado.
 	 * @static
 	 */
@@ -19,13 +19,12 @@ export class UserId extends IdValueObject {
 	}
 
 	/**
-	 * Método encargado de validar las características del ID
-	 * de un usuario.
+	 * Método encargado de validar las características del ID de un juego.
 	 * @param {string} value El ID para validar.
-	 * @protected
 	 * @throws {InvalidUserIdException} En caso de que el ID no sea válido se lanza la excepción.
+	 * @protected
 	 */
 	protected validate(value: string): void {
-		if (!validate(value)) throw new InvalidUserIdException();
+		if (!validate(value)) throw new InvalidGameIdException();
 	}
 }

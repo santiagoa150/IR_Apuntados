@@ -36,6 +36,16 @@ export enum ExceptionMessagesConstants {
 	 */
 	INVALID_CREDENTIALS_ERROR = 'INVALID_CREDENTIALS_ERROR',
 	/**
+	 * Se utiliza cuando un ID de un juego no cumple con las
+	 * características requeridas por el sistema.
+	 */
+	INVALID_GAME_ID_ERROR = 'INVALID_GAME_ID_ERROR',
+	/**
+	 * Se utiliza cuando el estado de un juego no se encuentra en
+	 * el archivo de constantes.
+	 */
+	INVALID_GAME_STATUS_ERROR = 'INVALID_GAME_STATUS_ERROR',
+	/**
 	 * Se utiliza cuando la contraseña de un usuario no cumple con
 	 * las características requeridas por el sistema.
 	 */

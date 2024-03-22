@@ -18,6 +18,15 @@ export enum DatabaseConstants {
 	 */
 	CARD_DESIGN_PROVIDER = 'CARD_DESIGN_PROVIDER',
 	/**
+	 * Esta constante representa el nombre de la colección de juegos
+	 * en la base de datos.
+	 */
+	GAME_COLLECTION_NAME = 'Game',
+	/**
+	 * Esta constante representa el provider del esquema de los juegos.
+	 */
+	GAME_PROVIDER = 'GAME_PROVIDER',
+	/**
 	 * Esta constante representa el nombre de la colección de usuarios
 	 * en la base de datos.
 	 */
