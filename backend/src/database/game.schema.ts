@@ -5,7 +5,7 @@ import { getConnectionToken } from '@nestjs/mongoose';
 import { DatabaseConstants } from './database.constants';
 
 /**
- * Representa el model para interactuar con los juegos de mongodb.
+ * Representa el modelo para interactuar con los juegos de mongodb.
  */
 export type GameDocument = HydratedDocument<GameDTO>;
 
@@ -53,17 +53,22 @@ const definition: Required<SchemaDefinition<GameDTO>> = {
 };
 
 /**
- * Constante que representa la definición y conexión del esquema de
+ * Constante que representa el esquema de los juegos.
+ * @const {Schema<GameDTO>}
+ */
+export const GameSchema: Schema<GameDTO> = new Schema<GameDTO>(definition, { timestamps: true });
+
+/**
+ * Constante que representa la conexión del esquema de
  * juegos en la base de datos.
  * @type {FactoryProvider}
  */
-export const GameSchema: FactoryProvider = {
+export const GameSchemaProvider: FactoryProvider = {
 	inject: [getConnectionToken(DatabaseConstants.DATABASE_CONNECTION_NAME)],
 	provide: DatabaseConstants.GAME_PROVIDER,
 	useFactory(connection: Connection): Model<GameDocument> {
 		return connection.model<GameDocument>(
-			DatabaseConstants.GAME_COLLECTION_NAME,
-			new Schema<GameDTO>(definition, { timestamps: true }),
+			DatabaseConstants.GAME_COLLECTION_NAME, GameSchema
 		);
 	},
 };

@@ -52,17 +52,22 @@ const definition: Required<SchemaDefinition<UserDTO>> = {
 };
 
 /**
- * Constante que representa la definición y conexión del esquema
+ * Constante que representa el esquema de los usuarios.
+ * @const {Schema<UserDTO>}
+ */
+export const UserSchema: Schema<UserDTO> = new Schema<UserDTO>(definition, { timestamps: true });
+
+/**
+ * Constante que representa la conexión del esquema
  * de usuarios en la base de datos.
  * @type {FactoryProvider}
  */
-export const UserSchema: FactoryProvider = {
+export const UserSchemaProvider: FactoryProvider = {
 	inject: [getConnectionToken(DatabaseConstants.DATABASE_CONNECTION_NAME)],
 	provide: DatabaseConstants.USER_PROVIDER,
 	useFactory(connection: Connection): Model<UserDocument> {
 		return connection.model<UserDocument>(
-			DatabaseConstants.USER_COLLECTION_NAME,
-			new Schema<UserDTO>(definition, { timestamps: true }),
+			DatabaseConstants.USER_COLLECTION_NAME, UserSchema,
 		);
 	},
 };

@@ -47,10 +47,25 @@ export enum ExceptionMessagesConstants {
 	 */
 	GAME_NAME_MUST_BE_A_STRING_ERROR = 'GAME_NAME_MUST_BE_A_STRING_ERROR',
 	/**
+	 * Se utiliza cuando se quiere expresar un error del servidor que
+	 * no debe ser comunicado al usuario final.
+	 */
+	INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
+	/**
 	 * Se utiliza cuando un ID de diseño de carta no cumple con las características
 	 * requeridas por el sistema.
 	 */
 	INVALID_CARD_DESIGN_ID_ERROR = 'INVALID_CARD_DESIGN_ID_ERROR',
+	/**
+	 * Se utiliza cuando la pinta de una carta no se encuentra en el
+	 * archivo de constantes.
+	 */
+	INVALID_CARD_SUIT_ERROR = 'INVALID_CARD_SUIT_ERROR',
+	/**
+	 * Se utiliza cuando el tipo de una carta no se encuentra en
+	 * el archivo de constantes.
+	 */
+	INVALID_CARD_TYPE_ERROR = 'INVALID_CARD_TYPE_ERROR',
 	/**
 	 * Se utiliza cuando las credenciales de inicio de sesión de un usuario no
 	 * son válidas.
@@ -77,14 +92,18 @@ export enum ExceptionMessagesConstants {
 	 */
 	INVALID_PASSWORD_ERROR = 'INVALID_PASSWORD_ERROR',
 	/**
+	 * Se utiliza cuando un ID de un jugador no cumple con las características
+	 * requeridas por el sistema.
+	 */
+	INVALID_PLAYER_ID_ERROR = 'INVALID_PLAYER_ID_ERROR',
+	/**
+	 * Se utiliza cuando el estado de un jugador no es válido.
+	 */
+	INVALID_PLAYER_STATUS_ERROR = 'INVALID_PLAYER_STATUS_ERROR',
+	/**
 	 * Se utiliza cuando el token de refresco de un usuario no es válido.
 	 */
 	INVALID_REFRESH_TOKEN_ERROR = 'INVALID_REFRESH_TOKEN_ERROR',
-	/**
-	 * Se utiliza cuando se quiere expresar un error del servidor que
-	 * no debe ser comunicado al usuario final.
-	 */
-	INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
 	/**
 	 * Se utiliza cuando el icono de un usuario no cumple con las
 	 * características requeridas por el sistema.

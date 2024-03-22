@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { DatabaseConstants } from './database.constants';
-import { UserSchema } from './user.schema';
+import { UserSchemaProvider } from './user.schema';
 import { ConfigModule } from '@nestjs/config';
 import * as process from 'process';
-import { CardDesignSchema } from './card-design.schema';
-import { GameSchema } from './game.schema';
+import { CardDesignSchemaProvider } from './card-design.schema';
+import { GameSchemaProvider } from './game.schema';
+import { PlayerSchemaProvider } from './player.schema';
 
 /**
  * Clase en dónde se deben colocar las configuraciones relacionadas con
@@ -25,15 +26,17 @@ import { GameSchema } from './game.schema';
 		}),
 	],
 	providers: [
-		UserSchema,
-		CardDesignSchema,
-		GameSchema,
+		UserSchemaProvider,
+		CardDesignSchemaProvider,
+		GameSchemaProvider,
+		PlayerSchemaProvider,
 	],
 	exports: [
 		MongooseModule,
-		UserSchema,
-		CardDesignSchema,
-		GameSchema,
+		UserSchemaProvider,
+		CardDesignSchemaProvider,
+		GameSchemaProvider,
+		PlayerSchemaProvider,
 	],
 })
 export class DatabaseModule {

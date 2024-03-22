@@ -4,6 +4,7 @@ import { UserModule } from './user/config/user.module';
 import { SessionModule } from './session/config/session.module';
 import { CardDesignModule } from './card-design/config/card-design.module';
 import { GameModule } from './game/config/game.module';
+import { PlayerModule } from './player/config/player.module';
 
 /**
  * Clase que representa el módulo principal de la aplicación.\
@@ -13,6 +14,7 @@ import { GameModule } from './game/config/game.module';
  * - El módulo de las sesiones.
  * - El módulo de los diseños de cartas.
  * - El módulo de los juegos.
+ * - El módulo de los jugadores.
  * @class
  */
 @Module({
@@ -22,6 +24,7 @@ import { GameModule } from './game/config/game.module';
 		SessionModule,
 		CardDesignModule,
 		GameModule,
+		PlayerModule,
 	],
 })
 export class AppModule {

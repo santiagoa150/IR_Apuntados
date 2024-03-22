@@ -7,5 +7,5 @@
  */
 export abstract class DomainBase<T> {
 
-	protected abstract toDTO(): T;
+	protected abstract toDTO(): T | Promise<T>;
 }

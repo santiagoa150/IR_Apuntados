@@ -58,6 +58,7 @@ export class GameService {
 			name: request.name,
 		});
 		await new this.model(game.toDTO()).save();
+		// TODO: Crear jugador
 		await this.userService.update(user);
 		this.logger.log(`[${this.create.name}] FINISH ::`);
 		return game;

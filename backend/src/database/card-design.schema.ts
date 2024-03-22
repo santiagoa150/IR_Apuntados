@@ -47,16 +47,21 @@ const definition: Required<SchemaDefinition<CardDesignDTO>> = {
 };
 
 /**
- * Constante que representa la definición y conexión del esquema de
+ * Constante que representa el esquema de los diseños de cartas.
+ * @const {Schema<CardDesignDTO>}
+ */
+export const CardDesignSchema: Schema<CardDesignDTO> = new Schema<CardDesignDTO>(definition, { timestamps: true });
+
+/**
+ * Constante que representa la conexión del esquema de
  * diseños de cartas en la base de datos.
  */
-export const CardDesignSchema: FactoryProvider = {
+export const CardDesignSchemaProvider: FactoryProvider = {
 	inject: [getConnectionToken(DatabaseConstants.DATABASE_CONNECTION_NAME)],
 	provide: DatabaseConstants.CARD_DESIGN_PROVIDER,
 	useFactory(connection: Connection): Model<CardDesignDocument> {
 		return connection.model<CardDesignDocument>(
-			DatabaseConstants.CARD_DESIGN_COLLECTION_NAME,
-			new Schema<CardDesignDTO>(definition, { timestamps: true }),
+			DatabaseConstants.CARD_DESIGN_COLLECTION_NAME, CardDesignSchema,
 		);
 	},
 };

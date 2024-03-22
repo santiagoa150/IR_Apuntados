@@ -17,11 +17,6 @@ export enum GameStatusConstants {
 	 */
 	SHOWING_MATCH_RESULTS = 'SHOWING_MATCH_RESULTS',
 	/**
-	 * El estado representa cuando se están mostrando los resultados
-	 * de un juego.
-	 */
-	SHOWING_GAME_RESULTS = 'SHOWING_GAME_RESULTS',
-	/**
 	 * El estado representa cuando se están esperando los juegos
 	 * para un juego.
 	 */
