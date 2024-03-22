@@ -10,6 +10,15 @@ import * as uuid from 'uuid';
 export class UserId extends IdValueObject {
 
 	/**
+	 * Método encargado de generar los IDS de los usuarios.
+	 * @returns {string} El ID generado.
+	 * @static
+	 */
+	static create(): string {
+		return uuid.v4();
+	}
+
+	/**
 	 * Método encargado de validar las características del ID
 	 * de un usuario.
 	 * @param {string} value El ID para validar.

@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { LoginGuard } from '../guards/login.guard';
-import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginControllerRequest } from './requests/login.controller.request';
 import { LoginControllerResponse } from './responses/login.controller.response';
 import { ExceptionResponseDTO } from '../../shared/exception.response';
@@ -38,7 +38,7 @@ export class SessionController {
 	@Post(SessionControllerConstants.LOGIN_URL)
 	@UseGuards(LoginGuard)
 	@ApiBody({ type: LoginControllerRequest })
-	@ApiOkResponse({ type: LoginControllerResponse })
+	@ApiCreatedResponse({ type: LoginControllerResponse })
 	@ApiResponse({ type: ExceptionResponseDTO })
 	async login(@UserDecorator() user: UserDTO): Promise<LoginControllerResponse> {
 		const response: LoginControllerResponse = new LoginControllerResponse();
@@ -55,7 +55,7 @@ export class SessionController {
 	 * @returns {RefreshTokenControllerResponse} Retorna el nuevo token de acceso.
 	 */
 	@Post(SessionControllerConstants.REFRESH_TOKEN_URL)
-	@ApiOkResponse({ type: RefreshTokenControllerResponse })
+	@ApiCreatedResponse({ type: RefreshTokenControllerResponse })
 	@ApiResponse({ type: ExceptionResponseDTO })
 	async refreshToken(@Body() body: RefreshTokenControllerRequest): Promise<RefreshTokenControllerResponse> {
 		const response: RefreshTokenControllerResponse = new RefreshTokenControllerResponse();

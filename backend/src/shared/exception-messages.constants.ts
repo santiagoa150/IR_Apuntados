@@ -4,6 +4,15 @@
  */
 export enum ExceptionMessagesConstants {
 	/**
+	 * Se utiliza cuando se solicita el diseño de cartas que no existe.
+	 */
+	DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR = 'DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR',
+	/**
+	 * Se utiliza cuando un ID de diseño de carta no cumple con las características
+	 * requeridas por el sistema.
+	 */
+	INVALID_CARD_DESIGN_ID_ERROR = 'INVALID_CARD_DESIGN_ID_ERROR',
+	/**
 	 * Se utiliza cuando las credenciales de inicio de sesión de un usuario no
 	 * son válidas.
 	 */
@@ -33,7 +42,36 @@ export enum ExceptionMessagesConstants {
 	 */
 	INVALID_USER_STATUS_ERROR = 'INVALID_USER_STATUS_ERROR',
 	/**
+	 * Se utiliza cuando se solicita una contraseña y no se envía.
+	 */
+	PASSWORD_IS_REQUIRED_ERROR = 'PASSWORD_IS_REQUIRED_ERROR',
+	/**
+	 * Se utiliza cuando se valida una contraseña y no es de tipo string.
+	 */
+	PASSWORD_MUST_BE_STRING = 'PASSWORD_MUST_BE_STRING',
+	/**
+	 * Se utiliza cuando se solicita un token de refresco y no se envía.
+	 */
+	REFRESH_TOKEN_IS_REQUIRED = 'REFRESH_TOKEN_IS_REQUIRED',
+	/**
+	 * Se utiliza cuando se valida un token de refresco y no es de tipo string.
+	 */
+	REFRESH_TOKEN_MUST_BE_STRING = 'REFRESH_TOKEN_MUST_BE_STRING',
+	/**
+	 * Se utiliza cuando se intenta crear un usuario que ya existe.
+	 */
+	USER_ALREADY_EXISTS_ERROR = 'USER_ALREADY_EXISTS_ERROR',
+	/**
 	 * Se utiliza cuando se solicita un usuario que no existe.
 	 */
 	USER_NOT_FOUND_ERROR = 'USER_NOT_FOUND_ERROR',
+	/**
+	 * Se utiliza cuando se solicita un nombre de usuario y no se envía.
+	 */
+	USERNAME_IS_REQUIRED_ERROR = 'USERNAME_IS_REQUIRED_ERROR',
+	/**
+	 * Se utiliza cuando se valida un nombre de usuario y no es de tipo string.
+	 */
+	USERNAME_MUST_BE_STRING_ERROR = 'USERNAME_MUST_BE_STRING_ERROR',
+
 }

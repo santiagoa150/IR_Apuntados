@@ -3,6 +3,7 @@ import { UserPassword } from './user-password';
 import { UserStatus } from './user-status';
 import { DomainBase } from '../shared/domain.base';
 import { ApiProperty } from '@nestjs/swagger';
+import { CardDesignId } from '../card-design/card-design-id';
 
 /**
  * Clase que representa el objeto de transferencia
@@ -27,39 +28,41 @@ export class UserDTO {
  */
 export class User extends DomainBase<UserDTO> {
 	public readonly password: UserPassword;
-	private readonly userId: UserId;
+	public readonly userId: UserId;
 	private readonly status: UserStatus;
+	private readonly currentDesignId: CardDesignId;
 	private readonly username: string;
+	// TODO: Cambiar por el Id del icono
 	private readonly icon: string;
-	// TODO: Cambiar por el Id del diseño de carta.
-	private readonly currentDesignId: string;
 	private readonly tokens: number;
+
+	// TODO: Agregar todos los diseños de carta comprados.
 
 	/**
 	 * @param {User} userId El ID del usuario.
 	 * @param {UserPassword} password La contraseña del usuario.
 	 * @param {UserStatus} status El estado del usuario.
+	 * @param {CardDesignId} currentDesignId El diseño de cartas actual del usuario.
 	 * @param {string} username El nombre del usuario.
 	 * @param {string} icon El icono del usuario.
-	 * @param {string} currentDesignId El diseño de cartas actual del usuario.
 	 * @param {number} tokens La cantidad de tokens del usuario.
 	 */
 	constructor(
 		userId: UserId,
 		password: UserPassword,
 		status: UserStatus,
+		currentDesignId: CardDesignId,
 		username: string,
 		icon: string,
-		currentDesignId: string,
 		tokens: number,
 	) {
 		super();
 		this.userId = userId;
 		this.password = password;
 		this.status = status;
+		this.currentDesignId = currentDesignId;
 		this.username = username;
 		this.icon = icon;
-		this.currentDesignId = currentDesignId;
 		this.tokens = tokens;
 	}
 
@@ -75,9 +78,9 @@ export class User extends DomainBase<UserDTO> {
 			new UserId(dto.userId),
 			new UserPassword(dto.password),
 			new UserStatus(dto.status),
+			new CardDesignId(dto.currentDesignId),
 			dto.username,
 			dto.icon,
-			dto.currentDesignId,
 			dto.tokens,
 		);
 	}
@@ -88,7 +91,7 @@ export class User extends DomainBase<UserDTO> {
 	 */
 	toDTO(): UserDTO {
 		return {
-			currentDesignId: this.currentDesignId,
+			currentDesignId: this.currentDesignId.toString(),
 			icon: this.icon,
 			password: this.password.toString(),
 			status: this.status.toString(),

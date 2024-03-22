@@ -4,6 +4,7 @@ import { DatabaseConstants } from './database.constants';
 import { UserSchema } from './user.schema';
 import { ConfigModule } from '@nestjs/config';
 import * as process from 'process';
+import { CardDesignSchema } from './card-design.schema';
 
 /**
  * Clase en dónde se deben colocar las configuraciones relacionadas con
@@ -11,6 +12,7 @@ import * as process from 'process';
  * Se configura:
  * - La conexión a la base de datos.
  * - El esquema de los usuarios.
+ * - El esquema de diseño de cartas.
  * @class
  */
 @Module({
@@ -20,8 +22,8 @@ import * as process from 'process';
 			connectionName: DatabaseConstants.DATABASE_CONNECTION_NAME,
 		}),
 	],
-	providers: [UserSchema],
-	exports: [MongooseModule, UserSchema],
+	providers: [UserSchema, CardDesignSchema],
+	exports: [MongooseModule, UserSchema, CardDesignSchema],
 })
 export class DatabaseModule {
 }

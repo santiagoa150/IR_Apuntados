@@ -54,7 +54,7 @@ const definition: Required<SchemaDefinition<UserDTO>> = {
  */
 export const UserSchema: FactoryProvider = {
 	inject: [getConnectionToken(DatabaseConstants.DATABASE_CONNECTION_NAME)],
-	provide: Model<UserDocument>,
+	provide: DatabaseConstants.USER_PROVIDER,
 	useFactory(connection: Connection): Model<UserDocument> {
 		return connection.model<UserDocument>(
 			DatabaseConstants.USER_COLLECTION_NAME,
