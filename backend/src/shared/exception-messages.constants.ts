@@ -17,6 +17,11 @@ export enum ExceptionMessagesConstants {
 	 */
 	CARD_DESIGN_NOT_FOUND_ERROR = 'CARD_DESIGN_NOT_FOUND_ERROR',
 	/**
+	 * Se utiliza cuando se intenta usar un diseño de carta que
+	 * no ha sido comprado.
+	 */
+	CARD_DESIGN_WITHOUT_PURCHASING_ERROR = 'CARD_DESIGN_WITHOUT_PURCHASING_ERROR',
+	/**
 	 * Se utiliza cuando se solicita el diseño de cartas que no existe.
 	 */
 	DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR = 'DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR',
@@ -44,6 +49,11 @@ export enum ExceptionMessagesConstants {
 	 * no debe ser comunicado al usuario final.
 	 */
 	INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
+	/**
+	 * Se utiliza cuando el icono de un usuario no cumple con las
+	 * características requeridas por el sistema.
+	 */
+	INVALID_USER_ICON_ERROR = 'INVALID_USER_ICON_ERROR',
 	/**
 	 * Se utiliza cuando un ID de un usuario no cumple con las
 	 * características requeridas por el sistema.

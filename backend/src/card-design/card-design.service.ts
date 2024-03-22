@@ -1,5 +1,5 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, PipelineStage } from 'mongoose';
 import { CardDesignDocument } from '../database/card-design.schema';
 import { CardDesign, CardDesignDTO } from './card-design';
 import { DefaultCardDesignNotFoundException } from './exceptions/default-card-design-not-found.exception';
@@ -24,6 +24,39 @@ export class CardDesignService {
 	constructor(
 		@Inject(DatabaseConstants.CARD_DESIGN_PROVIDER) private readonly model: Model<CardDesignDocument>,
 	) {
+	}
+
+	async getAvailable(userCardDesigns: Set<string>): Promise<Array<{ cardDesign: CardDesign, canSelect: boolean }>> {
+		this.logger.log(`[${this.getAvailable.name}] INIT ::`);
+		const query: Array<PipelineStage> = [
+			{
+				'$addFields': {
+					'canSelect': {
+						'$cond': {
+							'if': {
+								'$in': [
+									'$cardDesignId', Array.from(userCardDesigns),
+								],
+							},
+							'then': true,
+							'else': false,
+						},
+					},
+				},
+			},
+		];
+		const aggregateResponse: Array<CardDesignDTO & { canSelect: boolean }> = await this.model.aggregate(query);
+		const mapped: Array<{
+			cardDesign: CardDesign,
+			canSelect: boolean
+		}> = await Promise.all(aggregateResponse.map(async (cd) => {
+			return {
+				cardDesign: CardDesign.fromDTO(cd),
+				canSelect: cd.canSelect,
+			};
+		}));
+		this.logger.log(`[${this.getAvailable.name}] FINISH ::`);
+		return mapped;
 	}
 
 	/**

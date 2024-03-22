@@ -24,10 +24,10 @@ export class CardDesignDTO {
 export class CardDesign extends DomainBase<CardDesignDTO> {
 
 	public readonly cardDesignId: CardDesignId;
+	public readonly isFree: boolean;
 	private readonly name: string;
 	private readonly isDefault: boolean;
 	private readonly isActive: boolean;
-	private readonly isFree: boolean;
 	private readonly price?: number;
 
 	/**

@@ -10,6 +10,7 @@ import { Exclude } from 'class-transformer';
  */
 export class GetUserResponseData extends UserDTO {
 	@Exclude() password: string;
+	@Exclude() cardDesigns: Array<string>;
 
 	constructor(data: UserDTO) {
 		super();

@@ -3,14 +3,14 @@ import { StatusValueObject } from '../shared/status.value-object';
 import { InvalidUserStatusException } from './exceptions/invalid-user-status.exception';
 
 /**
- * Clase que represente el estado de un usuario.
+ * Clase que representa el estado de un usuario.
  * @class
  * @extends {StatusValueObject<UserStatusConstants>}
  */
 export class UserStatus extends StatusValueObject<UserStatusConstants> {
 
 	/**
-	 * Método que válida si el estado de un usuario no es válido.
+	 * Método que determina si el estado de un usuario no es válido.
 	 * @param {string} value El estado del usuario.
 	 * @protected
 	 * @throws {InvalidUserStatusException} Se lanza si el estado de un usuario no es válido.

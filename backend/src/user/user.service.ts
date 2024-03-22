@@ -13,6 +13,10 @@ import * as process from 'process';
 import { DatabaseConstants } from '../database/database.constants';
 import { CardDesignId } from '../card-design/card-design-id';
 import { UserNotUpdatedException } from './exceptions/user-not-updated.exception';
+import {
+	CardDesignWithoutPurchasingException,
+} from '../card-design/exceptions/card-design-without-purchasing.exception';
+import { UserIcon } from './user-icon';
 
 /**
  * Clase que contiene los servicios para interactuar con los
@@ -54,8 +58,9 @@ export class UserService {
 			status: UserStatusConstants.ACTIVE,
 			tokens: Number(process.env.APP_DEFAULT_TOKENS),
 			currentDesignId: defaultDesign.cardDesignId.toString(),
-			icon: ['1', '2', '3', '4', '5'][Math.floor(Math.random() * 5)],
+			icon: UserIcon.generate(),
 			username: username,
+			cardDesigns: [],
 		});
 		await new this.model(user.toDTO()).save();
 		this.logger.log(`[${this.create.name}] FINISH ::`);
@@ -113,6 +118,9 @@ export class UserService {
 		this.logger.log(`[${this.updateCardDesign.name}] INIT :: userId: ${userId.toString()}`);
 		const user: User = await this.getById(userId);
 		const cardDesign: CardDesign = await this.cardDesignService.getActiveById(cardDesignId);
+		if (!cardDesign.isFree && !user.cardDesigns.has(cardDesignId.toString())) {
+			throw new CardDesignWithoutPurchasingException();
+		}
 		user.currentDesignId = cardDesign.cardDesignId;
 		const updated: UserDTO = await this.model.findOneAndUpdate({ userId: userId.toString() }, user.toDTO(), { new: true });
 		const mapped: User = updated ? User.fromDTO(updated) : undefined;

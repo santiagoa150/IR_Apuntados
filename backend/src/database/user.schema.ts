@@ -13,6 +13,10 @@ export type UserDocument = HydratedDocument<UserDTO>;
  * Representa la definición completa de un usuario en mongodb.
  */
 const definition: Required<SchemaDefinition<UserDTO>> = {
+	cardDesigns: {
+		type: [String],
+		required: true,
+	},
 	currentDesignId: {
 		type: String,
 		required: true,
