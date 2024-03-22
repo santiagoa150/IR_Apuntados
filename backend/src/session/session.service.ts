@@ -65,7 +65,7 @@ export class SessionService {
 			});
 			return this.generateAccessToken(new UserId(decoded.userId));
 		} catch (e) {
-			throw new InvalidCredentialsException(ExceptionMessagesConstants.INVALID_REFRESH_TOKEN);
+			throw new InvalidCredentialsException(ExceptionMessagesConstants.INVALID_REFRESH_TOKEN_ERROR);
 		}
 	}
 

@@ -4,6 +4,19 @@
  */
 export enum ExceptionMessagesConstants {
 	/**
+	 * Se utiliza cuando se solicita el parámetro "cardDesignId" y no se envía.
+	 */
+	CARD_DESIGN_ID_IS_REQUIRED_ERROR = 'CARD_DESIGN_ID_IS_REQUIRED_ERROR',
+	/**
+	 * Se utiliza cuando el ID de un diseño de carta y no es
+	 * de tipo string.
+	 */
+	CARD_DESIGN_ID_MUST_BE_STRING_ERROR = 'CARD_DESIGN_ID_MUST_BE_STRING_ERROR',
+	/**
+	 * Se utiliza cuando se solicita un diseño de carta que no existe.
+	 */
+	CARD_DESIGN_NOT_FOUND_ERROR = 'CARD_DESIGN_NOT_FOUND_ERROR',
+	/**
 	 * Se utiliza cuando se solicita el diseño de cartas que no existe.
 	 */
 	DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR = 'DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR',
@@ -25,7 +38,7 @@ export enum ExceptionMessagesConstants {
 	/**
 	 * Se utiliza cuando el token de refresco de un usuario no es válido.
 	 */
-	INVALID_REFRESH_TOKEN = 'INVALID_REFRESH_TOKEN',
+	INVALID_REFRESH_TOKEN_ERROR = 'INVALID_REFRESH_TOKEN_ERROR',
 	/**
 	 * Se utiliza cuando se quiere expresar un error del servidor que
 	 * no debe ser comunicado al usuario final.
@@ -48,15 +61,15 @@ export enum ExceptionMessagesConstants {
 	/**
 	 * Se utiliza cuando se valida una contraseña y no es de tipo string.
 	 */
-	PASSWORD_MUST_BE_STRING = 'PASSWORD_MUST_BE_STRING',
+	PASSWORD_MUST_BE_STRING_ERROR = 'PASSWORD_MUST_BE_STRING_ERROR',
 	/**
 	 * Se utiliza cuando se solicita un token de refresco y no se envía.
 	 */
-	REFRESH_TOKEN_IS_REQUIRED = 'REFRESH_TOKEN_IS_REQUIRED',
+	REFRESH_TOKEN_IS_REQUIRED_ERROR = 'REFRESH_TOKEN_IS_REQUIRED_ERROR',
 	/**
 	 * Se utiliza cuando se valida un token de refresco y no es de tipo string.
 	 */
-	REFRESH_TOKEN_MUST_BE_STRING = 'REFRESH_TOKEN_MUST_BE_STRING',
+	REFRESH_TOKEN_MUST_BE_STRING_ERROR = 'REFRESH_TOKEN_MUST_BE_STRING_ERROR',
 	/**
 	 * Se utiliza cuando se intenta crear un usuario que ya existe.
 	 */
@@ -65,6 +78,11 @@ export enum ExceptionMessagesConstants {
 	 * Se utiliza cuando se solicita un usuario que no existe.
 	 */
 	USER_NOT_FOUND_ERROR = 'USER_NOT_FOUND_ERROR',
+	/**
+	 * Se utiliza cuando se solicita la actualización de un usuario,
+	 * pero algo falla.
+	 */
+	USER_NOT_UPDATED_ERROR = 'USER_NOT_UPDATED_ERROR',
 	/**
 	 * Se utiliza cuando se solicita un nombre de usuario y no se envía.
 	 */

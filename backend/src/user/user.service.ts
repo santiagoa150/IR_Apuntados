@@ -11,6 +11,8 @@ import { CardDesign } from '../card-design/card-design';
 import { UserStatusConstants } from './user-status.constants';
 import * as process from 'process';
 import { DatabaseConstants } from '../database/database.constants';
+import { CardDesignId } from '../card-design/card-design-id';
+import { UserNotUpdatedException } from './exceptions/user-not-updated.exception';
 
 /**
  * Clase que contiene los servicios para interactuar con los
@@ -96,6 +98,26 @@ export class UserService {
 		const mapped: User = found ? User.fromDTO(found) : undefined;
 		if (throwExceptionIfNotFound && !mapped) throw new UserNotFoundException();
 		this.logger.log(`[${this.getByUsername.name}] FINISH ::`);
+		return mapped;
+	}
+
+	/**
+	 * Método que permite actualizar el diseño de carta de un usuario.
+	 * @param {UserId} userId El usuario que se quiere actualizar.
+	 * @param {CardDesignId} cardDesignId El diseño de carta que se quiere actualizar.
+	 * @returns {Promise<User>} El usuario actualizado.
+	 * @throws {UserNotUpdatedException} Se lanza cuando la solicitud de actualización no se
+	 * pudo actualizar.
+	 */
+	async updateCardDesign(userId: UserId, cardDesignId: CardDesignId): Promise<User> {
+		this.logger.log(`[${this.updateCardDesign.name}] INIT :: userId: ${userId.toString()}`);
+		const user: User = await this.getById(userId);
+		const cardDesign: CardDesign = await this.cardDesignService.getActiveById(cardDesignId);
+		user.currentDesignId = cardDesign.cardDesignId;
+		const updated: UserDTO = await this.model.findOneAndUpdate({ userId: userId.toString() }, user.toDTO(), { new: true });
+		const mapped: User = updated ? User.fromDTO(updated) : undefined;
+		if (!mapped) throw new UserNotUpdatedException();
+		this.logger.log(`[${this.updateCardDesign.name}] FINISH ::`);
 		return mapped;
 	}
 }

@@ -8,7 +8,7 @@ import { Exclude } from 'class-transformer';
  * @extends {OmitType(UserDTO, ['password'])}
  * @class
  */
-export class GetUserByIdResponseData extends UserDTO {
+export class GetUserResponseData extends UserDTO {
 	@Exclude() password: string;
 
 	constructor(data: UserDTO) {
@@ -23,6 +23,6 @@ export class GetUserByIdResponseData extends UserDTO {
  *
  * @class
  */
-export class GetUserByIdControllerResponse {
-	@ApiProperty({ type: GetUserByIdResponseData }) user: GetUserByIdResponseData;
+export class GetUserControllerResponse {
+	@ApiProperty({ type: GetUserResponseData }) user: GetUserResponseData;
 }

@@ -15,7 +15,7 @@ export class CreateUserControllerRequest {
 		username: string;
 
 	@ApiProperty({ required: true })
-	@IsString({ message: ExceptionMessagesConstants.PASSWORD_MUST_BE_STRING })
+	@IsString({ message: ExceptionMessagesConstants.PASSWORD_MUST_BE_STRING_ERROR })
 	@IsNotEmpty({ message: ExceptionMessagesConstants.PASSWORD_IS_REQUIRED_ERROR })
 		password: string;
 }

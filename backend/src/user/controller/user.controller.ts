@@ -1,16 +1,18 @@
-import { Body, ClassSerializerInterceptor, Controller, Get, Post, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Get, Patch, Post, UseInterceptors } from '@nestjs/common';
 import { UserService } from '../user.service';
 import { UserControllerConstants } from './user.controller.constants';
 import { ApiCreatedResponse, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthDecorator } from '../../session/auth.decorator';
 import { UserDecorator, UserDecoratorType } from '../../session/user.decorator';
-import { GetUserByIdControllerResponse, GetUserByIdResponseData } from './responses/get-user-by-id-controller.response';
+import { GetUserControllerResponse, GetUserResponseData } from './responses/get-user-controller.response';
 import { User } from '../user';
 import { UserId } from '../user-id';
 import { ExceptionResponseDTO } from '../../shared/exception.response';
 import { CreateUserControllerRequest } from './requests/create-user.controller.request';
 import { SessionService } from '../../session/session.service';
 import { CreateUserControllerResponse } from './responses/create-user.controller.response';
+import { UpdateUserCardDesignControllerRequest } from './requests/update-user-card-design.controller.request';
+import { CardDesignId } from '../../card-design/card-design-id';
 
 /**
  * Clase que contiene los puntos de entrada a la aplicación
@@ -51,17 +53,40 @@ export class UserController {
 	/**
 	 * Controlador GET que permite a un usuario obtener sus datos.
 	 * @param {UserDecoratorType} user El usuario solicitado.
-	 * @returns {GetUserByIdControllerResponse} La respuesta correspondiente al controlador.
+	 * @returns {GetUserControllerResponse} La respuesta correspondiente al controlador.
 	 */
 	@Get()
 	@AuthDecorator()
 	@UseInterceptors(ClassSerializerInterceptor)
-	@ApiOkResponse({ type: GetUserByIdControllerResponse })
+	@ApiOkResponse({ type: GetUserControllerResponse })
 	@ApiResponse({ type: ExceptionResponseDTO })
-	async getById(@UserDecorator() user: UserDecoratorType): Promise<GetUserByIdControllerResponse> {
-		const response: GetUserByIdControllerResponse = new GetUserByIdControllerResponse();
+	async getById(@UserDecorator() user: UserDecoratorType): Promise<GetUserControllerResponse> {
+		const response: GetUserControllerResponse = new GetUserControllerResponse();
 		const data: User = await this.service.getById(new UserId(user.userId));
-		response.user = new GetUserByIdResponseData(data.toDTO());
+		response.user = new GetUserResponseData(data.toDTO());
+		return response;
+	}
+
+	/**
+	 * Controlador PATCH que permite actualizar el diseño de carta
+	 * de un usuario.
+	 * @param {UpdateUserCardDesignControllerRequest} body El diseño de carta deseado.
+	 * @param {UserDecoratorType} user El usuario que se está actualizando.
+	 * @returns {GetUserControllerResponse} La respuesta correspondiente al controlador.
+	 */
+	@Patch(UserControllerConstants.UPDATE_USER_CARD_DESIGN_URL)
+	@AuthDecorator()
+	@ApiOkResponse({ type: GetUserControllerResponse })
+	async update(
+		@Body() body: UpdateUserCardDesignControllerRequest,
+		@UserDecorator() user: UserDecoratorType,
+	): Promise<GetUserControllerResponse> {
+		const response: GetUserControllerResponse = new GetUserControllerResponse();
+		const data: User = await this.service.updateCardDesign(
+			new UserId(user.userId),
+			new CardDesignId(body.cardDesignId),
+		);
+		response.user = new GetUserResponseData(data.toDTO());
 		return response;
 	}
 }

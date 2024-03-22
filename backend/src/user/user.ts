@@ -29,14 +29,11 @@ export class UserDTO {
 export class User extends DomainBase<UserDTO> {
 	public readonly password: UserPassword;
 	public readonly userId: UserId;
+	public currentDesignId: CardDesignId;
 	private readonly status: UserStatus;
-	private readonly currentDesignId: CardDesignId;
 	private readonly username: string;
-	// TODO: Cambiar por el Id del icono
 	private readonly icon: string;
 	private readonly tokens: number;
-
-	// TODO: Agregar todos los diseños de carta comprados.
 
 	/**
 	 * @param {User} userId El ID del usuario.

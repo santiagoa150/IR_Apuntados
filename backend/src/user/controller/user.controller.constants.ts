@@ -12,4 +12,9 @@ export enum UserControllerConstants {
 	 * Tag que agrupa todos los controladores de los usuarios.
 	 */
 	CONTROLLER_TAG = 'User',
+	/**
+	 * Url utilizada para el controlador que actualiza el diseño
+	 * de carta del usuario.
+	 */
+	UPDATE_USER_CARD_DESIGN_URL = 'card-design',
 }
