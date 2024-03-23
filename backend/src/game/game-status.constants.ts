@@ -21,4 +21,9 @@ export enum GameStatusConstants {
 	 * para un juego.
 	 */
 	WAITING_PLAYERS = 'WAITING_PLAYERS',
+	/**
+	 * El estado representa cuando un juego ya ha sido llenado, pero
+	 * no ha comenzado.
+	 */
+	WAITING_TO_START = 'WAITING_TO_START',
 }

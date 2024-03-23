@@ -3,6 +3,8 @@ import { DomainBase } from '../shared/domain.base';
 import { GameId } from './game-id';
 import { UserId } from '../user/user-id';
 import { GameStatus } from './game-status';
+import { GameStatusConstants } from './game-status.constants';
+import { GameIsAlreadyStartedException } from './exceptions/game-is-already-started.exception';
 
 /**
  * Clase que representa el objeto de transferencia de un juego.
@@ -17,6 +19,7 @@ export class GameDTO {
 	@ApiProperty() currentPlayers: number;
 	@ApiProperty() betByPlayer: number;
 	@ApiProperty() isPublic: boolean;
+	@ApiProperty() wasInitiated: boolean;
 }
 
 /**
@@ -28,12 +31,13 @@ export class GameDTO {
 export class Game extends DomainBase<GameDTO> {
 
 	public readonly gameId: GameId;
-	private readonly creatorId: UserId;
 	public readonly status: GameStatus;
+	public readonly betByPlayer: number;
+	public readonly wasInitiated: boolean;
+	private readonly creatorId: UserId;
 	private readonly name: string;
 	private readonly requiredPlayers: number;
-	private readonly currentPlayers: number;
-	private readonly betByPlayer: number;
+	private currentPlayers: number;
 	private readonly isPublic: boolean;
 
 	/**
@@ -46,6 +50,7 @@ export class Game extends DomainBase<GameDTO> {
 	 * @param {number} currentPlayers El total de jugadores actuales.
 	 * @param {number} betByPlayer El valor de apuesta por cada jugador.
 	 * @param {boolean} isPublic Bandera que determina si el juego es público.
+	 * @param {boolean} wasInitiated Bandera que determina si un juego ya se inició.
 	 */
 	constructor(
 		gameId: GameId,
@@ -56,6 +61,7 @@ export class Game extends DomainBase<GameDTO> {
 		currentPlayers: number,
 		betByPlayer: number,
 		isPublic: boolean,
+		wasInitiated: boolean,
 	) {
 		super();
 		this.gameId = gameId;
@@ -66,6 +72,7 @@ export class Game extends DomainBase<GameDTO> {
 		this.currentPlayers = currentPlayers;
 		this.betByPlayer = betByPlayer;
 		this.isPublic = isPublic;
+		this.wasInitiated = wasInitiated;
 	}
 
 	/**
@@ -84,6 +91,7 @@ export class Game extends DomainBase<GameDTO> {
 			dto.currentPlayers,
 			dto.betByPlayer,
 			dto.isPublic,
+			dto.wasInitiated,
 		);
 	}
 
@@ -101,6 +109,33 @@ export class Game extends DomainBase<GameDTO> {
 			isPublic: this.isPublic,
 			currentPlayers: this.currentPlayers,
 			requiredPlayers: this.requiredPlayers,
+			wasInitiated: this.wasInitiated,
 		};
+	}
+
+	/**
+	 * Método que permite agregar un jugador al juego.
+	 */
+	addPlayer(): void {
+		this.currentPlayers++;
+		if (this.currentPlayers === this.requiredPlayers) this.changeStatus(GameStatusConstants.WAITING_TO_START);
+	}
+
+	/**
+	 * Método que permite cambiar el estado de un juego, haciendo las
+	 * respectivas validaciones.
+	 * @param {GameStatusConstants} status El nuevo estado del juego.
+	 * @throws {GameIsAlreadyStartedException} Si lanza si un juego ya ha sido empezado y se intenta ingresar a un juego.
+	 */
+	changeStatus(
+		status: GameStatusConstants,
+	): void {
+		switch (status) {
+		case GameStatusConstants.WAITING_TO_START: {
+			if (!this.status.is(GameStatusConstants.WAITING_PLAYERS)) throw new GameIsAlreadyStartedException();
+			break;
+		}
+		}
+		this.status.change(status);
 	}
 }

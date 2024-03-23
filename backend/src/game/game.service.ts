@@ -14,6 +14,9 @@ import { PlayerService } from '../player/player.service';
 import { Player } from '../player/player';
 import { GameIsAlreadyFinishedException } from './exceptions/game-is-already-finished.exception';
 import { GameNotFoundException } from './exceptions/game-not-found.exception';
+import { GameIsAlreadyStartedException } from './exceptions/game-is-already-started.exception';
+import { GameExceedsItsPlayerCountException } from './exceptions/game-exceeds-its-player-count.exception';
+import { GameNotUpdatedException } from './exceptions/game-not-updated.exception';
 
 /**
  * Clase que contiene los servicios para interactuar con los
@@ -75,6 +78,7 @@ export class GameService {
 			betByPlayer: request.betByPlayer,
 			isPublic: request.isPublic,
 			name: request.name,
+			wasInitiated: false,
 		});
 		await new this.model(game.toDTO()).save();
 		await this.playerService.create(request.creatorId, game.gameId, false);
@@ -120,15 +124,61 @@ export class GameService {
 	 * Método que permite traer todos los juegos públicos.
 	 * @returns {Array<Game>} Todos los juegos públicos disponibles.
 	 */
-	async getPublicAndUninitiated(): Promise<Array<Game>> {
-		this.logger.log(`[${this.getPublicAndUninitiated.name}] INIT ::`);
+	async getPublicAndEmpty(): Promise<Array<Game>> {
+		this.logger.log(`[${this.getPublicAndEmpty.name}] INIT ::`);
 		// TODO: Mejorar la lógica de este método con paginación.
 		const found: Array<GameDTO> = await this.model.find({
 			isPublic: true,
 			status: GameStatusConstants.WAITING_PLAYERS,
 		});
 		const mapped: Array<Game> = await Promise.all(found.map(async (g) => Game.fromDto(g)));
-		this.logger.log(`[${this.getPublicAndUninitiated.name}] FINISH ::`);
+		this.logger.log(`[${this.getPublicAndEmpty.name}] FINISH ::`);
+		return mapped;
+	}
+
+	/**
+	 * Método que permite a un usuario ingresar a un juego.
+	 * @param {GameId} gameId El juego al que se va a ingresar.
+	 * @param {UserId} userId El usuario que desea ingresar.
+	 * @returns {Game} El juego al que se ingresó.
+	 * @throws {GameIsAlreadyStartedException} Se lanza cuando se intenta ingresar a un juego que ya
+	 * ha iniciado.
+	 * @throws {GameExceedsItsPlayerCountException} Se lanza cuando el juego no se ha iniciado,
+	 * pero ya está lleno.
+	 */
+	async join(gameId: GameId, userId: UserId): Promise<Game> {
+		this.logger.log(`[${this.join.name}] INIT :: gameId: ${gameId.toString()}, userId: ${userId.toString()}`);
+		const game: Game = await this.getById(gameId);
+		if (game.wasInitiated) throw new GameIsAlreadyStartedException();
+		if (game.status.is(GameStatusConstants.WAITING_TO_START)) throw new GameExceedsItsPlayerCountException();
+		const user: User = await this.userService.getById(userId);
+		user.changeStatus(UserStatusConstants.PLAYING);
+		user.removeTokens(game.betByPlayer);
+		await this.playerService.create(userId, gameId, false);
+		await this.userService.update(user);
+		game.addPlayer();
+		const updated: Game = await this.update(game);
+		this.logger.log(`[${this.join.name}] FINISH ::`);
+		return updated;
+	}
+
+	/**
+	 * Método que permite actualizar toda la información de un juego.
+	 * @param {Game} game El juego que se está actualizando.
+	 * @returns {Promise<Game>} El juego actualizado.
+	 * @throws {GameNotUpdatedException} Se lanza cuando la solicitud de actualización
+	 * no se pudo realizar.
+	 */
+	async update(game: Game): Promise<Game> {
+		this.logger.log(`[${this.update.name}] INIT ::`);
+		const updated: GameDTO = await this.model.findOneAndUpdate(
+			{ gameId: game.gameId.toString() },
+			game.toDTO(),
+			{ new: true },
+		);
+		const mapped: Game = updated ? Game.fromDto(updated) : undefined;
+		if (!mapped) throw new GameNotUpdatedException();
+		this.logger.log(`[${this.update.name}] FINISH ::`);
 		return mapped;
 	}
 }

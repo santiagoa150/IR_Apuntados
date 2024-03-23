@@ -115,7 +115,11 @@ export class UserService {
 	 */
 	async update(user: User): Promise<User> {
 		this.logger.log(`[${this.update.name}] INIT :: updating: ${user.userId.toString()}`);
-		const updated: UserDTO = await this.model.findOneAndUpdate({ userId: user.userId.toString() }, user.toDTO(), { new: true });
+		const updated: UserDTO = await this.model.findOneAndUpdate(
+			{ userId: user.userId.toString() },
+			user.toDTO(),
+			{ new: true },
+		);
 		const mapped: User = updated ? User.fromDTO(updated) : undefined;
 		if (!mapped) throw new UserNotUpdatedException();
 		this.logger.log(`[${this.update.name}] FINISH :: `);

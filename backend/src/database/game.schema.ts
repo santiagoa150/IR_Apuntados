@@ -50,6 +50,10 @@ const definition: Required<SchemaDefinition<GameDTO>> = {
 		required: true,
 		index: true,
 	},
+	wasInitiated: {
+		type: Boolean,
+		required: true,
+	},
 };
 
 /**
@@ -68,7 +72,7 @@ export const GameSchemaProvider: FactoryProvider = {
 	provide: DatabaseConstants.GAME_PROVIDER,
 	useFactory(connection: Connection): Model<GameDocument> {
 		return connection.model<GameDocument>(
-			DatabaseConstants.GAME_COLLECTION_NAME, GameSchema
+			DatabaseConstants.GAME_COLLECTION_NAME, GameSchema,
 		);
 	},
 };

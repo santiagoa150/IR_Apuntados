@@ -20,4 +20,9 @@ export enum GameControllerConstants {
 	 * Url utilizada para el controlador que trae todas las partidas públicas.
 	 */
 	GET_PUBLIC_GAMES_URL = 'public',
+	/**
+	 * Url utilizada para el controlador que permite ingresar a
+	 * un juego.
+	 */
+	JOIN_GAME_URL = 'join',
 }

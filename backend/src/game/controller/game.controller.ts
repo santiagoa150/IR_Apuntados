@@ -1,10 +1,10 @@
 import { GameService } from '../game.service';
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { GameControllerConstants } from './game.controller.constants';
 import { ApiCreatedResponse, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthDecorator } from '../../security/auth.decorator';
 import { ExceptionResponseDTO } from '../../shared/exception.response';
-import { CreateGameControllerResponse } from './responses/create-game.controller.response';
+import { GameControllerResponse } from './responses/game.controller.response';
 import { UserDecorator, UserDecoratorType } from '../../security/user.decorator';
 import { CreateGameControllerRequest } from './requests/create-game.controller.request';
 import { Game, GameDTO } from '../game';
@@ -15,6 +15,7 @@ import { GameAuthDecorator } from '../../security/game-auth.decorator';
 import { GameDecorator } from '../../security/game.decorator';
 import { PlayerService } from '../../player/player.service';
 import { GameId } from '../game-id';
+import { JoinGameControllerRequest } from './requests/join-game-controller.request';
 
 /**
  * Clase que contiene los puntos de entrada a la aplicación
@@ -39,17 +40,17 @@ export class GameController {
 	 * Controlador POST que permite crear un juego.
 	 * @param {CreateGameControllerRequest} body Los datos requeridos para crear el juego.
 	 * @param {UserDecoratorType} user El usuario que crea el juego.
-	 * @returns {CreateGameControllerResponse} La respuesta con el juego creado.
+	 * @returns {GameControllerResponse} La respuesta con el juego creado.
 	 */
 	@Post()
 	@AuthDecorator()
-	@ApiCreatedResponse({ type: CreateGameControllerResponse })
+	@ApiCreatedResponse({ type: GameControllerResponse })
 	@ApiResponse({ type: ExceptionResponseDTO })
 	async create(
 		@Body() body: CreateGameControllerRequest,
 		@UserDecorator() user: UserDecoratorType,
-	): Promise<CreateGameControllerResponse> {
-		const response: CreateGameControllerResponse = new CreateGameControllerResponse();
+	): Promise<GameControllerResponse> {
+		const response: GameControllerResponse = new GameControllerResponse();
 		const data: Game = await this.service.create({
 			creatorId: new UserId(user.userId), ...body,
 		});
@@ -85,8 +86,28 @@ export class GameController {
 	@ApiResponse({ type: ExceptionResponseDTO })
 	async getPublic(): Promise<GetPublicGamesControllerResponse> {
 		const response: GetPublicGamesControllerResponse = new GetPublicGamesControllerResponse();
-		const games: Array<Game> = await this.service.getPublicAndUninitiated();
+		const games: Array<Game> = await this.service.getPublicAndEmpty();
 		response.data = await Promise.all(games.map(async (g) => g.toDTO()));
+		return response;
+	}
+
+	/**
+	 * Método PATCH que permite que un jugador ingrese a un juego.
+	 * @param {JoinGameControllerRequest} body Los datos requeridos para ingresar a un juego.
+	 * @param {UserDecoratorType} user El usuario que ingresa al juego.
+	 * @returns {GameControllerConstants} La respuesta del controlador con el juego al que se ingresó.
+	 */
+	@Patch(GameControllerConstants.JOIN_GAME_URL)
+	@AuthDecorator()
+	@ApiOkResponse({ type: GameControllerResponse })
+	@ApiResponse({ type: ExceptionResponseDTO })
+	async join(
+		@Body() body: JoinGameControllerRequest,
+		@UserDecorator() user: UserDecoratorType,
+	): Promise<GameControllerResponse> {
+		const response: GameControllerResponse = new GameControllerResponse();
+		const data: Game = await this.service.join(new GameId(body.gameId), new UserId(user.userId));
+		response.data = data.toDTO();
 		return response;
 	}
 }

@@ -7,6 +7,6 @@ import { GameDTO } from '../../game';
  * @class
  * @extends DefaultResponse
  */
-export class CreateGameControllerResponse extends DefaultResponse {
+export class GameControllerResponse extends DefaultResponse {
 	@ApiProperty({ type: GameDTO }) data: GameDTO;
 }

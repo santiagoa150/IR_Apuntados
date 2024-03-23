@@ -39,6 +39,23 @@ export enum ExceptionMessagesConstants {
 	 */
 	DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR = 'DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR',
 	/**
+	 * Se utiliza cuando se intenta agregar un jugador a un juego que ya está lleno.
+	 */
+	GAME_EXCEEDS_ITS_PLAYER_COUNT_ERROR = 'GAME_EXCEEDS_ITS_PLAYER_COUNT_ERROR',
+	/**
+	 * Se utiliza cuando se intenta ingresar a un juego que
+	 * ya fué iniciado.
+	 */
+	GAME_IS_ALREADY_STARTED = 'GAME_IS_ALREADY_STARTED',
+	/**
+	 * Se utiliza cuando se solicita el ID de un juego y no se envía.
+	 */
+	GAME_ID_IS_REQUIRED_ERROR = 'GAME_ID_IS_REQUIRED_ERROR',
+	/**
+	 * Se utiliza cuando se valida el ID de un juego y no es un string.
+	 */
+	GAME_ID_MUST_BE_A_STRING_ERROR = 'GAME_ID_MUST_BE_A_STRING_ERROR',
+	/**
 	 * Se utiliza cuando se intenta acceder a los recursos de un juego
 	 * que ya fué finalizado.
 	 */
@@ -55,6 +72,11 @@ export enum ExceptionMessagesConstants {
 	 * Se utiliza cuando se solicita un juego que no existe.
 	 */
 	GAME_NOT_FOUND_ERROR = 'GAME_NOT_FOUND_ERROR',
+	/**
+	 * Se utiliza cuando se solicita la actualización de un juego,
+	 * pero algo falla.
+	 */
+	GAME_NOT_UPDATED_ERROR = 'GAME_NOT_UPDATED_ERROR',
 	/**
 	 * Se utiliza cuando se quiere expresar un error del servidor que
 	 * no debe ser comunicado al usuario final.
