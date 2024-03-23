@@ -15,7 +15,7 @@ export enum GameControllerConstants {
 	/**
 	 * Url utilizada para el controlador que trae el detalle del juego actual.
 	 */
-	GET_CURRENT_GAME_URL = 'current',
+	GET_CURRENT_GAME_DETAIL_URL = 'current',
 	/**
 	 * Url utilizada para el controlador que trae todas las partidas públicas.
 	 */

@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { DatabaseConstants } from '../database/database.constants';
-import { Model } from 'mongoose';
+import { Model, PipelineStage } from 'mongoose';
 import { PlayerDocument } from '../database/player.schema';
 import { Player, PlayerDTO } from './player';
 import { UserId } from '../user/user-id';
@@ -9,6 +9,8 @@ import { UserIsAlreadyPlayingException } from '../user/exceptions/user-is-alread
 import { PlayerNotFoundException } from './exceptions/player-not-found.exception';
 import { PlayerId } from './player-id';
 import { PlayerStatusConstants } from './player-status.constants';
+import { PlayerWithUserDTO } from './player-with-user.dto';
+import { PlayerQueries } from './player.queries';
 
 @Injectable()
 export class PlayerService {
@@ -64,6 +66,35 @@ export class PlayerService {
 		const mapped: Player = found ? await Player.fromDto(found) : undefined;
 		if (throwExceptionIfNotFound && !mapped) throw new PlayerNotFoundException();
 		this.logger.log(`[${this.getActiveByUserId.name}] FINISH ::`);
+		return mapped;
+	}
+
+	/**
+	 * Método que permite buscar los participantes de un juego con la
+	 * información de sus usuarios.
+	 * @param {GameId} gameId El juego solicitado.
+	 * @returns {Promise<Array<PlayerWithUserDTO>>} Los jugadores encontrados.
+	 */
+	async getWithUserByGame(gameId: GameId): Promise<Array<PlayerWithUserDTO>> {
+		this.logger.log(`[${this.getWithUserByGame.name}] INIT :: gameId: ${gameId.toString()}`);
+		const query: Array<PipelineStage> = PlayerQueries.getWithUserByGame(gameId);
+		const aggregateResponse: Array<PlayerWithUserDTO & { _id: string }> = await this.model.aggregate(query);
+		const mapped: Array<PlayerWithUserDTO> = await Promise.all(
+			aggregateResponse.map(async (e): Promise<PlayerWithUserDTO> => {
+				return {
+					cardDesignId: e.cardDesignId,
+					cardDesignName: e.cardDesignName,
+					icon: e.icon,
+					isActive: e.isActive,
+					playerId: e.playerId,
+					position: e.position,
+					score: e.score,
+					status: e.status,
+					userId: e.userId,
+					username: e.username,
+				};
+			}));
+		this.logger.log(`[${this.getWithUserByGame.name}] FINISH ::`);
 		return mapped;
 	}
 }

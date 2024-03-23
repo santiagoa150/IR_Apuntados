@@ -6,6 +6,7 @@ import { DefaultCardDesignNotFoundException } from './exceptions/default-card-de
 import { DatabaseConstants } from '../database/database.constants';
 import { CardDesignId } from './card-design-id';
 import { CardDesignNotFoundException } from './exceptions/card-design-not-found.exception';
+import { CardDesignQueries } from './card-design.queries';
 
 /**
  * Clase que contiene los servicios para interactuar con los
@@ -28,23 +29,7 @@ export class CardDesignService {
 
 	async getAvailable(userCardDesigns: Set<string>): Promise<Array<{ cardDesign: CardDesign, canSelect: boolean }>> {
 		this.logger.log(`[${this.getAvailable.name}] INIT ::`);
-		const query: Array<PipelineStage> = [
-			{
-				'$addFields': {
-					'canSelect': {
-						'$cond': {
-							'if': {
-								'$in': [
-									'$cardDesignId', Array.from(userCardDesigns),
-								],
-							},
-							'then': true,
-							'else': false,
-						},
-					},
-				},
-			},
-		];
+		const query: Array<PipelineStage> = CardDesignQueries.getCardDesignsAvailable(userCardDesigns);
 		const aggregateResponse: Array<CardDesignDTO & { canSelect: boolean }> = await this.model.aggregate(query);
 		const mapped: Array<{
 			cardDesign: CardDesign,

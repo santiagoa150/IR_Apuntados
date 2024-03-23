@@ -187,7 +187,7 @@ export enum ExceptionMessagesConstants {
 	 * Se utiliza cuando un usuario intenta acceder a recursos de un
 	 * juego en el cual no está jugando.
 	 */
-	USER_IS_NOT_PART_OF_THE_GAME = 'USER_IS_NOT_PART_OF_THE_GAME',
+	USER_IS_NOT_PART_OF_A_GAME_ERROR = 'USER_IS_NOT_PART_OF_A_GAME_ERROR',
 	/**
 	 * Se utiliza cuando se solicita un usuario que no existe.
 	 */

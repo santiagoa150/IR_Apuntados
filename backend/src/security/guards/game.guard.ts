@@ -1,7 +1,7 @@
 import { CanActivate, ContextType, ExecutionContext, Injectable } from '@nestjs/common';
 import { GameService } from '../../game/game.service';
 import { Game } from '../../game/game';
-import { UserIsNotPartOfTheGameException } from '../../user/exceptions/user-is-not-part-of-the-game.exception';
+import { UserIsNotPartOfAGameException } from '../../user/exceptions/user-is-not-part-of-a-game.exception';
 import { Socket } from 'socket.io';
 import { UserDecoratorType } from '../user.decorator';
 import { UserId } from '../../user/user-id';
@@ -24,7 +24,7 @@ export class GameGuard implements CanActivate {
 	 * Método que define la lógica para la guardia de los juegos.
 	 * @param {ExecutionContext} context El contexto en el que se ejecuta la guardia.
 	 * @returns {boolean} Siempre se retorna true cuando se pueden acceder a los recursos del juego.
-	 * @throws {UserIsNotPartOfTheGameException} Se lanza cuando un usuario no tiene
+	 * @throws {UserIsNotPartOfAGameException} Se lanza cuando un usuario no tiene
 	 * acceso a los recursos del juego.
 	 */
 	async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -47,7 +47,7 @@ export class GameGuard implements CanActivate {
 			}
 			return true;
 		} catch (e) {
-			throw new UserIsNotPartOfTheGameException();
+			throw new UserIsNotPartOfAGameException();
 		}
 	}
 

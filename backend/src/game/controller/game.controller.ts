@@ -13,6 +13,8 @@ import { GetPublicGamesControllerResponse } from './responses/get-public-games.c
 import { GetCurrentGameControllerResponse } from './responses/get-current-game.controller.response';
 import { GameAuthDecorator } from '../../security/game-auth.decorator';
 import { GameDecorator } from '../../security/game.decorator';
+import { PlayerService } from '../../player/player.service';
+import { GameId } from '../game-id';
 
 /**
  * Clase que contiene los puntos de entrada a la aplicación
@@ -25,9 +27,11 @@ export class GameController {
 
 	/**
 	 * @param {GameService} service Los servicios que permiten interactuar con los juegos.
+	 * @param {PlayerService} playerService Los servicios que permiten interactuar con los jugadores.
 	 */
 	constructor(
 		private readonly service: GameService,
+		private readonly playerService: PlayerService,
 	) {
 	}
 
@@ -59,13 +63,14 @@ export class GameController {
 	 * @returns {GetPublicGamesControllerResponse} La respuesta del controlador
 	 * con el juego solicitado.
 	 */
-	@Get(GameControllerConstants.GET_CURRENT_GAME_URL)
+	@Get(GameControllerConstants.GET_CURRENT_GAME_DETAIL_URL)
 	@GameAuthDecorator()
 	@ApiOkResponse({ type: GetCurrentGameControllerResponse })
 	@ApiResponse({ type: ExceptionResponseDTO })
-	async getCurrentDetail(@GameDecorator() game: GameDTO): Promise<GetCurrentGameControllerResponse> {
+	async getCurrentGameDetail(@GameDecorator() game: GameDTO): Promise<GetCurrentGameControllerResponse> {
 		const response: GetCurrentGameControllerResponse = new GetCurrentGameControllerResponse();
 		response.game = game;
+		response.players = await this.playerService.getWithUserByGame(new GameId(game.gameId));
 		return response;
 	}
 
