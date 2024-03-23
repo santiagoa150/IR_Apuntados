@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { DatabaseModule } from '../../database/database.module';
 import { GameService } from '../game.service';
 import { GameController } from '../controller/game.controller';
@@ -14,9 +14,14 @@ import { PlayerModule } from '../../player/config/player.module';
  * @class
  */
 @Module({
-	imports: [DatabaseModule, UserModule, PlayerModule],
+	imports: [
+		DatabaseModule,
+		forwardRef(() => UserModule),
+		PlayerModule,
+	],
 	controllers: [GameController],
 	providers: [GameService],
+	exports: [GameService]
 })
 export class GameModule {
 }

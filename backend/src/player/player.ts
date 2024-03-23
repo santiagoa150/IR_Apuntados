@@ -17,6 +17,7 @@ export class PlayerDTO {
 	@ApiProperty() gameId: string;
 	@ApiProperty() userId: string;
 	@ApiProperty() status: string;
+	@ApiProperty() isActive: boolean;
 	@ApiProperty() trips1?: TripsDTO;
 	@ApiProperty() trips2?: TripsDTO;
 	@ApiProperty() quads?: QuadsDTO;
@@ -33,9 +34,10 @@ export class PlayerDTO {
 export class Player extends DomainBase<PlayerDTO> {
 
 	private readonly playerId: PlayerId;
-	private readonly gameId: GameId;
+	public readonly gameId: GameId;
 	private readonly userId: UserId;
 	private readonly status: PlayerStatus;
+	private readonly isActive: boolean;
 	private readonly trips1?: Trips;
 	private readonly trips2?: Trips;
 	private readonly quads?: Quads;
@@ -48,6 +50,7 @@ export class Player extends DomainBase<PlayerDTO> {
 	 * @param {GameId} gameId El id del juego.
 	 * @param {UserId} userId El id del usuario.
 	 * @param {PlayerStatus} status El estado del jugador.
+	 * @param {boolean} isActive Bandera que determina si un jugador está activo.
 	 * @param {number} score La puntuación del jugador en una partida.
 	 * @param {number} position La posición de un jugador en una partida.
 	 * @param {Trips} trips1 La terna 1 del jugador.
@@ -60,6 +63,7 @@ export class Player extends DomainBase<PlayerDTO> {
 		gameId: GameId,
 		userId: UserId,
 		status: PlayerStatus,
+		isActive: boolean,
 		trips1?: Trips,
 		trips2?: Trips,
 		quads?: Quads,
@@ -72,6 +76,7 @@ export class Player extends DomainBase<PlayerDTO> {
 		this.gameId = gameId;
 		this.userId = userId;
 		this.status = status;
+		this.isActive = isActive;
 		this.trips1 = trips1;
 		this.trips2 = trips2;
 		this.quads = quads;
@@ -101,6 +106,7 @@ export class Player extends DomainBase<PlayerDTO> {
 			new GameId(dto.gameId),
 			new UserId(dto.userId),
 			new PlayerStatus(dto.status),
+			dto.isActive,
 			trips1,
 			trips2,
 			quads,
@@ -126,6 +132,7 @@ export class Player extends DomainBase<PlayerDTO> {
 			await Promise.all(this.quads.map(async (q) => q.toDTO())) as QuadsDTO : undefined;
 		return {
 			gameId: this.gameId.toString(),
+			isActive: this.isActive,
 			kicker: this.kicker?.toDTO(),
 			playerId: this.playerId.toString(),
 			position: this.position,

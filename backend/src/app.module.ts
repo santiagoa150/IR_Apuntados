@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UserModule } from './user/config/user.module';
-import { SessionModule } from './session/config/session.module';
+import { SecurityModule } from './security/config/security.module';
 import { CardDesignModule } from './card-design/config/card-design.module';
 import { GameModule } from './game/config/game.module';
 import { PlayerModule } from './player/config/player.module';
@@ -21,7 +21,7 @@ import { PlayerModule } from './player/config/player.module';
 	imports: [
 		ConfigModule.forRoot({ isGlobal: true }),
 		UserModule,
-		SessionModule,
+		SecurityModule,
 		CardDesignModule,
 		GameModule,
 		PlayerModule,

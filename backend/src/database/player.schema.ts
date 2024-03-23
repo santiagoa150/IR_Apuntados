@@ -14,6 +14,11 @@ export type PlayerDocument = HydratedDocument<PlayerDTO>;
  * Representa la definición completa de un jugador en mongodb.
  */
 const definition: Required<SchemaDefinition<PlayerDTO>> = {
+	isActive: {
+		type: Boolean,
+		required: true,
+		index: true,
+	},
 	kicker: {
 		type: CardSchema,
 		required: false,

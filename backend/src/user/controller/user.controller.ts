@@ -2,14 +2,14 @@ import { Body, ClassSerializerInterceptor, Controller, Get, Patch, Post, UseInte
 import { UserService } from '../user.service';
 import { UserControllerConstants } from './user.controller.constants';
 import { ApiCreatedResponse, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { AuthDecorator } from '../../session/auth.decorator';
-import { UserDecorator, UserDecoratorType } from '../../session/user.decorator';
+import { AuthDecorator } from '../../security/auth.decorator';
+import { UserDecorator, UserDecoratorType } from '../../security/user.decorator';
 import { GetUserControllerResponse, GetUserResponseData } from './responses/get-user-controller.response';
 import { User } from '../user';
 import { UserId } from '../user-id';
 import { ExceptionResponseDTO } from '../../shared/exception.response';
 import { CreateUserControllerRequest } from './requests/create-user.controller.request';
-import { SessionService } from '../../session/session.service';
+import { SessionService } from '../../security/session.service';
 import { CreateUserControllerResponse } from './responses/create-user.controller.response';
 import { UpdateUserCardDesignControllerRequest } from './requests/update-user-card-design.controller.request';
 import { CardDesignId } from '../../card-design/card-design-id';

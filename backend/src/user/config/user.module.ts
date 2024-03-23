@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../../database/database.module';
 import { UserController } from '../controller/user.controller';
 import { UserService } from '../user.service';
-import { SessionModule } from '../../session/config/session.module';
+import { SecurityModule } from '../../security/config/security.module';
 import { CardDesignModule } from '../../card-design/config/card-design.module';
 
 /**
@@ -16,7 +16,7 @@ import { CardDesignModule } from '../../card-design/config/card-design.module';
 @Module({
 	imports: [
 		DatabaseModule,
-		SessionModule,
+		SecurityModule,
 		CardDesignModule,
 	],
 	controllers: [UserController],
