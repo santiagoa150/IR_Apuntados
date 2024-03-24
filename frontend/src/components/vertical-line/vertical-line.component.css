@@ -1,0 +1,10 @@
+.vertical-line {
+    display: flex;
+    align-items: center;
+
+    & div {
+        background-color: var(--tertiary);
+        height: 90%;
+        width: 100%;
+    }
+}

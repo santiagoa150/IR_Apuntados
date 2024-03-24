@@ -1,0 +1,16 @@
+#default-page-container {
+    display: grid;
+    grid-template-columns: 49.8% 0.04% 49.8%;
+    grid-template-rows: max-content 1fr;
+
+    & header {
+        grid-column: 1/4;
+        text-align: center;
+        font-size: 1.5rem;
+
+        & h1 {
+            padding: 0;
+            margin: 0;
+        }
+    }
+}

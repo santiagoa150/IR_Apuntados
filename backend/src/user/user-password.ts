@@ -15,7 +15,7 @@ export class UserPassword extends StringValueObject {
 	 * @static
 	 * @private
 	 */
-	private static regexp: RegExp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!#$%&()*,\-./:;<>?^_{|}~¡¿])\S{8,}$/;
+	private static regexp: RegExp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!#$%&()*,\-.:;<>?^_{|}~¡¿])\S{8,}$/;
 
 	/**
 	 * Método que permite construir la contraseña de un usuario.

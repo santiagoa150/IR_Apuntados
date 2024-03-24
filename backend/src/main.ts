@@ -22,6 +22,7 @@ async function bootstrap(): Promise<void> {
 	app.useGlobalPipes(new ValidationPipe());
 	app.useGlobalFilters(new AppExceptionFilter());
 	app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+	app.enableCors();
 
 	const config = new DocumentBuilder()
 		.setTitle('Apuntado Requisitos')

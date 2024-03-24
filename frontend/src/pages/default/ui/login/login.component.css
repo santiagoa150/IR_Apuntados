@@ -1,0 +1,32 @@
+#login-component-container {
+    display: grid;
+    grid-template-rows: 1fr 60% 1fr;
+    padding: 5% 20% 5% 20%;
+
+    & h1 {
+        font-size: 2em;
+    }
+
+    & form {
+        display: flex;
+        flex-flow: column;
+        align-items: start;
+        row-gap: 30px;
+        height: 100%;
+
+        & .login-component-input {
+            width: 100%;
+        }
+    }
+
+    & #login-component-send-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+
+        & #login-component-send-button {
+            width: 60%;
+            height: max-content;
+        }
+    }
+}

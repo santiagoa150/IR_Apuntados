@@ -1,0 +1,29 @@
+/**
+ * Constantes que define los tipos de alertas que maneja la aplicación.
+ * @enum
+ * @readonly
+ */
+export enum AlertTypeConstants {
+    /**
+     * Alerta que es un mensaje de error.
+     */
+    ERROR_ALERT = 'error',
+    /**
+     * Alerta que es un mensaje satisfactorio.
+     */
+    SUCCESS_ALERT = 'success',
+    /**
+     * Alerta que es una advertencia.
+     */
+    WARNING_ALERT = 'warning',
+}
+
+/**
+ * Constantes que definen lo mensajes de las alertas de la aplicación.
+ * @const {Record<string, string>}
+ */
+export const AlertMessagesConstants: Record<string, string> = {
+    UNKNOWN_ERROR: 'Intente más tarde.',
+    USER_NOT_FOUND_ERROR: 'El usuario no existe.',
+    INVALID_CREDENTIALS_ERROR: 'Credenciales inválidas',
+};

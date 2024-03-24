@@ -4,7 +4,7 @@ import {RouterProvider} from 'react-router-dom';
 import {CssBaseline, ThemeProvider} from '@mui/material';
 import {AppTheme} from './config/app.theme.tsx';
 import {AppRouter} from './config/app.router.tsx';
-import './config/main.css';
+import './main.css';
 
 /**
  * Define:
