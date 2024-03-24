@@ -30,6 +30,29 @@ export abstract class ValidationUtils {
     }
 
     /**
+     * Permite validar la confirmación de la contraseña del usuario y mostrar los mensajes de error
+     * en caso de que sean necesarios.
+     * @param {string} value La confirmación de contraseña que se valida.
+     * @param {string} password La contraseña del usuario.
+     * @param {Dispatch<SetStateAction<string>>} setError Hook que permite actualizar el error
+     * de la confirmación contraseña en caso de que haya algo inválido.
+     * @returns {boolean} Bandera que determina si es válido.
+     */
+    static validatePasswordConfirmation(
+        value: string, password: string,
+        setError: Dispatch<SetStateAction<string>>,
+    ): boolean {
+        let response: boolean = false;
+        if (!value) setError(ValidationErrorsConstants.REQUIRED_ERROR);
+        else if (value !== password) setError(ValidationErrorsConstants.PASSWORD_CONFIRMATION_DIFFERENT_ERROR);
+        else {
+            setError('');
+            response = true;
+        }
+        return response;
+    }
+
+    /**
      * Permite validar el nombre de usuario y mostrar los mensajes de error
      * en caso de que sean necesarios.
      * @param {string} value El nombre de usuario que se valida.

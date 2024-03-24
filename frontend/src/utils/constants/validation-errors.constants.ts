@@ -9,6 +9,11 @@ export enum ValidationErrorsConstants {
      */
     LENGTH_OVER_6_ERROR = 'El valor debe tener 6 carácteres o más.',
     /**
+     * Error que indica que la contraseña y su confirmación son
+     * diferentes.
+     */
+    PASSWORD_CONFIRMATION_DIFFERENT_ERROR = 'Las contraseñas son diferentes.',
+    /**
      * Error que indica que una contraseña no cumple las características del sistema.
      */
     PASSWORD_STRUCTURE_ERROR = 'La contraseña debe tener mínimo, 1 mayúscula, 1 minúscula, ' +

@@ -1,23 +1,23 @@
 import {JSX, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {Button, TextField} from '@mui/material';
+import {ValidationUtils} from '../../../../utils/validation.utils.ts';
 import {PasswordFieldComponent} from '../../../../components/password-field/password-field.component.tsx';
 import {GlobalLoadingComponent} from '../../../../components/loading/global/global-loading.component.tsx';
-import {AlertComponent} from '../../../../components/alert/alert.component.tsx';
-import {ValidationUtils} from '../../../../utils/validation.utils.ts';
-import {LoginRequest, LoginResponse} from './login.data.ts';
-import {BackendUtils} from '../../../../utils/backend.utils.tsx';
 import {AlertTypeConstants} from '../../../../utils/constants/alert.constants.ts';
-import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
+import {AlertComponent} from '../../../../components/alert/alert.component.tsx';
 import {RoutesConstants} from '../../../../config/app.router.tsx';
+import {RegisterRequest, RegisterResponse} from './register.data.ts';
+import {BackendUtils} from '../../../../utils/backend.utils.tsx';
+import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
 import {SessionStorageUtils} from '../../../../store/session-storage.utils.ts';
 import {SessionStorageConstants} from '../../../../store/session-storage.constants.ts';
 
 /**
- * Componente en dónde se define el login de la aplicación.
+ * Componente en dónde se define el registro de la aplicación.
  * @constructor
  */
-export function LoginComponent(): JSX.Element {
+export function RegisterComponent(): JSX.Element {
 
     /**
      * Hooks encargado de manejar el nombre de usuario y
@@ -32,6 +32,13 @@ export function LoginComponent(): JSX.Element {
      */
     const [password, setPassword] = useState<string>('');
     const [passwordError, setPasswordError] = useState<string>('');
+
+    /**
+     * Hook encargado de manejar la confirmación contraseña del usuario y
+     * sus validaciones.
+     */
+    const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
+    const [passwordConfirmationError, setPasswordConfirmationError] = useState<string>('');
 
     /**
      * Hooks encargados de manejar el funcionamiento del componente.
@@ -55,7 +62,6 @@ export function LoginComponent(): JSX.Element {
         }
     );
 
-
     /**
      * Permite cambiar el nombre de usuario y realizar sus validaciones.
      * @param {string} value El nuevo nombre de usuario.
@@ -75,17 +81,27 @@ export function LoginComponent(): JSX.Element {
     };
 
     /**
-     * Método que permite a un usuario ingresar a la aplicación.
+     * Permite cambiar la contraseña del usuario y realizar sus validaciones.
+     * @param {string} value La nueva contraseña.
+     */
+    const handleChangePasswordConfirmation = (value: string): void => {
+        setPasswordConfirmation(value);
+        ValidationUtils.validatePasswordConfirmation(value, password, setPasswordConfirmationError);
+    };
+
+    /**
+     * Método que permite a un usuario registrarse en la aplicación.
      * @return {Promise<void | false>} Se retorna "false" si los datos son inválidos.
      */
-    const loginUser = async (): Promise<void | false> => {
+    const registerUser = async (): Promise<void | false> => {
         let isValid: boolean = true;
         if (!ValidationUtils.validateUsername(username, setUsernameError)) isValid = false;
         if (!ValidationUtils.validatePassword(password, setPasswordError)) isValid = false;
+        if (!ValidationUtils.validatePasswordConfirmation(passwordConfirmation, password, setPasswordConfirmationError)) isValid = false;
         if (!isValid) return isValid;
         setLoading(true);
-        const body: LoginRequest = {username: username.toLowerCase(), password};
-        const res = await backendUtils.post<LoginResponse, LoginRequest>(BackendConstants.LOGIN_URL, body);
+        const body: RegisterRequest = {username: username.toLowerCase(), password};
+        const res = await backendUtils.post<RegisterResponse, RegisterRequest>(BackendConstants.REGISTER_URL, body);
         if (res) {
             SessionStorageUtils.set<SessionStorageConstants.KEY_ACCESS_TOKEN>(SessionStorageConstants.KEY_ACCESS_TOKEN, res.accessToken);
             SessionStorageUtils.set<SessionStorageConstants.KEY_REFRESH_TOKEN>(SessionStorageConstants.KEY_REFRESH_TOKEN, res.refreshToken);
@@ -97,13 +113,13 @@ export function LoginComponent(): JSX.Element {
     return (
         <>
             <section
-                id='login-component-container'
+                id='register-component-container'
                 className='
                 default-page-section-container
                 component-container
                 '
             >
-                <h1>Iniciar sesión</h1>
+                <h1>Registrarse</h1>
                 <form
                     className='default-page-form-container'
                     autoComplete='off'
@@ -122,13 +138,19 @@ export function LoginComponent(): JSX.Element {
                         passwordError={passwordError}
                         setPassword={handleChangePassword}
                     />
+                    <PasswordFieldComponent
+                        classname='default-page-form-input'
+                        labelName='Confirmar contraseña'
+                        passwordError={passwordConfirmationError}
+                        setPassword={handleChangePasswordConfirmation}
+                    />
                 </form>
                 <div className='default-page-send-container'>
                     <Button
                         className='default-page-send-button'
                         variant='contained'
-                        onClick={loginUser}
-                    >Ingresar</Button>
+                        onClick={registerUser}
+                    >Confirmar</Button>
                 </div>
             </section>
             <AlertComponent

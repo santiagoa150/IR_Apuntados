@@ -9,6 +9,10 @@ export enum BackendConstants {
      * Ruta para acceder al login de la aplicación.
      */
     LOGIN_URL = '/api/session/login',
+    /**
+     * Ruta para acceder al registro de la aplicación.
+     */
+    REGISTER_URL = '/api/user'
 }
 
 /**
@@ -17,6 +21,10 @@ export enum BackendConstants {
  */
 export const BackendConfigConstants: Record<BackendConstants, BackendConfigType> = {
     [BackendConstants.LOGIN_URL]: {
+        requireAccessToken: false,
+        retryRequest: false,
+    },
+    [BackendConstants.REGISTER_URL]: {
         requireAccessToken: false,
         retryRequest: false,
     }

@@ -26,7 +26,7 @@ export function AlertComponent(
         >
             <Alert
                 severity={props.type}
-                sx={{width: '400px'}}
+                sx={{width: '100%'}}
                 onClose={() => props.setRawMessage('')}
             >
                 {AlertMessagesConstants[props.rawMessage] || AlertMessagesConstants.UNKNOWN_ERROR}

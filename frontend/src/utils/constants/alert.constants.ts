@@ -23,7 +23,8 @@ export enum AlertTypeConstants {
  * @const {Record<string, string>}
  */
 export const AlertMessagesConstants: Record<string, string> = {
-    UNKNOWN_ERROR: 'Intente más tarde.',
-    USER_NOT_FOUND_ERROR: 'El usuario no existe.',
     INVALID_CREDENTIALS_ERROR: 'Credenciales inválidas',
+    UNKNOWN_ERROR: 'Intente más tarde.',
+    USER_ALREADY_EXISTS_ERROR: 'El usuario ya existe.',
+    USER_NOT_FOUND_ERROR: 'El usuario no existe.',
 };

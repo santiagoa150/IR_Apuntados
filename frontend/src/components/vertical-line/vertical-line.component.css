@@ -1,10 +1,24 @@
 .vertical-line {
     display: flex;
     align-items: center;
+    justify-content: center;
 
     & div {
         background-color: var(--tertiary);
         height: 90%;
         width: 100%;
+
+        @media (max-width: 1200px) {
+            @media (min-height: 800px) {
+                height: 2%;
+                width: 90%;
+            }
+        }
+
+        @media (max-width: 830px) {
+            height: 2%;
+            width: 90%;
+        }
     }
 }
+
