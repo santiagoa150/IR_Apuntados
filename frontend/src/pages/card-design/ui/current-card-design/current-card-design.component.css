@@ -1,27 +1,53 @@
-#card-table-component-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex-flow: column;
+#current-card-design-component-container {
+    display: grid;
+    padding: 20px;
+    justify-content: center;
+    grid-template-rows: max-content 1fr max-content;
 
     & h1 {
+        text-align: center;
         font-size: 2em;
     }
 
     & section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    & #current-card-design-table-container {
         width: 100%;
-        height: 280px;
+        display: grid;
+        min-height: 280px;
         position: relative;
         justify-content: center;
-        display: grid;
         grid-template-columns: max-content max-content;
         grid-template-rows: max-content max-content;
 
-        & #card-table-component-right {
+
+        & #current-card-design-component-right {
             display: flex;
             align-items: center;
             grid-row: 1/3;
             grid-column: 2/3;
         }
+    }
+
+    & #current-card-design-check-box-group {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 620px) {
+    & #current-card-design-component-top, #current-card-design-component-bottom {
+        display: flex;
+        flex-wrap: wrap;
+        max-width: calc(40px * 6);
+    }
+
+    & #current-card-design-check-box-group {
+        margin: 10px 0 10px 0;
     }
 }

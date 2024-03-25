@@ -1,5 +1,4 @@
 import {JSX, useEffect, useState} from 'react';
-import './current-card-design.component.css';
 import {CardComponent} from '../../../../components/card/card.component.tsx';
 import {CardSuitsConstants} from '../../../../utils/constants/card-suits.constants.ts';
 import {CheckBoxGroupComponent} from '../../../../components/check-box-group/check-box-group.component.tsx';
@@ -8,6 +7,7 @@ import {LocalLoadingComponent} from '../../../../components/loading/local/local-
 import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
 import {BackendUtils} from '../../../../utils/backend.utils.tsx';
 import {GetCurrentCardDesign} from '../../../../types/services/get-current-card-design.ts';
+import './current-card-design.component.css';
 
 /**
  * Componente en dónde se define el tablero de cartas.
@@ -45,39 +45,40 @@ export function CurrentCardDesignComponent(): JSX.Element {
     const right: string = 'A';
 
     return (
-        <section id='card-table-component-container' className='component-container'>
+        <section id='current-card-design-component-container' className='component-container'>
             <h1>Diseño actual</h1>
-            <section>
-                {
-                    cardDesign
-                        ? <>
-                            <div>
-                                {
-                                    top.map((d) => {
-                                        return (
-                                            <CardComponent key={d} suit={suit} type={d} designName={cardDesign.name}/>
-                                        );
-                                    })
-                                }
-                            </div>
-                            <div>
-                                {
-                                    bottom.map((d) => {
-                                        return (
-                                            <CardComponent key={d} suit={suit} type={d} designName={cardDesign.name}/>
-                                        );
-                                    })
-                                }
-                            </div>
-                            <div id='card-table-component-right'>
-                                <CardComponent suit={suit} type={right} designName={cardDesign.name}/>
-                            </div>
-                        </>
-                        : <LocalLoadingComponent loading={true} showBackground={false}/>
-                }
-
+            <section className='component-container'>
+                <div id='current-card-design-table-container'>
+                    {
+                        cardDesign
+                            ? <>
+                                <div id='current-card-design-component-top'>
+                                    {
+                                        top.map((d) => {
+                                            return (
+                                                <CardComponent key={d} suit={suit} type={d} designName={cardDesign.name}/>
+                                            );
+                                        })
+                                    }
+                                </div>
+                                <div id='current-card-design-component-bottom'>
+                                    {
+                                        bottom.map((d) => {
+                                            return (
+                                                <CardComponent key={d} suit={suit} type={d} designName={cardDesign.name}/>
+                                            );
+                                        })
+                                    }
+                                </div>
+                                <div id='current-card-design-component-right'>
+                                    <CardComponent suit={suit} type={right} designName={cardDesign.name}/>
+                                </div>
+                            </>
+                            : <LocalLoadingComponent loading={true} showBackground={false}/>
+                    }
+                </div>
             </section>
-            <div>
+            <div id='current-card-design-check-box-group'>
                 <CheckBoxGroupComponent
                     label=''
                     selected={suit}

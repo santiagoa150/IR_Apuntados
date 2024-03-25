@@ -6,6 +6,10 @@
  */
 export enum BackendConstants {
     /**
+     * Ruta para acceder a los diseños de cartas disponibles.
+     */
+    GET_ACTIVE_CARD_DESIGNS_URL = '/api/card-design/active',
+    /**
      * Ruta para acceder al diseño de carta actual del usuario.
      */
     GET_CURRENT_CARD_DESIGN_URL = '/api/card-design/current',
@@ -32,6 +36,10 @@ export enum BackendConstants {
  * @const {Record<BackendConstants, BackendConfigType>}
  */
 export const BackendConfigConstants: Record<BackendConstants, BackendConfigType> = {
+    [BackendConstants.GET_ACTIVE_CARD_DESIGNS_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
+    },
     [BackendConstants.GET_CURRENT_CARD_DESIGN_URL]: {
         requireAccessToken: true,
         retryRequest: true,

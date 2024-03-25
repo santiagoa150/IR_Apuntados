@@ -1,0 +1,71 @@
+import {JSX, useEffect, useState} from 'react';
+import {CardDesignShopType} from '../../../../types/card-design.shop.type.ts';
+import './card-designs-shop.component.css';
+import {CardDesignCardComponent} from '../card-design-card/card-design-card.component.tsx';
+import {LocalLoadingComponent} from '../../../../components/loading/local/local-loading.component.tsx';
+import {Link} from 'react-router-dom';
+import {Button} from '@mui/material';
+import {RoutesConstants} from '../../../../config/app.router.tsx';
+import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
+import {BackendUtils} from '../../../../utils/backend.utils.tsx';
+import {GetActiveCardDesigns} from '../../../../types/services/get-active-card-designs.ts';
+
+/**
+ * Componente en dónde se define la tienda de diseños de cartas.
+ * @constructor
+ */
+export function CardDesignsShopComponent(): JSX.Element {
+
+    /**
+     * Hook encargado de manejar los diseños de cartas del sistema.
+     */
+    const [cardDesigns, setCardDesigns] = useState<Array<CardDesignShopType> | undefined>(undefined);
+
+    /**
+     * Utils para acceder al diseño de carta actual en el backend.
+     * @const {BackendUtils}
+     */
+    const backendUtils: BackendUtils = new BackendUtils();
+
+    /**
+     * Hook que se encarga de consultar los diseños de cartas del sistema.
+     */
+    useEffect(() => {
+        async function fetchData(): Promise<void> {
+            const res = await backendUtils.get<GetActiveCardDesigns, never>(BackendConstants.GET_ACTIVE_CARD_DESIGNS_URL);
+            if (res) setCardDesigns(res.data);
+        }
+
+        fetchData();
+    }, []);
+
+    return (
+        <section id='card-designs-shop-container' className='component-container'>
+            <h1>Diseños disponibles</h1>
+            <div id='card-designs-shop-available-container' className='component-container'>
+                {
+                    cardDesigns
+                        ? cardDesigns.map((c) => {
+                            return <CardDesignCardComponent design={c} key={c.cardDesignId}/>;
+                        })
+                        : <LocalLoadingComponent loading={true} showBackground={false}/>
+                }
+            </div>
+            <div id='card-designs-shop-buttons-container'>
+                <Link
+                    className='card-designs-shop-buttons-div'
+                    to={RoutesConstants.HOME_ROUTE}
+                >
+                    <Button
+                        variant='contained'
+                    >Atrás</Button>
+                </Link>
+                <div className='card-designs-shop-buttons-div'>
+                    <Button
+                        variant='contained'
+                    >Aceptar</Button>
+                </div>
+            </div>
+        </section>
+    );
+}

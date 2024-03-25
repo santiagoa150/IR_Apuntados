@@ -1,0 +1,65 @@
+#card-designs-shop-container {
+    display: grid;
+    padding: 20px;
+    justify-content: center;
+    grid-template-rows: max-content 1fr max-content;
+    grid-template-columns: 1fr;
+    overflow: hidden;
+
+    & h1 {
+        text-align: center;
+        font-size: 2em;
+    }
+
+    & #card-designs-shop-available-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 5px;
+        gap: 15px;
+        overflow-y: scroll;
+    }
+
+    & #card-designs-shop-buttons-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        box-sizing: border-box;
+        flex-wrap: wrap;
+        padding: 10px 0 10px 0;
+        gap: 10px;
+
+        & button {
+            width: 200px;
+        }
+
+        @media (max-width: 470px) {
+            & .card-designs-shop-buttons-div {
+                display: flex;
+                justify-content: center;
+                width: 45%;
+                text-decoration: none;
+            }
+
+            & button {
+                width: 85%;
+            }
+        }
+    }
+}
+
+@media (max-width: 1210px) {
+    #card-designs-shop-container {
+        grid-template-rows: max-content max-content 1fr;
+        height: max-content;
+
+        & #card-designs-shop-available-container {
+            overflow-y: initial;
+        }
+
+        & #card-designs-shop-buttons-container {
+            grid-row: 2/3;
+        }
+    }
+}

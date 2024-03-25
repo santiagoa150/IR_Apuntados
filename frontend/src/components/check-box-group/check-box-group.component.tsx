@@ -20,11 +20,12 @@ export function CheckBoxGroupComponent<T>(
     }
 ): JSX.Element {
     return (
-        <FormControl className='component-container'>
+        <FormControl>
             <FormLabel>{props.label}</FormLabel>
             <RadioGroup
                 row
                 value={props.selected}
+                sx={{justifyContent: 'center', display: 'flex'}}
                 name='row-radio-buttons-group'
                 aria-labelledby='demo-row-radio-buttons-group-label'
                 onChange={(e) => props.setSelected(e.target.value as T)}

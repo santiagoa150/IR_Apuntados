@@ -7,5 +7,5 @@ export type CardDesignType = {
     isDefault: boolean;
     isActive: boolean;
     isFree: boolean;
-    price: number;
+    price?: number;
 }
