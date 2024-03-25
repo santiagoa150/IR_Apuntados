@@ -133,9 +133,6 @@ export class BackendUtils {
      * @private
      */
     private static resolveIfRetry(c: BackendConfigType, e: ErrorResponseType, attempts: number): boolean {
-        console.log(c.retryRequest);
-        console.log(BackendUtils.extractCode(e));
-        console.log(attempts);
         return c.retryRequest && BackendUtils.extractCode(e) == 401 && attempts == 0;
     }
 

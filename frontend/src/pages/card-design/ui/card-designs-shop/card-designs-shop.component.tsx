@@ -1,6 +1,5 @@
-import {JSX, useEffect, useState} from 'react';
+import {Dispatch, JSX, SetStateAction, useEffect, useState} from 'react';
 import {CardDesignShopType} from '../../../../types/card-design.shop.type.ts';
-import './card-designs-shop.component.css';
 import {CardDesignCardComponent} from '../card-design-card/card-design-card.component.tsx';
 import {LocalLoadingComponent} from '../../../../components/loading/local/local-loading.component.tsx';
 import {Link} from 'react-router-dom';
@@ -9,12 +8,18 @@ import {RoutesConstants} from '../../../../config/app.router.tsx';
 import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
 import {BackendUtils} from '../../../../utils/backend.utils.tsx';
 import {GetActiveCardDesigns} from '../../../../types/services/get-active-card-designs.ts';
+import {CardDesignType} from '../../../../types/card-design.type.ts';
+import './card-designs-shop.component.css';
 
 /**
  * Componente en dónde se define la tienda de diseños de cartas.
  * @constructor
  */
-export function CardDesignsShopComponent(): JSX.Element {
+export function CardDesignsShopComponent(
+    props: {
+        selectDesign: Dispatch<SetStateAction<CardDesignType | undefined>>
+    }
+): JSX.Element {
 
     /**
      * Hook encargado de manejar los diseños de cartas del sistema.
@@ -46,7 +51,11 @@ export function CardDesignsShopComponent(): JSX.Element {
                 {
                     cardDesigns
                         ? cardDesigns.map((c) => {
-                            return <CardDesignCardComponent design={c} key={c.cardDesignId}/>;
+                            return <CardDesignCardComponent
+                                design={c}
+                                key={c.cardDesignId}
+                                selectDesign={props.selectDesign}
+                            />;
                         })
                         : <LocalLoadingComponent loading={true} showBackground={false}/>
                 }

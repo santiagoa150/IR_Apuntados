@@ -4,22 +4,27 @@ import {CardSuitsConstants} from '../../../../utils/constants/card-suits.constan
 import {CheckBoxGroupComponent} from '../../../../components/check-box-group/check-box-group.component.tsx';
 import {CardDesignType} from '../../../../types/card-design.type.ts';
 import {LocalLoadingComponent} from '../../../../components/loading/local/local-loading.component.tsx';
-import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
 import {BackendUtils} from '../../../../utils/backend.utils.tsx';
 import {GetCurrentCardDesign} from '../../../../types/services/get-current-card-design.ts';
+import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
 import './current-card-design.component.css';
 
 /**
  * Componente en dónde se define el tablero de cartas.
  * @constructor
  */
-export function CurrentCardDesignComponent(): JSX.Element {
+export function CurrentCardDesignComponent(
+    props: {
+        selectedDesign: CardDesignType | undefined
+    }
+): JSX.Element {
 
     /**
      * Hooks para el funcionamiento del componente.
      */
     const [suit, setSuit] = useState<CardSuitsConstants>(CardSuitsConstants.SPADE);
-    const [cardDesign, setCardDesign] = useState<CardDesignType | undefined>(undefined);
+    const [cardDesign, setCardDesign] = useState<CardDesignType | undefined>(props.selectedDesign);
+    const [getFromBackend, setGetFromBackend] = useState<boolean>(false);
 
     /**
      * Utils para acceder al diseño de carta actual en el backend.
@@ -30,8 +35,15 @@ export function CurrentCardDesignComponent(): JSX.Element {
     useEffect(() => {
 
         async function fetchData(): Promise<void> {
-            const res = await backendUtils.get<GetCurrentCardDesign, never>(BackendConstants.GET_CURRENT_CARD_DESIGN_URL);
-            if (res) setCardDesign(res.design);
+            if (props.selectedDesign) {
+                setCardDesign(props.selectedDesign);
+            } else if (!getFromBackend) {
+                const res = await backendUtils.get<GetCurrentCardDesign, never>(BackendConstants.GET_CURRENT_CARD_DESIGN_URL);
+                if (res) {
+                    setGetFromBackend(true);
+                    setCardDesign(res.design);
+                }
+            }
         }
 
         fetchData();
