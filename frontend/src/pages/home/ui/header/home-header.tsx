@@ -51,14 +51,8 @@ export function HomeHeader(): JSX.Element {
 
     return (
         <>
-            <header
-                id='home-header-component-container'
-                className='component-container'
-            >
-                <div
-                    id='home-header-button-group-container'
-                    className='component-container'
-                >
+            <header id='home-header-component-container' className='component-container'>
+                <div id='home-header-button-group-container' className='component-container'>
                     <ButtonGroup
                         id='home-header-button-group'
                         variant="contained"

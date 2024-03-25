@@ -27,6 +27,13 @@ export class CardDesignService {
 	) {
 	}
 
+	/**
+	 * Método que permite buscar todos los diseños de cartas disponibles y si
+	 * son seleccionables o no.
+	 * @param {Set<string>} userCardDesigns Los diseños de cartas del usuario.
+	 * @returns {Promise<Array<{ cardDesign: CardDesign, canSelect: boolean }>>} Los
+	 * diseños encontrados.
+	 */
 	async getAvailable(userCardDesigns: Set<string>): Promise<Array<{ cardDesign: CardDesign, canSelect: boolean }>> {
 		this.logger.log(`[${this.getAvailable.name}] INIT ::`);
 		const query: Array<PipelineStage> = CardDesignQueries.getCardDesignsAvailable(userCardDesigns);

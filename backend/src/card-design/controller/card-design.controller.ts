@@ -9,6 +9,8 @@ import { UserDecorator, UserDecoratorType } from '../../security/user.decorator'
 import { UserService } from '../../user/user.service';
 import { User } from '../../user/user';
 import { UserId } from '../../user/user-id';
+import { GetCurrentCardDesignControllerResponse } from './responses/get-current-card-design.controller.response';
+import { CardDesign } from '../card-design';
 
 /**
  * Clase que contiene los puntos de entrada a la aplicación
@@ -37,7 +39,7 @@ export class CardDesignController {
 	 * @param {UserDecoratorType} user El usuario que accede a los datos.
 	 * @returns {GetActiveCardDesignsControllerResponse} Los diseños de carta.
 	 */
-	@Get(CardDesignControllerConstants.SEARCH_ACTIVE_CARD_DESIGNS_URL)
+	@Get(CardDesignControllerConstants.GET_ACTIVE_CARD_DESIGNS_URL)
 	@AuthDecorator()
 	@ApiOkResponse({ type: GetActiveCardDesignsControllerResponse })
 	@ApiResponse({ type: ExceptionResponseDTO })
@@ -51,6 +53,23 @@ export class CardDesignController {
 				canSelect: data.canSelect,
 			};
 		}));
+		return response;
+	}
+
+	/**
+	 * Controlador GET que permite al usuario consultar su diseño de cartas actual.
+	 * @param {UserDecoratorType} user El usuario que accede al diseño de carta
+	 * @returns {GetCurrentCardDesignControllerResponse} El diseño de carta actual.
+	 */
+	@Get(CardDesignControllerConstants.GET_CURRENT_CARD_DESIGN)
+	@AuthDecorator()
+	@ApiOkResponse({ type: GetCurrentCardDesignControllerResponse })
+	@ApiResponse({ type: ExceptionResponseDTO })
+	async getCurrent(@UserDecorator() user: UserDecoratorType): Promise<GetCurrentCardDesignControllerResponse> {
+		const response: GetCurrentCardDesignControllerResponse = new GetCurrentCardDesignControllerResponse();
+		const userData: User = await this.userService.getById(new UserId(user.userId));
+		const data: CardDesign = await this.service.getActiveById(userData.currentDesignId);
+		response.design = data.toDTO();
 		return response;
 	}
 }

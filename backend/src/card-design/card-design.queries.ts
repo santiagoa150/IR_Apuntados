@@ -21,9 +21,17 @@ export abstract class CardDesignQueries {
 					'canSelect': {
 						'$cond': {
 							'if': {
-								'$in': [
-									'$cardDesignId', Array.from(userCardDesigns),
-								],
+								'$or': [
+									{
+										'$in': [
+											'$cardDesignId', Array.from(userCardDesigns),
+										],
+									},
+									{
+										'$eq': ['$isFree', true]
+									}
+								]
+
 							},
 							'then': true,
 							'else': false,

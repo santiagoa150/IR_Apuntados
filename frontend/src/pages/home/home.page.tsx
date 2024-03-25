@@ -3,6 +3,10 @@ import {VerticalLineComponent} from '../../components/vertical-line/vertical-lin
 import { HomeHeader } from './ui/header/home-header.tsx';
 import './home.page.css';
 
+/**
+ * Página principal del sistema.
+ * @constructor
+ */
 export function HomePage(): JSX.Element {
     return (
         <>

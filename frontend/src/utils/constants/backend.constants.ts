@@ -6,6 +6,10 @@
  */
 export enum BackendConstants {
     /**
+     * Ruta para acceder al diseño de carta actual del usuario.
+     */
+    GET_CURRENT_CARD_DESIGN_URL = '/api/card-design/current',
+    /**
      * Ruta para acceder al usuario que ejecuta la aplicación.
      */
     GET_ME_URL = '/api/user/me',
@@ -28,6 +32,10 @@ export enum BackendConstants {
  * @const {Record<BackendConstants, BackendConfigType>}
  */
 export const BackendConfigConstants: Record<BackendConstants, BackendConfigType> = {
+    [BackendConstants.GET_CURRENT_CARD_DESIGN_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
+    },
     [BackendConstants.GET_ME_URL]: {
         requireAccessToken: true,
         retryRequest: true,

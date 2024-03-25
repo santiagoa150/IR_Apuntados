@@ -2,6 +2,7 @@ import {createBrowserRouter, Navigate} from 'react-router-dom';
 import {DefaultPage} from '../pages/default/default.page.tsx';
 import {LoginGuard} from './login.guard.tsx';
 import {HomePage} from '../pages/home/home.page.tsx';
+import {CardDesignPage} from '../pages/card-design/card-design.page.tsx';
 
 /**
  * Constantes que definen las rutas de la aplicación.
@@ -35,7 +36,7 @@ export enum RoutesConstants {
 export const AppRouter = createBrowserRouter([
     {
         path: RoutesConstants.CARD_DESIGNS_ROUTE,
-        element: <p>Diseños de carta</p>
+        element: <LoginGuard element={<CardDesignPage/>}/>
     },
     {
         path: RoutesConstants.HOME_ROUTE,

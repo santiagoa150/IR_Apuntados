@@ -15,5 +15,10 @@ export enum CardDesignControllerConstants {
 	 * Url utilizada para el controlador que permite traer los diseños
 	 * de cartas activos.
 	 */
-	SEARCH_ACTIVE_CARD_DESIGNS_URL = 'active',
+	GET_ACTIVE_CARD_DESIGNS_URL = 'active',
+	/**
+	 * Url utilizada para el controlador que permite traer el diseño
+	 * actual del usuario.
+	 */
+	GET_CURRENT_CARD_DESIGN = 'current',
 }

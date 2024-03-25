@@ -105,7 +105,7 @@ export class UserService {
 		this.logger.log(`[${this.getByUsername.name}] FINISH ::`);
 		return mapped;
 	}
-
+	
 	/**
 	 * Método que permite actualizar toda la información de un usuario.
 	 * @param {User} user El usuario que se está actualizando

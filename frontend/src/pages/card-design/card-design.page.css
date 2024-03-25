@@ -1,0 +1,4 @@
+#card-designs-page-container {
+    display: grid;
+    grid-template-columns: 800px 0.04% 1fr;
+}
