@@ -3,6 +3,7 @@ import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
 import {SessionStorageUtils} from '../store/session-storage.utils.ts';
 import {SessionStorageConstants} from '../store/session-storage.constants.ts';
 import {ErrorResponseType} from '../types/error.response.type.ts';
+import {RefreshTokenRequest, RefreshTokenResponse} from '../types/services/refresh-token.ts';
 import {RoutesConstants} from '../config/app.router.tsx';
 
 /**
@@ -18,7 +19,7 @@ export class BackendUtils {
      * @constructor
      */
     constructor(
-        private readonly callBackErrors: (message: string) => (void),
+        private readonly callBackErrors?: (message: string) => (void),
     ) {
     }
 
@@ -38,17 +39,44 @@ export class BackendUtils {
     ): Promise<Res | undefined> {
         const serviceConfig: BackendConfigType = BackendConfigConstants[url];
         return axios.post<Res>(url, body, BackendUtils.buildRequestConfig(serviceConfig))
-            .then((data: AxiosResponse): Res => {
-                return data.data;
-            })
-            .catch((e: ErrorResponseType) => {
-                if (
-                    serviceConfig.retryRequest &&
-                    BackendUtils.extractCode(e) == 401 &&
-                    attempts == 0
-                ) {
-                    BackendUtils.refreshAccessToken();
-                    return this.post<Res, Req>(url, body, attempts++);
+            .then((data: AxiosResponse): Res => data.data)
+            .catch(async (e: ErrorResponseType) => {
+                if (BackendUtils.resolveIfRetry(serviceConfig, e, attempts)) {
+                    return this.refreshAccessToken().then(() => {
+                        attempts += 1;
+                        return this.post<Res, Req>(url, body, attempts++);
+                    });
+                }
+                this.processError(serviceConfig, e);
+                return undefined;
+            });
+    }
+
+    /**
+     * Método get que permite acceder al backend.
+     * @template Res El tipo de la respuesta del servicio.
+     * @template Req El tipo del request del servicio.
+     * @param {BackendConfigConstants} url
+     * @param {Req} query Los parámetros que requiere el servicio.
+     * @param {number} [attempts=0] Define la cantidad de intentos del servicio.
+     * @returns {Promise<Res | undefined>} La respuesta del servicio.
+     */
+    public async get<Res, Req>(
+        url: BackendConstants,
+        query?: Req,
+        attempts: number = 0
+    ): Promise<Res | undefined> {
+        const serviceConfig: BackendConfigType = BackendConfigConstants[url];
+        const backendConfig: AxiosRequestConfig = BackendUtils.buildRequestConfig(serviceConfig);
+        if (query) backendConfig.params = query;
+        return axios.get<Res>(url, backendConfig)
+            .then((data: AxiosResponse): Res => data.data)
+            .catch(async (e: ErrorResponseType) => {
+                if (BackendUtils.resolveIfRetry(serviceConfig, e, attempts)) {
+                    return this.refreshAccessToken().then(() => {
+                        attempts += 1;
+                        return this.get<Res, Req>(url, query, attempts++);
+                    });
                 }
                 this.processError(serviceConfig, e);
                 return undefined;
@@ -69,15 +97,46 @@ export class BackendUtils {
         } else {
             const message: string = BackendUtils.extractMessage(e);
             console.log(message);
-            this.callBackErrors(message);
+            if (this.callBackErrors) this.callBackErrors(message);
         }
 
     }
 
-    // TODO: Definir lógica para refrescar el token de un
-    //       usuario.
-    private static refreshAccessToken(): void {
+    /**
+     * Método que permite refrescar el token de acceso del usuario.
+     * @private
+     * @async
+     */
+    private async refreshAccessToken(): Promise<void> {
+        const refreshToken = SessionStorageUtils.get<SessionStorageConstants.KEY_REFRESH_TOKEN>(SessionStorageConstants.KEY_REFRESH_TOKEN);
+        if (refreshToken) {
+            const body: RefreshTokenRequest = {refreshToken};
+            return this.post<RefreshTokenResponse, RefreshTokenRequest>(BackendConstants.REFRESH_ACCESS_TOKEN_URL, body)
+                .then((res) => {
+                    if (res) {
+                        SessionStorageUtils.set<SessionStorageConstants.KEY_ACCESS_TOKEN>(
+                            SessionStorageConstants.KEY_ACCESS_TOKEN, res.accessToken
+                        );
+                    }
+                })
+                .catch();
+        }
+    }
 
+    /**
+     * Método que determina si un servicio debe reintentar el consumo.
+     * @param {BackendConfigType} c La configuración del servicio.
+     * @param {ErrorResponseType} e El error del servicio.
+     * @param {number} attempts Los reintentos totales.
+     * @returns {boolean} "true" si se debe reintentar, "false" si no.
+     * @static
+     * @private
+     */
+    private static resolveIfRetry(c: BackendConfigType, e: ErrorResponseType, attempts: number): boolean {
+        console.log(c.retryRequest);
+        console.log(BackendUtils.extractCode(e));
+        console.log(attempts);
+        return c.retryRequest && BackendUtils.extractCode(e) == 401 && attempts == 0;
     }
 
     /**

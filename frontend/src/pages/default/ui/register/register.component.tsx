@@ -7,7 +7,7 @@ import {GlobalLoadingComponent} from '../../../../components/loading/global/glob
 import {AlertTypeConstants} from '../../../../utils/constants/alert.constants.ts';
 import {AlertComponent} from '../../../../components/alert/alert.component.tsx';
 import {RoutesConstants} from '../../../../config/app.router.tsx';
-import {RegisterRequest, RegisterResponse} from './register.data.ts';
+import {RegisterRequest, RegisterResponse} from '../../../../types/services/register.ts';
 import {BackendUtils} from '../../../../utils/backend.utils.tsx';
 import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
 import {SessionStorageUtils} from '../../../../store/session-storage.utils.ts';
@@ -20,28 +20,28 @@ import {SessionStorageConstants} from '../../../../store/session-storage.constan
 export function RegisterComponent(): JSX.Element {
 
     /**
-     * Hooks encargado de manejar el nombre de usuario y
-     * sus validaciones.
+     * Hooks encargado de manejar el nombre de usuario que se registra
+     * y sus validaciones.
      */
     const [username, setUsername] = useState<string>('');
     const [usernameError, setUsernameError] = useState<string>('');
 
     /**
-     * Hook encargado de manejar la contraseña del usuario y
-     * sus validaciones.
+     * Hook encargado de manejar la contraseña del usuario que se registra
+     * y sus validaciones.
      */
     const [password, setPassword] = useState<string>('');
     const [passwordError, setPasswordError] = useState<string>('');
 
     /**
-     * Hook encargado de manejar la confirmación contraseña del usuario y
-     * sus validaciones.
+     * Hook encargado de manejar la confirmación contraseña del usuario
+     * que se registra y sus validaciones.
      */
     const [passwordConfirmation, setPasswordConfirmation] = useState<string>('');
     const [passwordConfirmationError, setPasswordConfirmationError] = useState<string>('');
 
     /**
-     * Hooks encargados de manejar el funcionamiento del componente.
+     * Hooks encargados de manejar el funcionamiento del componente del registro.
      * Definen:
      * - La configuración para los componentes de carga.
      * - La configuración para la redirección exitosa.
@@ -52,7 +52,7 @@ export function RegisterComponent(): JSX.Element {
     const [errorMessage, setErrorMessage] = useState<string>('');
 
     /**
-     * Utils para acceder al backend.
+     * Utils para acceder al registro en el backend.
      * @const {BackendUtils}
      */
     const backendUtils: BackendUtils = new BackendUtils(
@@ -63,16 +63,8 @@ export function RegisterComponent(): JSX.Element {
     );
 
     /**
-     * Permite cambiar el nombre de usuario y realizar sus validaciones.
-     * @param {string} value El nuevo nombre de usuario.
-     */
-    const handleChangeUsername = (value: string): void => {
-        setUsername(value);
-        ValidationUtils.validateUsername(value, setUsernameError);
-    };
-
-    /**
-     * Permite cambiar la contraseña del usuario y realizar sus validaciones.
+     * Permite cambiar la contraseña del usuario que se registra
+     * y realizar sus validaciones.
      * @param {string} value La nueva contraseña.
      */
     const handleChangePassword = (value: string): void => {
@@ -81,12 +73,23 @@ export function RegisterComponent(): JSX.Element {
     };
 
     /**
-     * Permite cambiar la contraseña del usuario y realizar sus validaciones.
+     * Permite cambiar la contraseña del usuario que se registra
+     * y realizar sus validaciones.
      * @param {string} value La nueva contraseña.
      */
     const handleChangePasswordConfirmation = (value: string): void => {
         setPasswordConfirmation(value);
         ValidationUtils.validatePasswordConfirmation(value, password, setPasswordConfirmationError);
+    };
+
+    /**
+     * Permite cambiar el nombre de usuario que se registra y realizar
+     * sus validaciones.
+     * @param {string} value El nuevo nombre de usuario.
+     */
+    const handleChangeUsername = (value: string): void => {
+        setUsername(value);
+        ValidationUtils.validateUsername(value, setUsernameError);
     };
 
     /**

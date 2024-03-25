@@ -12,6 +12,7 @@ import {JSX} from 'react';
 export function LocalLoadingComponent(
     props: {
         loading: boolean,
+        showBackground: boolean
     }
 ): JSX.Element {
     return (
@@ -28,6 +29,7 @@ export function LocalLoadingComponent(
                     position: 'relative',
                     width: '100%',
                     height: '100%',
+                    background: props.showBackground ? '' : 'transparent',
                     zIndex: (theme) => theme.zIndex.drawer - 1,
                 }}
             >

@@ -1,4 +1,3 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {RouterProvider} from 'react-router-dom';
 import {CssBaseline, ThemeProvider} from '@mui/material';
@@ -12,10 +11,8 @@ import './main.css';
  * - El tema de la aplicación.
  */
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-        <ThemeProvider theme={AppTheme}>
-            <CssBaseline/>
-            <RouterProvider router={AppRouter}/>
-        </ThemeProvider>
-    </React.StrictMode>,
+    <ThemeProvider theme={AppTheme}>
+        <CssBaseline/>
+        <RouterProvider router={AppRouter}/>
+    </ThemeProvider>
 );

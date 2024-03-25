@@ -1,0 +1,43 @@
+#home-header-component-container {
+    display: grid;
+    grid-template-columns: 90% 10%;
+    padding: 10px 0 10px 0;
+
+    & #home-header-button-group-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        & #home-header-button-group {
+            width: 90%;
+
+            & .home-header-button-container {
+                width: calc(100% / 3);
+
+                & button {
+                    width: 100%;
+                    border: none;
+                }
+            }
+        }
+    }
+
+    & #home-header-info {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        box-sizing: border-box;
+
+        & .home-header-info-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        & h4 {
+            margin: 0;
+            padding: 0;
+        }
+    }
+}

@@ -14,6 +14,10 @@ export enum RoutesConstants {
      */
     ALL_ROUTES = '*',
     /**
+     * Define la ruta para acceder a los diseños de carta.
+     */
+    CARD_DESIGNS_ROUTE = '/card-designs',
+    /**
      * Define la ruta por defecto de la aplicación.
      */
     DEFAULT_ROUTE = '/',
@@ -29,6 +33,10 @@ export enum RoutesConstants {
  * @const
  */
 export const AppRouter = createBrowserRouter([
+    {
+        path: RoutesConstants.CARD_DESIGNS_ROUTE,
+        element: <p>Diseños de carta</p>
+    },
     {
         path: RoutesConstants.HOME_ROUTE,
         element: <LoginGuard element={<HomePage/>}/>

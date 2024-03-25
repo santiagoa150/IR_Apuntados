@@ -1,10 +1,20 @@
 import {JSX} from 'react';
+import {VerticalLineComponent} from '../../components/vertical-line/vertical-line.component.tsx';
+import { HomeHeader } from './ui/header/home-header.tsx';
 import './home.page.css';
 
 export function HomePage(): JSX.Element {
     return (
         <>
-            <p>Home page</p>
+            <div
+                id='home-page-container'
+                className='page-container'
+            >
+                <HomeHeader/>
+                <section></section>
+                <VerticalLineComponent id='home-page-vertical-line'/>
+                <section></section>
+            </div>
         </>
     );
 }

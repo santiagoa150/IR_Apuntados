@@ -1,0 +1,9 @@
+#home-page-container {
+    display: grid;
+    grid-template-rows: max-content 1fr;
+    grid-template-columns: 49.8% 0.04% 49.8%;
+
+    & #home-header-component-container {
+        grid-column: 1/4;
+    }
+}

@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { UserDTO } from '../../user';
 import { Exclude } from 'class-transformer';
+import { DefaultResponse } from '../../../shared/default.response';
 
 /**
  * Clase en dónde se define la data en la respuesta del controlador.
@@ -24,6 +25,6 @@ export class GetUserResponseData extends UserDTO {
  *
  * @class
  */
-export class GetUserControllerResponse {
+export class GetUserControllerResponse extends DefaultResponse {
 	@ApiProperty({ type: GetUserResponseData }) user: GetUserResponseData;
 }

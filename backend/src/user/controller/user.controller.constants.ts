@@ -13,6 +13,10 @@ export enum UserControllerConstants {
 	 */
 	CONTROLLER_TAG = 'User',
 	/**
+	 * Url utilizada para el controlador que retorna al usuario.
+	 */
+	GET_ME_URL = 'me',
+	/**
 	 * Url utilizada para el controlador que actualiza el diseño
 	 * de carta del usuario.
 	 */

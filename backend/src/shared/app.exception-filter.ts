@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, Logger } from '@nestjs/common';
 import { HttpArgumentsHost, RpcArgumentsHost, WsArgumentsHost } from '@nestjs/common/interfaces';
 import { Exception } from './exception';
 import { ExceptionResponse, ExceptionResponseDTO } from './exception.response';
@@ -94,6 +94,8 @@ export class AppExceptionFilter implements ExceptionFilter {
 				AppExceptionFilter.resolveStatus(exception),
 			);
 		}
-		AppExceptionFilter.setExceptionResponse(host, response.toDTO());
+		const responseDto: ExceptionResponseDTO = response.toDTO();
+		new Logger().error(`[${AppExceptionFilter.name}] ERROR :: ${JSON.stringify(responseDto)}`);
+		AppExceptionFilter.setExceptionResponse(host, responseDto);
 	}
 }

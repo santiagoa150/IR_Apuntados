@@ -55,7 +55,7 @@ export class UserController {
 	 * @param {UserDecoratorType} user El usuario solicitado.
 	 * @returns {GetUserControllerResponse} La respuesta correspondiente al controlador.
 	 */
-	@Get()
+	@Get(UserControllerConstants.GET_ME_URL)
 	@AuthDecorator()
 	@UseInterceptors(ClassSerializerInterceptor)
 	@ApiOkResponse({ type: GetUserControllerResponse })

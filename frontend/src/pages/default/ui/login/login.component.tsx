@@ -5,7 +5,7 @@ import {PasswordFieldComponent} from '../../../../components/password-field/pass
 import {GlobalLoadingComponent} from '../../../../components/loading/global/global-loading.component.tsx';
 import {AlertComponent} from '../../../../components/alert/alert.component.tsx';
 import {ValidationUtils} from '../../../../utils/validation.utils.ts';
-import {LoginRequest, LoginResponse} from './login.data.ts';
+import {LoginRequest, LoginResponse} from '../../../../types/services/login.ts';
 import {BackendUtils} from '../../../../utils/backend.utils.tsx';
 import {AlertTypeConstants} from '../../../../utils/constants/alert.constants.ts';
 import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
