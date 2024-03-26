@@ -1,0 +1,34 @@
+#card-designs-shop-container {
+    display: grid;
+    padding: 20px;
+    justify-content: center;
+    grid-template-rows: max-content 1fr;
+    grid-template-columns: 1fr;
+    overflow: hidden;
+
+    & h1 {
+        text-align: center;
+        font-size: 2em;
+    }
+
+    & #card-designs-shop-available-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        padding: 5px;
+        gap: 15px;
+        overflow-y: scroll;
+    }
+}
+
+@media (max-width: 1210px) {
+    #card-designs-shop-container {
+        grid-template-rows: max-content 1fr;
+        height: max-content;
+
+        & #card-designs-shop-available-container {
+            overflow-y: initial;
+        }
+    }
+}

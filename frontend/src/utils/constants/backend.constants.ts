@@ -29,6 +29,11 @@ export enum BackendConstants {
      * Ruta para acceder al servicio que refresca el token del usuario.
      */
     REFRESH_ACCESS_TOKEN_URL = '/api/session/refresh-token',
+    /**
+     * Ruta para acceder al servicio que actualiza el diseño de
+     * carta de un usuario.
+     */
+    UPDATE_USER_CARD_DESIGN_URL = '/api/user/card-design'
 }
 
 /**
@@ -59,6 +64,10 @@ export const BackendConfigConstants: Record<BackendConstants, BackendConfigType>
     [BackendConstants.REFRESH_ACCESS_TOKEN_URL]: {
         requireAccessToken: false,
         retryRequest: false,
+    },
+    [BackendConstants.UPDATE_USER_CARD_DESIGN_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
     }
 };
 

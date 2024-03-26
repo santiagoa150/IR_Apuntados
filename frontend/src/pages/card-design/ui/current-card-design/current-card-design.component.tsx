@@ -1,4 +1,4 @@
-import {JSX, useEffect, useState} from 'react';
+import {Dispatch, JSX, SetStateAction, useEffect, useState} from 'react';
 import {CardComponent} from '../../../../components/card/card.component.tsx';
 import {CardSuitsConstants} from '../../../../utils/constants/card-suits.constants.ts';
 import {CheckBoxGroupComponent} from '../../../../components/check-box-group/check-box-group.component.tsx';
@@ -11,10 +11,16 @@ import './current-card-design.component.css';
 
 /**
  * Componente en dónde se define el tablero de cartas.
+ * @param props Los parámetros necesarios para el funcionamiento del componente.
+ * @param {Dispatch<SetStateAction<CardDesignType | undefined>>} props.selectUserCardDesign Hook
+ * que permite guardar el diseño de carta del usuario.
+ * @param {CardDesignType | undefined} props.selectedDesign El diseño seleccionado por
+ * el usuario.
  * @constructor
  */
 export function CurrentCardDesignComponent(
     props: {
+        selectUserCardDesign: Dispatch<SetStateAction<CardDesignType | undefined>>
         selectedDesign: CardDesignType | undefined
     }
 ): JSX.Element {
@@ -42,6 +48,7 @@ export function CurrentCardDesignComponent(
                 if (res) {
                     setGetFromBackend(true);
                     setCardDesign(res.design);
+                    props.selectUserCardDesign(res.design);
                 }
             }
         }

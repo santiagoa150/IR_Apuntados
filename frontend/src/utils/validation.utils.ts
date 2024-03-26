@@ -16,6 +16,7 @@ export abstract class ValidationUtils {
      * @param {Dispatch<SetStateAction<string>>} setError Hook que permite actualizar el error
      * de la contraseña en caso de que haya algo inválido.
      * @returns {boolean} Bandera que determina si es válido.
+     * @static
      */
     static validatePassword(value: string, setError: Dispatch<SetStateAction<string>>): boolean {
         let response: boolean = false;
@@ -37,6 +38,7 @@ export abstract class ValidationUtils {
      * @param {Dispatch<SetStateAction<string>>} setError Hook que permite actualizar el error
      * de la confirmación contraseña en caso de que haya algo inválido.
      * @returns {boolean} Bandera que determina si es válido.
+     * @static
      */
     static validatePasswordConfirmation(
         value: string, password: string,
@@ -59,6 +61,7 @@ export abstract class ValidationUtils {
      * @param {Dispatch<SetStateAction<string>>} setError Hook que permite actualizar el error
      * del nombre de usuario en caso de que haya algo inválido.
      * @returns {boolean} Determina si el nombre de usuario es válido.
+     * @static
      */
     static validateUsername(value: string, setError: Dispatch<SetStateAction<string>>): boolean {
         let response: boolean = false;

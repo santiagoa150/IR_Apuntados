@@ -7,6 +7,7 @@ import './card.component.css';
  * @param props.designName El diseño de la carta
  * @param props.suit La pinta de la carta.
  * @param props.type El tipo de la carta.
+ * @param props.positionClassName Clase utilizada para cambiar la posición de la imagen.
  * @constructor
  */
 export function CardComponent(
@@ -14,6 +15,7 @@ export function CardComponent(
         designName: string;
         suit: string;
         type: string;
+        positionClassName?: string
     }
 ): JSX.Element {
 
@@ -26,7 +28,7 @@ export function CardComponent(
     return (
         <img
             alt=''
-            className='card-image'
+            className={`card-image ${props.positionClassName}`}
             src={imageRoute}
         />
     );

@@ -1,11 +1,20 @@
 #card-designs-page-container {
     display: grid;
+    grid-template-rows: max-content 1fr;
     grid-template-columns: 800px 0.04% 1fr;
+
+    & #card-designs-header-component-container {
+        grid-column: 1/4;
+    }
 
     @media (max-width: 1210px) {
         width: 100%;
+        grid-template-rows: max-content max-content 5% max-content;
         grid-template-columns: 1fr;
-        grid-template-rows: max-content 5% max-content;
+
+        & #card-designs-header-component-container {
+            grid-column: 1/2;
+        }
 
         & #card-designs-page-vertical-line {
             & div {

@@ -1,8 +1,9 @@
 import {JSX, useState} from 'react';
 import {CurrentCardDesignComponent} from './ui/current-card-design/current-card-design.component.tsx';
 import {VerticalLineComponent} from '../../components/vertical-line/vertical-line.component.tsx';
-import {CardDesignsShopComponent} from './ui/card-designs-shop/card-designs-shop.component.tsx';
+import {CardDesignsShopComponent} from './ui/shop/card-designs-shop.component.tsx';
 import {CardDesignType} from '../../types/card-design.type.ts';
+import {CardDesignsHeader} from './ui/header/card-designs-header.tsx';
 import './card-design.page.css';
 
 /**
@@ -11,14 +12,26 @@ import './card-design.page.css';
  */
 export function CardDesignPage(): JSX.Element {
 
-    const [design, selectDesign] = useState<CardDesignType | undefined>(undefined);
+    /**
+     * Hook que permite manejar los diseños del usuario.
+     */
+    const [selectedDesign, selectSelectedDesign] = useState<CardDesignType | undefined>(undefined);
+    const [userDesign, selectUserDesign] = useState<CardDesignType | undefined>(undefined);
 
     return (
         <>
             <div id='card-designs-page-container' className='page-container'>
-                <CurrentCardDesignComponent selectedDesign={design}/>
+                <CardDesignsHeader
+                    userDesign={userDesign}
+                    selectedDesign={selectedDesign}
+                    selectUserCardDesign={selectUserDesign}
+                />
+                <CurrentCardDesignComponent
+                    selectedDesign={selectedDesign}
+                    selectUserCardDesign={selectUserDesign}
+                />
                 <VerticalLineComponent id='card-designs-page-vertical-line'/>
-                <CardDesignsShopComponent selectDesign={selectDesign}/>
+                <CardDesignsShopComponent selectDesign={selectSelectedDesign}/>
             </div>
         </>
     );

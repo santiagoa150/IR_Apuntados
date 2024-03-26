@@ -27,4 +27,5 @@ export const AlertMessagesConstants: Record<string, string> = {
     UNKNOWN_ERROR: 'Intente más tarde.',
     USER_ALREADY_EXISTS_ERROR: 'El usuario ya existe.',
     USER_NOT_FOUND_ERROR: 'El usuario no existe.',
+    CARD_DESIGN_ID_IS_REQUIRED_ERROR: 'Diseño de carta requerido.'
 };

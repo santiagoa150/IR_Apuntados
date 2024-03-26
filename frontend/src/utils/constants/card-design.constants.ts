@@ -6,7 +6,7 @@
 export const CardDesignTitleConstants: Record<string, string> = {
     BLUE: 'Azul',
     DEFAULT: 'Básico',
-    NIGHT_VISION: 'Visión nocturna',
+    NIGHT_VISION: 'Nocturno',
     RED: 'Rojo',
     RETRO: 'Retro',
 };

@@ -2,7 +2,7 @@ import { UserId } from './user-id';
 import { UserPassword } from './user-password';
 import { UserStatus } from './user-status';
 import { DomainBase } from '../shared/domain.base';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { CardDesignId } from '../card-design/card-design-id';
 import { UserIcon } from './user-icon';
 import { UserStatusConstants } from './user-status.constants';
@@ -16,13 +16,13 @@ import { NotEnoughTokensException } from './exceptions/not-enough-tokens.excepti
  */
 export class UserDTO {
 	@ApiProperty() userId: string;
-	@ApiProperty() password: string;
+	@ApiHideProperty() password: string;
 	@ApiProperty() status: string;
 	@ApiProperty() username: string;
 	@ApiProperty() icon: string;
 	@ApiProperty() currentDesignId: string;
 	@ApiProperty() tokens: number;
-	@ApiProperty() cardDesigns: Array<string>;
+	@ApiHideProperty() cardDesigns: Array<string>;
 }
 
 /**
@@ -119,10 +119,10 @@ export class User extends DomainBase<UserDTO> {
 		status: UserStatusConstants,
 	): void {
 		switch (status) {
-		case UserStatusConstants.PLAYING: {
-			if (this.status.is(UserStatusConstants.PLAYING)) throw new UserIsAlreadyPlayingException();
-			break;
-		}
+			case UserStatusConstants.PLAYING: {
+				if (this.status.is(UserStatusConstants.PLAYING)) throw new UserIsAlreadyPlayingException();
+				break;
+			}
 		}
 		this.status.change(status);
 	}

@@ -24,6 +24,35 @@ export class BackendUtils {
     }
 
     /**
+     * Método patch que permite acceder al backend.
+     * @template Res El tipo de la respuesta del servicio.
+     * @template Req El tipo del request del servicio.
+     * @param {BackendConfigConstants} url
+     * @param {Req} body Los parámetros que requiere el servicio.
+     * @param {number} [attempts=0] Define la cantidad de intentos del servicio.
+     * @returns {Promise<Res | undefined>} La respuesta del servicio.
+     */
+    public async patch<Res, Req>(
+        url: BackendConstants,
+        body: Req,
+        attempts: number = 0
+    ): Promise<Res | undefined> {
+        const serviceConfig: BackendConfigType = BackendConfigConstants[url];
+        return axios.patch<Res>(url, body, BackendUtils.buildRequestConfig(serviceConfig))
+            .then((data: AxiosResponse): Res => data.data)
+            .catch(async (e: ErrorResponseType) => {
+                if (BackendUtils.resolveIfRetry(serviceConfig, e, attempts)) {
+                    return this.refreshAccessToken().then(() => {
+                        attempts += 1;
+                        return this.patch<Res, Req>(url, body, attempts++);
+                    });
+                }
+                this.processError(serviceConfig, e);
+                return undefined;
+            });
+    }
+
+    /**
      * Método post que permite acceder al backend.
      * @template Res El tipo de la respuesta del servicio.
      * @template Req El tipo del request del servicio.

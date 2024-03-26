@@ -1,0 +1,110 @@
+#card-design-article-component-container {
+    width: 140px;
+    height: 180px;
+    display: grid;
+    grid-template-rows: max-content 1fr;
+    background: white;
+    box-sizing: border-box;
+    border-radius: 5px;
+    box-shadow: 1px 1px 10px black;
+    cursor: pointer;
+
+    & h3 {
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    
+    @media (max-width: 410px) {
+        width: 90px;
+
+        & button {
+            font-size: 0.7rem;
+        }
+
+        & h3 {
+            font-size: 0.8rem;
+        }
+    }
+
+    & :hover {
+
+        & .card-design-article-icon {
+            display: initial;
+            opacity: 0.95;
+        }
+    }
+}
+
+.card-design-article-image {
+    top: 50%;
+    left: 50%;
+    transform: translate(-55%, -50%);
+    position: absolute;
+}
+
+.card-design-article-icon {
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    margin: 5px;
+    width: 90px;
+    position: absolute;
+    transform: translate(-55%, -50%);
+    height: calc(90px * (1280 / 941));
+    background-color: black;
+    background-position: center;
+    background-size: 50px;
+    background-repeat: no-repeat;
+    border-radius: 10px;
+    transition: opacity 0.7s;
+    opacity: 0;
+}
+
+
+@media (max-width: 760px) {
+    #card-design-article-component-container {
+        width: 130px;
+        height: calc(130px * (1280 / 941));
+    }
+
+    .card-design-article-icon {
+        width: 80px;
+        height: calc(80px * (1280 / 941));
+    }
+
+    .card-design-article-icon {
+        background-size: 45px;
+    }
+}
+
+@media (max-width: 690px) {
+    #card-design-article-component-container {
+        width: 110px;
+        height: calc(120px * (1280 / 941));
+    }
+
+    .card-design-article-icon {
+        width: 70px;
+        height: calc(70px * (1280 / 941));
+    }
+
+    .card-design-article-icon {
+        background-size: 40px;
+    }
+}
+
+@media (max-width: 620px) {
+    #card-design-article-component-container {
+        height: calc(100px * (1280 / 941));
+    }
+
+    .card-design-article-icon {
+        width: 60px;
+        height: calc(60px * (1280 / 941));
+    }
+
+    .card-design-article-icon {
+        background-size: 35px;
+    }
+}

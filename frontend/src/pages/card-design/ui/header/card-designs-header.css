@@ -1,0 +1,47 @@
+#card-designs-header-component-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0 10px 0;
+
+    & #card-designs-header-button-group {
+        width: 90%;
+
+        & .card-header-header-button {
+            width: calc(100% / 2);
+
+            & button {
+                height: max-content;
+                width: 100%;
+                border: none;
+            }
+        }
+    }
+}
+
+#card-designs-shop-buttons-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    padding: 10px 0 10px 0;
+    gap: 10px;
+
+    & button {
+        width: 200px;
+    }
+
+    @media (max-width: 470px) {
+        & .card-designs-shop-buttons-div {
+            display: flex;
+            justify-content: center;
+            width: 45%;
+            text-decoration: none;
+        }
+
+        & button {
+            width: 85%;
+        }
+    }
+}
