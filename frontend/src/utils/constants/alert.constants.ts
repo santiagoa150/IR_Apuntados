@@ -23,9 +23,11 @@ export enum AlertTypeConstants {
  * @const {Record<string, string>}
  */
 export const AlertMessagesConstants: Record<string, string> = {
-    INVALID_CREDENTIALS_ERROR: 'Credenciales inválidas',
-    UNKNOWN_ERROR: 'Intente más tarde.',
-    USER_ALREADY_EXISTS_ERROR: 'El usuario ya existe.',
-    USER_NOT_FOUND_ERROR: 'El usuario no existe.',
-    CARD_DESIGN_ID_IS_REQUIRED_ERROR: 'Diseño de carta requerido.'
+    CARD_DESIGN_ID_IS_REQUIRED_ERROR: '¡Diseño de carta requerido!',
+    INVALID_CREDENTIALS_ERROR: '¡Credenciales inválidas!',
+    NOT_ENOUGH_TOKENS_ERROR: '¡No tienes tokens suficientes!',
+    UNKNOWN_ERROR: 'Intente más tarde',
+    USER_ALREADY_EXISTS_ERROR: '¡El usuario ya existe!',
+    USER_IS_ALREADY_PLAYING_ERROR: '¡No puedes crear un juego si ya estás jugando!',
+    USER_NOT_FOUND_ERROR: '¡El usuario no existe!',
 };

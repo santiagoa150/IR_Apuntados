@@ -5,6 +5,10 @@
  */
 export enum ValidationErrorsConstants {
     /**
+     * Error que indica que un valor debe tener menos de 50 carácteres.
+     */
+    LENGTH_LOWER_50_ERROR = 'El valor debe tener menos de 50 carácteres.',
+    /**
      * Error que indica que un valor debe tener más de 8 carácteres.
      */
     LENGTH_OVER_6_ERROR = 'El valor debe tener 6 carácteres o más.',
@@ -22,4 +26,8 @@ export enum ValidationErrorsConstants {
      * Error que indica que un valor es requerido.
      */
     REQUIRED_ERROR = 'El valor es requerido.',
+    /**
+     * Error que indica que el valor debe ser mayor a 1.
+     */
+    VALUE_OVER_1_ERROR = 'El valor debe ser mayor a 1.'
 }

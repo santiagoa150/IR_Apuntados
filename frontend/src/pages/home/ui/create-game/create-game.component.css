@@ -1,0 +1,34 @@
+#create-game-component-container {
+    display: grid;
+    padding: 0 20% 0 20%;
+    grid-template-rows: max-content 1fr max-content;
+
+    & h1 {
+        margin: 10px;
+        font-size: 2em;
+    }
+
+    & #create-game-form-container {
+        height: 100%;
+        display: flex;
+        row-gap: 18px;
+        flex-flow: column;
+        align-items: start;
+
+        & .create-game-form-input {
+            width: 100%;
+        }
+    }
+
+    & #create-game-send-container {
+        width: 100%;
+        display: flex;
+        padding: 17px 0 25px 0;
+        box-sizing: border-box;
+        justify-content: center;
+
+        & button {
+            width: 70%;
+        }
+    }
+}

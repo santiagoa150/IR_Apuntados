@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom';
 import {RoutesConstants} from '../../../../config/app.router.tsx';
 import {Button, ButtonGroup} from '@mui/material';
 import {CardDesignType} from '../../../../types/card-design.type.ts';
-import './card-designs-header.css';
 import {AlertComponent} from '../../../../components/alert/alert.component.tsx';
 import {AlertTypeConstants} from '../../../../utils/constants/alert.constants.ts';
 import {BackendUtils} from '../../../../utils/backend.utils.tsx';
@@ -13,6 +12,7 @@ import {
     UpdateUserCardDesignResponse
 } from '../../../../types/services/update-user-card-design.ts';
 import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
+import './card-designs-header.component.css';
 
 /**
  * Componente que renderiza el header de los diseños de cartas.
@@ -23,7 +23,7 @@ import {BackendConstants} from '../../../../utils/constants/backend.constants.ts
  * @param {CardDesignType | undefined} props.userDesign El diseño del usuario.
  * @constructor
  */
-export function CardDesignsHeader(
+export function CardDesignsHeaderComponent(
     props: {
         selectedDesign: CardDesignType | undefined,
         selectUserCardDesign: Dispatch<SetStateAction<CardDesignType | undefined>>

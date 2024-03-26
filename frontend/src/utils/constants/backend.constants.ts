@@ -6,6 +6,10 @@
  */
 export enum BackendConstants {
     /**
+     * Ruta para crear un juego en la aplicación.
+     */
+    CREATE_GAME_URL = '/api/game',
+    /**
      * Ruta para acceder a los diseños de cartas disponibles.
      */
     GET_ACTIVE_CARD_DESIGNS_URL = '/api/card-design/active',
@@ -41,6 +45,10 @@ export enum BackendConstants {
  * @const {Record<BackendConstants, BackendConfigType>}
  */
 export const BackendConfigConstants: Record<BackendConstants, BackendConfigType> = {
+    [BackendConstants.CREATE_GAME_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
+    },
     [BackendConstants.GET_ACTIVE_CARD_DESIGNS_URL]: {
         requireAccessToken: true,
         retryRequest: true,

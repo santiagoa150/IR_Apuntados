@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {Button, ButtonGroup} from '@mui/material';
 import {RoutesConstants} from '../../../../config/app.router.tsx';
 import TutorialPDF from '../../../../assets/documents/Tutorial.pdf';
-import './home-header.css';
+import './home-header.component.css';
 import {UserType} from '../../../../types/user.type.ts';
 import {LocalLoadingComponent} from '../../../../components/loading/local/local-loading.component.tsx';
 import {BackendUtils} from '../../../../utils/backend.utils.tsx';
@@ -15,7 +15,7 @@ import {BackendConstants} from '../../../../utils/constants/backend.constants.ts
  * principal de la aplicación
  * @constructor
  */
-export function HomeHeader(): JSX.Element {
+export function HomeHeaderComponent(): JSX.Element {
 
     /**
      * Hook que controla el usuario que está ejecutando la aplicación.

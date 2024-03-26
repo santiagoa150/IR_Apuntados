@@ -3,7 +3,7 @@ import {CurrentCardDesignComponent} from './ui/current-card-design/current-card-
 import {VerticalLineComponent} from '../../components/vertical-line/vertical-line.component.tsx';
 import {CardDesignsShopComponent} from './ui/shop/card-designs-shop.component.tsx';
 import {CardDesignType} from '../../types/card-design.type.ts';
-import {CardDesignsHeader} from './ui/header/card-designs-header.tsx';
+import {CardDesignsHeaderComponent} from './ui/header/card-designs-header.component.tsx';
 import './card-design.page.css';
 
 /**
@@ -21,7 +21,7 @@ export function CardDesignPage(): JSX.Element {
     return (
         <>
             <div id='card-designs-page-container' className='page-container'>
-                <CardDesignsHeader
+                <CardDesignsHeaderComponent
                     userDesign={userDesign}
                     selectedDesign={selectedDesign}
                     selectUserCardDesign={selectUserDesign}

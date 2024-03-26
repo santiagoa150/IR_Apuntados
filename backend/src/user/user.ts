@@ -119,10 +119,10 @@ export class User extends DomainBase<UserDTO> {
 		status: UserStatusConstants,
 	): void {
 		switch (status) {
-			case UserStatusConstants.PLAYING: {
-				if (this.status.is(UserStatusConstants.PLAYING)) throw new UserIsAlreadyPlayingException();
-				break;
-			}
+		case UserStatusConstants.PLAYING: {
+			if (this.status.is(UserStatusConstants.PLAYING)) throw new UserIsAlreadyPlayingException();
+			break;
+		}
 		}
 		this.status.change(status);
 	}

@@ -3,6 +3,7 @@ import {DefaultPage} from '../pages/default/default.page.tsx';
 import {LoginGuard} from './login.guard.tsx';
 import {HomePage} from '../pages/home/home.page.tsx';
 import {CardDesignPage} from '../pages/card-design/card-design.page.tsx';
+import {WaitingGamePage} from '../pages/waiting-game/waiting-game.page.tsx';
 
 /**
  * Constantes que definen las rutas de la aplicación.
@@ -23,6 +24,10 @@ export enum RoutesConstants {
      */
     DEFAULT_ROUTE = '/',
     /**
+     * Define la ruta del juego de la aplicación.
+     */
+    WAITING_GAME_ROUTE = '/game/waiting',
+    /**
      * Define la ruta del home de la aplicación.
      */
     HOME_ROUTE = '/home'
@@ -34,6 +39,10 @@ export enum RoutesConstants {
  * @const
  */
 export const AppRouter = createBrowserRouter([
+    {
+        path: RoutesConstants.WAITING_GAME_ROUTE,
+        element: <LoginGuard element={<WaitingGamePage/>}/>
+    },
     {
         path: RoutesConstants.CARD_DESIGNS_ROUTE,
         element: <LoginGuard element={<CardDesignPage/>}/>

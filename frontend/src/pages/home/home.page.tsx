@@ -1,7 +1,8 @@
 import {JSX} from 'react';
 import {VerticalLineComponent} from '../../components/vertical-line/vertical-line.component.tsx';
-import { HomeHeader } from './ui/header/home-header.tsx';
+import {HomeHeaderComponent} from './ui/header/home-header.component.tsx';
 import './home.page.css';
+import {CreateGameComponent} from './ui/create-game/create-game.component.tsx';
 
 /**
  * Página principal del sistema.
@@ -14,8 +15,8 @@ export function HomePage(): JSX.Element {
                 id='home-page-container'
                 className='page-container'
             >
-                <HomeHeader/>
-                <section></section>
+                <HomeHeaderComponent/>
+                <CreateGameComponent/>
                 <VerticalLineComponent id='home-page-vertical-line'/>
                 <section></section>
             </div>
