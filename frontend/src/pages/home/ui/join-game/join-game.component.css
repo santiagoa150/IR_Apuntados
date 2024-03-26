@@ -1,0 +1,43 @@
+#join-game-component-container {
+    display: grid;
+    padding: 0 17% 0 17%;
+    grid-template-rows: max-content 1fr;
+
+    & h1 {
+        margin: 10px;
+        font-size: 2em;
+        text-align: center;
+    }
+
+    & #join-game-component-list-container {
+        width: 100%;
+        max-height: 430px;
+        position: relative;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        row-gap: 15px;
+        overflow-y: scroll;
+        box-sizing: border-box;
+
+        & .join-game-component-list-item {
+            background-color: white;
+            border-radius: 3px;
+            width: 95%;
+            box-sizing: border-box;
+            padding-left: 10px;
+        }
+    }
+
+    & #join-game-component-list-container::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    & #join-game-component-list-container::-webkit-scrollbar-track {
+        background-color: var(--secondary);
+    }
+
+    & #join-game-component-list-container::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+    }
+}

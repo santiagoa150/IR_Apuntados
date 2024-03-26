@@ -22,6 +22,14 @@ export enum BackendConstants {
      */
     GET_ME_URL = '/api/user/me',
     /**
+     * Ruta para acceder a los juegos públicos.
+     */
+    GET_PUBLIC_GAMES_URL = '/api/game/public',
+    /**
+     * Ruta para ingresar a un juego.
+     */
+    JOIN_GAME_URL = '/api/game/join',
+    /**
      * Ruta para acceder al login de la aplicación.
      */
     LOGIN_URL = '/api/session/login',
@@ -58,6 +66,14 @@ export const BackendConfigConstants: Record<BackendConstants, BackendConfigType>
         retryRequest: true,
     },
     [BackendConstants.GET_ME_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
+    },
+    [BackendConstants.GET_PUBLIC_GAMES_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
+    },
+    [BackendConstants.JOIN_GAME_URL]: {
         requireAccessToken: true,
         retryRequest: true,
     },

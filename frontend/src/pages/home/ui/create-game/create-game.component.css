@@ -1,11 +1,12 @@
 #create-game-component-container {
     display: grid;
-    padding: 0 20% 0 20%;
+    padding: 0 17% 0 17%;
     grid-template-rows: max-content 1fr max-content;
 
     & h1 {
         margin: 10px;
         font-size: 2em;
+        text-align: center;
     }
 
     & #create-game-form-container {

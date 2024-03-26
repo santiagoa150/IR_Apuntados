@@ -3,6 +3,7 @@ import {VerticalLineComponent} from '../../components/vertical-line/vertical-lin
 import {HomeHeaderComponent} from './ui/header/home-header.component.tsx';
 import './home.page.css';
 import {CreateGameComponent} from './ui/create-game/create-game.component.tsx';
+import {JoinGameComponent} from './ui/join-game/join-game.component.tsx';
 
 /**
  * Página principal del sistema.
@@ -18,7 +19,7 @@ export function HomePage(): JSX.Element {
                 <HomeHeaderComponent/>
                 <CreateGameComponent/>
                 <VerticalLineComponent id='home-page-vertical-line'/>
-                <section></section>
+                <JoinGameComponent/>
             </div>
         </>
     );

@@ -12,6 +12,10 @@ import {Navigate} from 'react-router-dom';
 import {RoutesConstants} from '../../../../config/app.router.tsx';
 import './create-game.component.css';
 
+/**
+ * Componente que permite crear un juego.
+ * @constructor
+ */
 export function CreateGameComponent(): JSX.Element {
 
     /**
@@ -55,6 +59,8 @@ export function CreateGameComponent(): JSX.Element {
      * Hooks para la configuración del componente.
      * Define:
      * - El componente de carga.
+     * - El componente de redirección.
+     * - El componente de errores.
      */
     const [loading, setLoading] = useState<boolean>(false);
     const [redirect, setRedirect] = useState<boolean>(false);

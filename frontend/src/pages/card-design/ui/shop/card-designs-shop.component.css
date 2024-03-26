@@ -20,6 +20,18 @@
         gap: 15px;
         overflow-y: scroll;
     }
+
+    & #card-designs-shop-available-container::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    & #card-designs-shop-available-container::-webkit-scrollbar-track {
+        background-color: var(--secondary);
+    }
+
+    & #card-designs-shop-available-container::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+    }
 }
 
 @media (max-width: 1210px) {
