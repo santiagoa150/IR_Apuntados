@@ -25,6 +25,7 @@
     & #home-header-info {
         display: flex;
         flex-flow: column;
+        justify-content: center;
         align-items: center;
         box-sizing: border-box;
 
@@ -38,6 +39,20 @@
         & h4 {
             margin: 0;
             padding: 0;
+        }
+    }
+}
+
+@media (max-width: 650px) {
+    #home-header-component-container {
+        grid-template-columns: 80% 20%;
+    }
+}
+
+@media (max-width: 400px) {
+    .home-header-button-container {
+        & button{
+            font-size: 0.7rem;
         }
     }
 }

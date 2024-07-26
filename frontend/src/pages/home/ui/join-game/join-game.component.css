@@ -11,8 +11,7 @@
 
     & #join-game-component-list-container {
         width: 100%;
-        max-height: 430px;
-        position: relative;
+        max-height: 95%;
         display: flex;
         flex-flow: column;
         align-items: center;
@@ -26,6 +25,15 @@
             width: 95%;
             box-sizing: border-box;
             padding-left: 10px;
+        }
+    }
+
+    & #join-game-component-not-matches-image-container {
+        text-align: center;
+        align-content: center;
+
+        & img {
+            width: 40%;
         }
     }
 

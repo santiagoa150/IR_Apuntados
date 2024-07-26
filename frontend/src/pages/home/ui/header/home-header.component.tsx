@@ -37,7 +37,7 @@ export function HomeHeaderComponent(): JSX.Element {
             if (res) setUser(res.user);
         }
 
-        fetchData();
+        fetchData().then();
     }, []);
 
     /**
@@ -74,7 +74,7 @@ export function HomeHeaderComponent(): JSX.Element {
                             <Button>Personalizar</Button>
                         </Link>
                         <div className='home-header-button-container'>
-                            <Button>Comprar tokens</Button>
+                            <Button>Tokens</Button>
                         </div>
                     </ButtonGroup>
                 </div>

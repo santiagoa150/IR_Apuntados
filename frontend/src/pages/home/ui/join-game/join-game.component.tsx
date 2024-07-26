@@ -13,6 +13,7 @@ import {AlertTypeConstants} from '../../../../utils/constants/alert.constants.ts
 import {Navigate} from 'react-router-dom';
 import {RoutesConstants} from '../../../../config/app.router.tsx';
 import {JoinGameRequest, JoinGameResponse} from '../../../../types/services/join-game.ts';
+import NoMatchesImage from '../../../../assets/images/icons/no-matches.png';
 
 /**
  * Componente que permite ingresar a un juego.
@@ -24,6 +25,7 @@ export function JoinGameComponent(): JSX.Element {
      * Hook para manejar los juegos de la lista.
      */
     const [games, setGames] = useState<Array<GameType> | undefined>(undefined);
+    const [gamesLoading, setGamesLoading] = useState(true);
 
     /**
      * Hooks para la configuración del componente.
@@ -43,7 +45,7 @@ export function JoinGameComponent(): JSX.Element {
     const backendUtils: BackendUtils = new BackendUtils(
         (message: string) => {
             setLoading(false);
-            setErrorMessage(message);
+            setErrorMessage(message === 'USER_IS_ALREADY_PLAYING_ERROR' ? message + '_JOINING' : message);
         }
     );
 
@@ -55,10 +57,13 @@ export function JoinGameComponent(): JSX.Element {
             const res = await backendUtils.get<GetPublicGamesResponse, never>(
                 BackendConstants.GET_PUBLIC_GAMES_URL,
             );
-            if (res) setGames(res.data);
+            if (res) {
+                setGames(res.data);
+                setGamesLoading(false);
+            }
         }
 
-        fetchData();
+        fetchData().then();
     }, []);
 
     /**
@@ -84,10 +89,10 @@ export function JoinGameComponent(): JSX.Element {
                 className='component-container'
             >
                 <h1>Partidas públicas</h1>
-                <div id='join-game-component-list-container'>
-                    {
-                        games
-                            ? games.map((game) => {
+                {gamesLoading || (!gamesLoading && games && games.length > 0)
+                    ? <div id='join-game-component-list-container'>
+                        {
+                            games ? games.map((game) => {
                                 return (
                                     <ListItem
                                         key={game.gameId}
@@ -105,10 +110,13 @@ export function JoinGameComponent(): JSX.Element {
                                         />
                                     </ListItem>
                                 );
-                            })
-                            : <LocalLoadingComponent loading={true} showBackground={false}/>
-                    }
-                </div>
+                            }) : <LocalLoadingComponent loading={true} showBackground={false}/>
+                        }
+                    </div>
+                    : <div id="join-game-component-not-matches-image-container" className='component-container'>
+                        <img src={NoMatchesImage} alt=""/>
+                    </div>
+                }
             </section>
             <GlobalLoadingComponent loading={loading}/>
             <AlertComponent

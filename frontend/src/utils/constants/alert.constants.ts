@@ -29,5 +29,6 @@ export const AlertMessagesConstants: Record<string, string> = {
     UNKNOWN_ERROR: 'Intente más tarde',
     USER_ALREADY_EXISTS_ERROR: '¡El usuario ya existe!',
     USER_IS_ALREADY_PLAYING_ERROR: '¡No puedes crear un juego si ya estás jugando!',
+    USER_IS_ALREADY_PLAYING_ERROR_JOINING: '¡No puedes ingresar a un juego si ya estás jugando!',
     USER_NOT_FOUND_ERROR: '¡El usuario no existe!',
 };
