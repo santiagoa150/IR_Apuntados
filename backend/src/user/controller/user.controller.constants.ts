@@ -21,4 +21,8 @@ export enum UserControllerConstants {
 	 * de carta del usuario.
 	 */
 	UPDATE_USER_CARD_DESIGN_URL = 'card-design',
+	/**
+	 * Url utilizada para el controlador que actualiza el icono de un usuario.
+	 */
+	UPDATE_USER_ICON = 'icon',
 }

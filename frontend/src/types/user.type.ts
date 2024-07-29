@@ -7,5 +7,6 @@ export type UserType = {
     username: string;
     icon: string;
     currentDesignId: string;
+    currentDesignName: string;
     tokens: number;
 }

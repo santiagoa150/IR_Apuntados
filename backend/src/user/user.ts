@@ -21,6 +21,7 @@ export class UserDTO {
 	@ApiProperty() username: string;
 	@ApiProperty() icon: string;
 	@ApiProperty() currentDesignId: string;
+	@ApiProperty() currentDesignName: string;
 	@ApiProperty() tokens: number;
 	@ApiHideProperty() cardDesigns: Array<string>;
 }
@@ -35,10 +36,11 @@ export class User extends DomainBase<UserDTO> {
 	public readonly password: UserPassword;
 	public readonly userId: UserId;
 	public currentDesignId: CardDesignId;
+	public currentDesignName: string;
 	public readonly cardDesigns: Set<string>;
+	public icon: UserIcon;
 	private readonly status: UserStatus;
 	private readonly username: string;
-	private readonly icon: UserIcon;
 	private tokens: number;
 
 	/**
@@ -46,6 +48,7 @@ export class User extends DomainBase<UserDTO> {
 	 * @param {UserPassword} password La contraseña del usuario.
 	 * @param {UserStatus} status El estado del usuario.
 	 * @param {CardDesignId} currentDesignId El diseño de cartas actual del usuario.
+	 * @param {string} currentDesignName El nombre del diseño de carta actual.
 	 * @param {string} username El nombre del usuario.
 	 * @param {UserIcon} icon El icono del usuario.
 	 * @param {number} tokens La cantidad de tokens del usuario.
@@ -56,6 +59,7 @@ export class User extends DomainBase<UserDTO> {
 		password: UserPassword,
 		status: UserStatus,
 		currentDesignId: CardDesignId,
+		currentDesignName: string,
 		username: string,
 		icon: UserIcon,
 		tokens: number,
@@ -66,6 +70,7 @@ export class User extends DomainBase<UserDTO> {
 		this.password = password;
 		this.status = status;
 		this.currentDesignId = currentDesignId;
+		this.currentDesignName = currentDesignName;
 		this.username = username;
 		this.icon = icon;
 		this.tokens = tokens;
@@ -85,6 +90,7 @@ export class User extends DomainBase<UserDTO> {
 			new UserPassword(dto.password),
 			new UserStatus(dto.status),
 			new CardDesignId(dto.currentDesignId),
+			dto.currentDesignName,
 			dto.username,
 			new UserIcon(dto.icon),
 			dto.tokens,
@@ -100,6 +106,7 @@ export class User extends DomainBase<UserDTO> {
 		return {
 			cardDesigns: Array.from(this.cardDesigns),
 			currentDesignId: this.currentDesignId.toString(),
+			currentDesignName: this.currentDesignName,
 			icon: this.icon.toString(),
 			password: this.password.toString(),
 			status: this.status.toString(),

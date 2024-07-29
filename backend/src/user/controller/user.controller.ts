@@ -13,6 +13,9 @@ import { SessionService } from '../../security/session.service';
 import { CreateUserControllerResponse } from './responses/create-user.controller.response';
 import { UpdateUserCardDesignControllerRequest } from './requests/update-user-card-design.controller.request';
 import { CardDesignId } from '../../card-design/card-design-id';
+import { DefaultResponse } from '../../shared/default.response';
+import { UpdateUserIconController } from './requests/update-user-icon.controller.request';
+import { UserIcon } from '../user-icon';
 
 /**
  * Clase que contiene los puntos de entrada a la aplicación
@@ -77,7 +80,8 @@ export class UserController {
 	@Patch(UserControllerConstants.UPDATE_USER_CARD_DESIGN_URL)
 	@AuthDecorator()
 	@ApiOkResponse({ type: GetUserControllerResponse })
-	async update(
+	@ApiResponse({ type: ExceptionResponseDTO })
+	async updateCardDesign(
 		@Body() body: UpdateUserCardDesignControllerRequest,
 		@UserDecorator() user: UserDecoratorType,
 	): Promise<GetUserControllerResponse> {
@@ -88,5 +92,26 @@ export class UserController {
 		);
 		response.user = new GetUserResponseData(data.toDTO());
 		return response;
+	}
+
+	/**
+	 * Controlador PATCH que permite actualizar el icono de un usuario.
+	 * @param body El icono deseado.
+	 * @param user El usuario que se está actualizando.
+	 * @returns {DefaultResponse} La respuesta correspondiente al controlador.
+	 */
+	@Patch(UserControllerConstants.UPDATE_USER_ICON)
+	@AuthDecorator()
+	@ApiOkResponse({ type: DefaultResponse })
+	@ApiResponse({ type: ExceptionResponseDTO })
+	async updateIcon(
+		@Body() body: UpdateUserIconController,
+		@UserDecorator() user: UserDecoratorType,
+	): Promise<DefaultResponse> {
+		await this.service.updateIcon(
+			new UserId(user.userId),
+			new UserIcon(body.icon),
+		);
+		return new DefaultResponse();
 	}
 }

@@ -201,6 +201,14 @@ export enum ExceptionMessagesConstants {
 	 */
 	USER_ALREADY_EXISTS_ERROR = 'USER_ALREADY_EXISTS_ERROR',
 	/**
+	 * Se utiliza para indicar que el icono de un usuario debe ser una cadena de texto.
+	 */
+	USER_ICON_MUST_BE_A_STRING = 'USER_ICON_MUST_BE_A_STRING',
+	/**
+	 * Se utiliza para indicar que el icono de un usuario es requerido.
+	 */
+	USER_ICON_IS_REQUIRED = 'USER_ICON_IS_REQUIRED',
+	/**
 	 * Se utiliza cuando se intenta cambiar el estado de un usuario a jugando,
 	 * cuando ya está jugando.
 	 */

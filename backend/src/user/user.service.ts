@@ -58,6 +58,7 @@ export class UserService {
 			status: UserStatusConstants.ACTIVE,
 			tokens: Number(process.env.APP_DEFAULT_TOKENS),
 			currentDesignId: defaultDesign.cardDesignId.toString(),
+			currentDesignName: defaultDesign.name,
 			icon: UserIcon.generate(),
 			username: username,
 			cardDesigns: [],
@@ -105,7 +106,7 @@ export class UserService {
 		this.logger.log(`[${this.getByUsername.name}] FINISH ::`);
 		return mapped;
 	}
-	
+
 	/**
 	 * Método que permite actualizar toda la información de un usuario.
 	 * @param {User} user El usuario que se está actualizando
@@ -140,8 +141,24 @@ export class UserService {
 			throw new CardDesignWithoutPurchasingException();
 		}
 		user.currentDesignId = cardDesign.cardDesignId;
+		user.currentDesignName = cardDesign.name;
 		const updated: User = await this.update(user);
 		this.logger.log(`[${this.updateCardDesign.name}] FINISH ::`);
+		return updated;
+	}
+
+	/**
+	 * Método que permite actualizar el icono de un usuario.
+	 * @param userId El usuario que se quiere actualizar.
+	 * @param userIcon El nuevo icono del usuario.
+	 * @returns El usuario actualizado.
+	 */
+	async updateIcon(userId: UserId, userIcon: UserIcon): Promise<User> {
+		this.logger.log(`[${this.updateIcon.name}] INIT :: userId: ${userId?.toString()}`);
+		const user: User = await this.getById(userId);
+		user.icon = userIcon;
+		const updated: User = await this.update(user);
+		this.logger.log(`[${this.updateIcon.name}] FINISH ::`);
 		return updated;
 	}
 }

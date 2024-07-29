@@ -45,7 +45,11 @@ export enum BackendConstants {
      * Ruta para acceder al servicio que actualiza el diseño de
      * carta de un usuario.
      */
-    UPDATE_USER_CARD_DESIGN_URL = '/api/user/card-design'
+    UPDATE_USER_CARD_DESIGN_URL = '/api/user/card-design',
+    /**
+     * Ruta para acceder al servicio que actualiza el icono del usuario.
+     */
+    UPDATE_USER_ICON = '/api/user/icon'
 }
 
 /**
@@ -90,6 +94,10 @@ export const BackendConfigConstants: Record<BackendConstants, BackendConfigType>
         retryRequest: false,
     },
     [BackendConstants.UPDATE_USER_CARD_DESIGN_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
+    },
+    [BackendConstants.UPDATE_USER_ICON]: {
         requireAccessToken: true,
         retryRequest: true,
     }

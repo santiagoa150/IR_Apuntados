@@ -28,12 +28,19 @@
         justify-content: center;
         align-items: center;
         box-sizing: border-box;
+        cursor: pointer;
+
+        & :hover {
+            box-shadow: 5px 5px 10px gray;
+            transition: box-shadow 500ms;
+        }
 
         & .home-header-info-image {
             width: 60px;
             height: 60px;
             border-radius: 50%;
             position: relative;
+
         }
 
         & h4 {
@@ -51,7 +58,7 @@
 
 @media (max-width: 400px) {
     .home-header-button-container {
-        & button{
+        & button {
             font-size: 0.7rem;
         }
     }

@@ -41,7 +41,7 @@ export function CardDesignsShopComponent(
             if (res) setCardDesigns(res.data);
         }
 
-        fetchData();
+        fetchData().then();
     }, []);
 
     return (

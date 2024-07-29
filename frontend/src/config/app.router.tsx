@@ -31,7 +31,7 @@ export enum RoutesConstants {
     /**
      * Define la ruta del home de la aplicación.
      */
-    HOME_ROUTE = '/home'
+    HOME_ROUTE = '/home',
 }
 
 /**

@@ -21,6 +21,10 @@ const definition: Required<SchemaDefinition<UserDTO>> = {
 		type: String,
 		required: true,
 	},
+	currentDesignName: {
+		type: String,
+		required: true,
+	},
 	icon: {
 		type: String,
 		required: true,
