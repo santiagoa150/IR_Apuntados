@@ -73,9 +73,10 @@ export class PlayerService {
 	 * Método que permite buscar los participantes de un juego con la
 	 * información de sus usuarios.
 	 * @param {GameId} gameId El juego solicitado.
+	 * @param {UserId} userId El usuario que ejecuta el servicio.
 	 * @returns {Promise<Array<PlayerWithUserDTO>>} Los jugadores encontrados.
 	 */
-	async getWithUserByGame(gameId: GameId): Promise<Array<PlayerWithUserDTO>> {
+	async getWithUserByGame(gameId: GameId, userId: UserId): Promise<Array<PlayerWithUserDTO>> {
 		this.logger.log(`[${this.getWithUserByGame.name}] INIT :: gameId: ${gameId.toString()}`);
 		const query: Array<PipelineStage> = PlayerQueries.getWithUserByGame(gameId);
 		const aggregateResponse: Array<PlayerWithUserDTO & { _id: string }> = await this.model.aggregate(query);
@@ -92,6 +93,7 @@ export class PlayerService {
 					status: e.status,
 					userId: e.userId,
 					username: e.username,
+					isMarked: userId.toString() === e.userId,
 				};
 			}));
 		this.logger.log(`[${this.getWithUserByGame.name}] FINISH ::`);

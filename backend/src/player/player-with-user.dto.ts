@@ -10,6 +10,7 @@ export class PlayerWithUserDTO {
 	@ApiProperty() userId: string;
 	@ApiProperty() username: string;
 	@ApiProperty() icon: string;
+	@ApiProperty() isMarked: boolean;
 	@ApiProperty() status: string;
 	@ApiProperty() position: number;
 	@ApiProperty() score: number;

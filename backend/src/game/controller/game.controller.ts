@@ -60,6 +60,7 @@ export class GameController {
 
 	/**
 	 * Método GET que permite traer el juego actual de un jugador.
+	 * @param {UserDTO} user Los datos de autenticación del usuario.
 	 * @param {GameDTO} game El juego solicitado.
 	 * @returns {GetPublicGamesControllerResponse} La respuesta del controlador
 	 * con el juego solicitado.
@@ -68,10 +69,16 @@ export class GameController {
 	@GameAuthDecorator()
 	@ApiOkResponse({ type: GetCurrentGameControllerResponse })
 	@ApiResponse({ type: ExceptionResponseDTO })
-	async getCurrentGameDetail(@GameDecorator() game: GameDTO): Promise<GetCurrentGameControllerResponse> {
+	async getCurrentGameDetail(
+		@UserDecorator() user: UserDecoratorType,
+		@GameDecorator() game: GameDTO,
+	): Promise<GetCurrentGameControllerResponse> {
 		const response: GetCurrentGameControllerResponse = new GetCurrentGameControllerResponse();
 		response.game = game;
-		response.players = await this.playerService.getWithUserByGame(new GameId(game.gameId));
+		response.players = await this.playerService.getWithUserByGame(
+			new GameId(game.gameId),
+			new UserId(user.userId),
+		);
 		return response;
 	}
 

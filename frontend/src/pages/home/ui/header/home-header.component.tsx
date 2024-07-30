@@ -6,6 +6,7 @@ import TutorialPDF from '../../../../assets/documents/Tutorial.pdf';
 import './home-header.component.css';
 import {UserType} from '../../../../types/user.type.ts';
 import {LocalLoadingComponent} from '../../../../components/loading/local/local-loading.component.tsx';
+import {buildProfileImageRoute} from '../../../../utils/profile-image.utils.ts';
 
 /**
  * Componente en dónde se define el header de la página
@@ -18,15 +19,6 @@ export function HomeHeaderComponent(
         openIProfileConfigModel: () => (void),
     }
 ): JSX.Element {
-
-    /**
-     * Permite construir la ruta en dónde se encuentran los iconos de la app.
-     * @param {string} icon El icono que se busca.
-     * @return {string} La url construida.
-     */
-    const buildProfileImageRoute = (icon: string): string => {
-        return `${import.meta.env.VITE_PROFILE_IMAGES_URL}${icon}.png`;
-    };
 
     return (
         <>

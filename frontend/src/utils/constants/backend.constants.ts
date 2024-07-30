@@ -49,7 +49,11 @@ export enum BackendConstants {
     /**
      * Ruta para acceder al servicio que actualiza el icono del usuario.
      */
-    UPDATE_USER_ICON = '/api/user/icon'
+    UPDATE_USER_ICON_URL = '/api/user/icon',
+    /**
+     * Ruta para acceder al servicio que permite obtener el juego actual de un usuario.
+     */
+    GET_CURRENT_GAME_URL = '/api/game/current',
 }
 
 /**
@@ -97,7 +101,11 @@ export const BackendConfigConstants: Record<BackendConstants, BackendConfigType>
         requireAccessToken: true,
         retryRequest: true,
     },
-    [BackendConstants.UPDATE_USER_ICON]: {
+    [BackendConstants.UPDATE_USER_ICON_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
+    },
+    [BackendConstants.GET_CURRENT_GAME_URL]: {
         requireAccessToken: true,
         retryRequest: true,
     }

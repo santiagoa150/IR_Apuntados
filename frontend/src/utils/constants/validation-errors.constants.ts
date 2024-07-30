@@ -27,7 +27,7 @@ export enum ValidationErrorsConstants {
      */
     REQUIRED_ERROR = 'El valor es requerido.',
     /**
-     * Error que indica que el valor debe ser mayor a 1.
+     * Error que indica que el valor debe ser mayor a 0.
      */
-    VALUE_OVER_1_ERROR = 'El valor debe ser mayor a 1.'
+    VALUE_OVER_0_ERROR = 'El valor debe ser mayor a 0.'
 }

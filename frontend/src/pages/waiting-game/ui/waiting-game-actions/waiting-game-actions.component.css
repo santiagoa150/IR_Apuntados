@@ -1,0 +1,17 @@
+#waiting-game-actions-component-container {
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    & #waiting-game-actions-component-share-button {
+        background-color: var(--primary);
+        color: var(--tertiary);
+        margin-right: 10px;
+    }
+
+    & #waiting-game-actions-component-start-button {
+        width: 300px;
+        margin-right: 20px;
+    }
+}

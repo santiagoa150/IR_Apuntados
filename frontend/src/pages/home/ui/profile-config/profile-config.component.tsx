@@ -14,6 +14,7 @@ import {AlertComponent} from '../../../../components/alert/alert.component.tsx';
 import {AlertTypeConstants} from '../../../../utils/constants/alert.constants.ts';
 import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
 import {UpdateUserIconRequest, UpdateUserIconResponse} from '../../../../types/services/update-user-icon.ts';
+import {buildProfileImageRoute} from "../../../../utils/profile-image.utils.ts";
 
 /**
  * Componente que permite configurar el perfíl de un usuario.
@@ -46,15 +47,6 @@ export function ProfileConfigComponent(
         setRedirect(true);
     };
 
-    /**
-     * Permite construir la ruta en dónde se encuentran los iconos de la app.
-     * @param {string} icon El icono que se busca.
-     * @return {string} La url construida.
-     */
-    const buildProfileImageRoute = (icon: string): string => {
-        return `${import.meta.env.VITE_PROFILE_IMAGES_URL}${icon}.png`;
-    };
-
     const saveIcon = async (icon: string): Promise<void> => {
         const backendUtils: BackendUtils = new BackendUtils(
             (message: string) => {
@@ -63,7 +55,7 @@ export function ProfileConfigComponent(
             }
         );
         setLoading(true);
-        const res = await backendUtils.patch<UpdateUserIconResponse, UpdateUserIconRequest>(BackendConstants.UPDATE_USER_ICON, {icon});
+        const res = await backendUtils.patch<UpdateUserIconResponse, UpdateUserIconRequest>(BackendConstants.UPDATE_USER_ICON_URL, {icon});
         if (res) {
             setLoading(false);
             const params: URLSearchParams = new URLSearchParams({ps: 'true'});
@@ -123,7 +115,8 @@ export function ProfileConfigComponent(
                                 <h1>Diseños disponibles:</h1>
                                 <div id='profile-config-modal-photo-option-container'>
                                     {
-                                        ['ICON1', 'ICON2', 'ICON3', 'ICON4', 'ICON5'].map((icon) => {
+                                        ['ICON1', 'ICON2', 'ICON3', 'ICON4', 'ICON5', 'ICON6', 'ICON7', 'ICON8', 'ICON9',
+                                            'ICON10', 'ICON11', 'ICON12p'].map((icon) => {
                                             return (
                                                 <img
                                                     id={'profile-config-modal-photo-option' + icon}
@@ -131,11 +124,11 @@ export function ProfileConfigComponent(
                                                     alt=''
                                                     onMouseEnter={() => {
                                                         const element = document.getElementById('profile-config-modal-photo-option' + icon);
-                                                        if (element) element.style.width = '28%';
+                                                        if (element) element.style.width = '23%';
                                                     }}
                                                     onMouseLeave={() => {
                                                         const element = document.getElementById('profile-config-modal-photo-option' + icon);
-                                                        if (element) element.style.width = '25%';
+                                                        if (element) element.style.width = '20%';
                                                     }}
                                                     key={icon}
                                                     src={buildProfileImageRoute(icon)}

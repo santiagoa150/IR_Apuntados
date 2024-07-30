@@ -31,4 +31,5 @@ export const AlertMessagesConstants: Record<string, string> = {
     USER_IS_ALREADY_PLAYING_ERROR: '¡No puedes crear un juego si ya estás jugando!',
     USER_IS_ALREADY_PLAYING_ERROR_JOINING: '¡No puedes ingresar a un juego si ya estás jugando!',
     USER_NOT_FOUND_ERROR: '¡El usuario no existe!',
+    GAME_EXCEEDS_ITS_PLAYER_COUNT_ERROR: '¡El juego ya está lleno!',
 };

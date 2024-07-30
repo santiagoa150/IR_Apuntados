@@ -53,7 +53,7 @@ export function CurrentCardDesignComponent(
             }
         }
 
-        fetchData();
+        fetchData().then();
     });
 
     /**

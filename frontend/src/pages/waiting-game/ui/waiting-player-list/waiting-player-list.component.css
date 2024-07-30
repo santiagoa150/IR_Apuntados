@@ -1,0 +1,108 @@
+#waiting-player-list-component-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    & .waiting-player-list-component-card {
+        background-color: white;
+        border-radius: 5px;
+        box-shadow: 5px 5px 5px gray;
+        width: 14%;
+        height: 46%;
+        box-sizing: border-box;
+        padding: 12px;
+        margin: 7px 20px 0 20px;
+
+        & .waiting-player-list-component-card-top {
+            display: flex;
+            justify-content: space-around;
+
+            & .waiting-player-list-component-card-image {
+                width: 33%;
+                object-fit: contain;
+                border-radius: 50%;
+            }
+        }
+
+        & .waiting-player-list-component-card-bottom {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+        }
+
+        @media (min-height: 935px) {
+            height: 35%;
+            width: 15%;
+        }
+
+        @media (max-width: 1250px) {
+            width: 17%;
+        }
+
+        @media (max-width: 1070px) {
+            width: 20%;
+        }
+
+        @media (max-width: 910px) {
+            width: 25%;
+        }
+        
+        @media (max-width: 760px) {
+            width: 28%;
+            height: 42%;
+            
+            @media (min-height: 900px) {
+                height: 30%;
+            }
+        }
+
+        @media (max-width: 750px) {
+            height: 39%;
+            width: 24%;
+
+            & h4 {
+                font-size: 0.7em;
+            }
+
+            @media (min-height: 900px)  {
+                height: 27%;
+            }
+        }
+
+        @media (max-width: 620px) {
+            height: 33%;
+
+            @media (min-height: 900px)  {
+                height: 22%;
+            }
+        }
+
+        @media (max-width: 490px) {
+            width: 35%;
+            height: 33%;
+            margin: 6px 5px 0 5px;
+
+            @media (min-height: 900px)  {
+                height: 22%;
+            }
+        }
+
+        @media (max-width: 415px) {
+            width: 45%;
+            height: 30%;
+            margin: 6px 5px 0 5px;
+
+            @media (min-height: 900px)  {
+                height: 25%;
+            }
+        }
+    }
+
+    & .waiting-player-list-component-card-selected {
+        background-color: var(--fourth) !important;
+        color: white;
+    }
+}

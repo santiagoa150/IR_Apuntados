@@ -1,0 +1,13 @@
+#waiting-game-page-container {
+    display: grid;
+    grid-template-rows: max-content 8vh 1fr 8vh;
+
+    & #waiting-game-page-container-title {
+        width: 100%;
+        text-align: center;
+
+        & h1 {
+            margin: 5px;
+        }
+    }
+}

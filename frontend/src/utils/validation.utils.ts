@@ -21,7 +21,7 @@ export abstract class ValidationUtils {
     static validateBetByPlayer(value: number | string, setError: Dispatch<SetStateAction<string>>): boolean {
         let response: boolean = false;
         if (typeof value == 'string' && !value) setError(ValidationErrorsConstants.REQUIRED_ERROR);
-        else if (typeof value == 'number' && value < 1) setError(ValidationErrorsConstants.VALUE_OVER_1_ERROR);
+        else if (typeof value == 'number' && value < 1) setError(ValidationErrorsConstants.VALUE_OVER_0_ERROR);
         else {
             setError('');
             response = true;
