@@ -73,7 +73,7 @@ export class GameService {
 		user.changeStatus(UserStatusConstants.PLAYING);
 		user.removeTokens(request.betByPlayer);
 		if (requiredPlayers < 2 || requiredPlayers > 6) throw new InvalidGameRequiredPlayersException();
-		const game: Game = Game.fromDto({
+		const game: Game = Game.fromDTO({
 			creatorId: request.creatorId.toString(),
 			gameId: GameId.create(),
 			status: GameStatusConstants.WAITING_PLAYERS,
@@ -104,7 +104,7 @@ export class GameService {
 	async getById(gameId: GameId, throwExceptionIfNotFound: boolean = true): Promise<Game | undefined> {
 		this.logger.log(`[${this.getById.name}] INIT :: gameId: ${gameId.toString()}`);
 		const found: GameDTO = await this.model.findOne({ gameId: gameId.toString() });
-		const mapped: Game = found ? Game.fromDto(found) : undefined;
+		const mapped: Game = found ? Game.fromDTO(found) : undefined;
 		if (throwExceptionIfNotFound && !mapped) throw new GameNotFoundException();
 		this.logger.log(`[${this.getById.name}] FINISH ::`);
 		return mapped;
@@ -135,7 +135,7 @@ export class GameService {
 			isPublic: true,
 			status: GameStatusConstants.WAITING_PLAYERS,
 		});
-		const mapped: Array<Game> = await Promise.all(found.map(async (g) => Game.fromDto(g)));
+		const mapped: Array<Game> = await Promise.all(found.map(async (g) => Game.fromDTO(g)));
 		this.logger.log(`[${this.getPublicAndEmpty.name}] FINISH ::`);
 		return mapped;
 	}
@@ -184,7 +184,7 @@ export class GameService {
 			game.toDTO(),
 			{ new: true },
 		);
-		const mapped: Game = updated ? Game.fromDto(updated) : undefined;
+		const mapped: Game = updated ? Game.fromDTO(updated) : undefined;
 		if (!mapped) throw new GameNotUpdatedException();
 		this.logger.log(`[${this.update.name}] FINISH ::`);
 		return mapped;

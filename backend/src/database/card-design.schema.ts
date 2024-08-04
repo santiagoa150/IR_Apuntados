@@ -16,23 +16,23 @@ const definition: Required<SchemaDefinition<CardDesignDTO>> = {
 	cardDesignId: {
 		type: String,
 		required: true,
-		index: true,
+		index: 'hashed',
 		unique: true,
 	},
 	isDefault: {
 		type: Boolean,
 		required: true,
-		index: true,
+		index: 'hashed',
 	},
 	isFree: {
 		type: Boolean,
 		required: true,
-		index: true,
+		index: 'hashed',
 	},
 	isActive: {
 		type: Boolean,
 		required: true,
-		index: true,
+		index: 'hashed',
 	},
 	price: {
 		type: Number,
@@ -41,7 +41,6 @@ const definition: Required<SchemaDefinition<CardDesignDTO>> = {
 	name: {
 		type: String,
 		required: true,
-		index: true,
 		unique: true,
 	},
 };

@@ -42,7 +42,7 @@ export class Card extends DomainBase<CardDTO> {
 	 * @returns {Card} La carta.
 	 * @static
 	 */
-	static fromDto(dto: CardDTO): Card {
+	static fromDTO(dto: CardDTO): Card {
 		return new Card(
 			new CardType(dto.type),
 			new CardSuit(dto.suit),

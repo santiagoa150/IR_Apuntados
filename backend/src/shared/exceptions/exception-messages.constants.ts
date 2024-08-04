@@ -118,6 +118,14 @@ export enum ExceptionMessagesConstants {
 	 */
 	INVALID_GAME_STATUS_ERROR = 'INVALID_GAME_STATUS_ERROR',
 	/**
+	 * Se utiliza cuando el ID de una partida no cumple con las características requeridas por el sistema.
+	 */
+	INVALID_MATCH_ID_ERROR = 'INVALID_MATCH_ID_ERROR',
+	/**
+	 * Se utiliza para indicar que el estado de una partida no es válido.
+	 */
+	INVALID_MATCH_STATUS_ERROR = 'INVALID_MATCH_STATUS_ERROR',
+	/**
 	 * Se utiliza cuando la contraseña de un usuario no cumple con
 	 * las características requeridas por el sistema.
 	 */

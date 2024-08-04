@@ -5,6 +5,7 @@ import { SecurityModule } from './security/config/security.module';
 import { CardDesignModule } from './card-design/config/card-design.module';
 import { GameModule } from './game/config/game.module';
 import { PlayerModule } from './player/config/player.module';
+import { MatchModule } from './match/config/match.module';
 
 /**
  * Clase que representa el módulo principal de la aplicación.\
@@ -25,6 +26,7 @@ import { PlayerModule } from './player/config/player.module';
 		SecurityModule,
 		CardDesignModule,
 		PlayerModule,
+		MatchModule,
 	],
 })
 export class AppModule {

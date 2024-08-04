@@ -32,7 +32,6 @@ const definition: Required<SchemaDefinition<UserDTO>> = {
 	status: {
 		type: String,
 		required: true,
-		index: true,
 	},
 	tokens: {
 		type: Number,
@@ -41,7 +40,7 @@ const definition: Required<SchemaDefinition<UserDTO>> = {
 	userId: {
 		type: String,
 		required: true,
-		index: true,
+		index: 'hashed',
 		unique: true,
 	},
 	password: {
@@ -51,7 +50,7 @@ const definition: Required<SchemaDefinition<UserDTO>> = {
 	username: {
 		type: String,
 		required: true,
-		index: true,
+		index: 'hashed',
 	},
 };
 

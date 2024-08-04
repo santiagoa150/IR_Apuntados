@@ -12,6 +12,9 @@ import { PlayerStatusConstants } from './player-status.constants';
 import { PlayerWithUserDTO } from './player-with-user.dto';
 import { PlayerQueries } from './player.queries';
 
+/**
+ * Los servicios asociados a los jugadores.
+ */
 @Injectable()
 export class PlayerService {
 
@@ -38,7 +41,7 @@ export class PlayerService {
 			validateUser &&
 			(await this.getActiveByUserId(userId, false))
 		) throw new UserIsAlreadyPlayingException();
-		const player: Player = await Player.fromDto({
+		const player: Player = await Player.fromDTO({
 			gameId: gameId.toString(),
 			isActive: true,
 			playerId: PlayerId.create(),
@@ -63,7 +66,7 @@ export class PlayerService {
 	async getActiveByUserId(userId: UserId, throwExceptionIfNotFound: boolean = true): Promise<Player | undefined> {
 		this.logger.log(`[${this.getActiveByUserId.name}] INIT :: userId: ${userId.toString()}`);
 		const found: PlayerDTO = await this.model.findOne({ userId: userId.toString(), isActive: true });
-		const mapped: Player = found ? await Player.fromDto(found) : undefined;
+		const mapped: Player = found ? await Player.fromDTO(found) : undefined;
 		if (throwExceptionIfNotFound && !mapped) throw new PlayerNotFoundException();
 		this.logger.log(`[${this.getActiveByUserId.name}] FINISH ::`);
 		return mapped;

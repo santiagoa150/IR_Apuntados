@@ -27,6 +27,14 @@ export enum DatabaseConstants {
 	 */
 	GAME_PROVIDER = 'GAME_PROVIDER',
 	/**
+	 * Esta constante representa el nombre de la colección de las partidas en la base de datos.
+	 */
+	MATCH_COLLECTION_NAME = 'Match',
+	/**
+	 * Esta constante representa el proveedor del esquema de las partidas.
+	 */
+	MATCH_PROVIDER = 'MATCH_PROVIDER',
+	/**
 	 * Esta constante representa el nombre de la colección
 	 * de los jugadores en la base de datos.
 	 */

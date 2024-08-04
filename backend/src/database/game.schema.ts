@@ -20,12 +20,12 @@ const definition: Required<SchemaDefinition<GameDTO>> = {
 	isPublic: {
 		type: Boolean,
 		required: true,
-		index: true,
+		index: 'hashed',
 	},
 	status: {
 		type: String,
 		required: true,
-		index: true,
+		index: 'hashed',
 	},
 	betByPlayer: {
 		type: Number,
@@ -42,13 +42,12 @@ const definition: Required<SchemaDefinition<GameDTO>> = {
 	gameId: {
 		type: String,
 		required: true,
-		index: true,
+		index: 'hashed',
 		unique: true,
 	},
 	creatorId: {
 		type: String,
 		required: true,
-		index: true,
 	},
 	wasInitiated: {
 		type: Boolean,

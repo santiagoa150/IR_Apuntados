@@ -92,15 +92,15 @@ export class Player extends DomainBase<PlayerDTO> {
 	 * @static
 	 * @async
 	 */
-	static async fromDto(dto: PlayerDTO): Promise<Player> {
+	static async fromDTO(dto: PlayerDTO): Promise<Player> {
 		const trips1: Trips = Array.isArray(dto.trips1) ?
-			await Promise.all(dto.trips1.map(async (t) => Card.fromDto(t))) as Trips : undefined;
+			await Promise.all(dto.trips1.map(async (t) => Card.fromDTO(t))) as Trips : undefined;
 
 		const trips2: Trips = Array.isArray(dto.trips2) ?
-			await Promise.all(dto.trips2.map(async (t) => Card.fromDto(t))) as Trips : undefined;
+			await Promise.all(dto.trips2.map(async (t) => Card.fromDTO(t))) as Trips : undefined;
 
 		const quads: Quads = Array.isArray(dto.quads) ?
-			await Promise.all(dto.quads.map(async (q) => Card.fromDto(q))) as Quads : undefined;
+			await Promise.all(dto.quads.map(async (q) => Card.fromDTO(q))) as Quads : undefined;
 		return new Player(
 			new PlayerId(dto.playerId),
 			new GameId(dto.gameId),
@@ -112,7 +112,7 @@ export class Player extends DomainBase<PlayerDTO> {
 			quads,
 			dto.score,
 			dto.position,
-			dto.kicker ? Card.fromDto(dto.kicker) : undefined,
+			dto.kicker ? Card.fromDTO(dto.kicker) : undefined,
 		);
 	}
 

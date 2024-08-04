@@ -7,6 +7,7 @@ import * as process from 'process';
 import { CardDesignSchemaProvider } from './card-design.schema';
 import { GameSchemaProvider } from './game.schema';
 import { PlayerSchemaProvider } from './player.schema';
+import { MatchSchemaProvider } from './match.schema';
 
 /**
  * Clase en dónde se deben colocar las configuraciones relacionadas con
@@ -30,6 +31,7 @@ import { PlayerSchemaProvider } from './player.schema';
 		CardDesignSchemaProvider,
 		GameSchemaProvider,
 		PlayerSchemaProvider,
+		MatchSchemaProvider,
 	],
 	exports: [
 		MongooseModule,
@@ -37,6 +39,7 @@ import { PlayerSchemaProvider } from './player.schema';
 		CardDesignSchemaProvider,
 		GameSchemaProvider,
 		PlayerSchemaProvider,
+		MatchSchemaProvider,
 	],
 })
 export class DatabaseModule {

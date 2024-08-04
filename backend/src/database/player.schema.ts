@@ -17,7 +17,7 @@ const definition: Required<SchemaDefinition<PlayerDTO>> = {
 	isActive: {
 		type: Boolean,
 		required: true,
-		index: true,
+		index: 'hashed',
 	},
 	kicker: {
 		type: CardSchema,
@@ -26,17 +26,16 @@ const definition: Required<SchemaDefinition<PlayerDTO>> = {
 	status: {
 		type: String,
 		required: true,
-		index: true,
 	},
 	userId: {
 		type: String,
 		required: true,
-		index: true,
+		index: 'hashed',
 	},
 	gameId: {
 		type: String,
 		required: true,
-		index: true,
+		index: 'hashed',
 	},
 	score: {
 		type: Number,
@@ -64,7 +63,6 @@ const definition: Required<SchemaDefinition<PlayerDTO>> = {
 	playerId: {
 		type: String,
 		required: true,
-		index: true,
 		unique: true,
 	},
 };

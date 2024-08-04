@@ -81,7 +81,7 @@ export class Game extends DomainBase<GameDTO> {
 	 * @returns {Game} El modelo de dominio.
 	 * @static
 	 */
-	static fromDto(dto: GameDTO): Game {
+	static fromDTO(dto: GameDTO): Game {
 		return new Game(
 			new GameId(dto.gameId),
 			new UserId(dto.creatorId),
