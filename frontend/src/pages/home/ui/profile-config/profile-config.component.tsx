@@ -116,7 +116,7 @@ export function ProfileConfigComponent(
                                 <div id='profile-config-modal-photo-option-container'>
                                     {
                                         ['ICON1', 'ICON2', 'ICON3', 'ICON4', 'ICON5', 'ICON6', 'ICON7', 'ICON8', 'ICON9',
-                                            'ICON10', 'ICON11', 'ICON12p'].map((icon) => {
+                                            'ICON10', 'ICON11', 'ICON12'].map((icon) => {
                                             return (
                                                 <img
                                                     id={'profile-config-modal-photo-option' + icon}
@@ -124,11 +124,11 @@ export function ProfileConfigComponent(
                                                     alt=''
                                                     onMouseEnter={() => {
                                                         const element = document.getElementById('profile-config-modal-photo-option' + icon);
-                                                        if (element) element.style.width = '23%';
+                                                        if (element) element.style.width = '85%';
                                                     }}
                                                     onMouseLeave={() => {
                                                         const element = document.getElementById('profile-config-modal-photo-option' + icon);
-                                                        if (element) element.style.width = '20%';
+                                                        if (element) element.style.width = '80%';
                                                     }}
                                                     key={icon}
                                                     src={buildProfileImageRoute(icon)}

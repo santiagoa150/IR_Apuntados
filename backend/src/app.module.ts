@@ -19,11 +19,11 @@ import { PlayerModule } from './player/config/player.module';
  */
 @Module({
 	imports: [
-		ConfigModule.forRoot({ isGlobal: true }),
+		ConfigModule.forRoot({ isGlobal: true, expandVariables: true }),
 		UserModule,
+		GameModule,
 		SecurityModule,
 		CardDesignModule,
-		GameModule,
 		PlayerModule,
 	],
 })

@@ -197,6 +197,10 @@ export enum ExceptionMessagesConstants {
 	 */
 	REQUIRED_PLAYERS_MUST_BE_IN_RANGE_ERROR = 'REQUIRED_PLAYERS_MUST_BE_IN_RANGE_ERROR',
 	/**
+	 * Mensaje que indica que un request no tiene autorización.
+	 */
+	UNAUTHORIZED = 'UNAUTHORIZED',
+	/**
 	 * Se utiliza cuando se intenta crear un usuario que ya existe.
 	 */
 	USER_ALREADY_EXISTS_ERROR = 'USER_ALREADY_EXISTS_ERROR',

@@ -1,6 +1,6 @@
-import { ExceptionMessagesConstants } from '../../shared/exception-messages.constants';
+import { ExceptionMessagesConstants } from '../../shared/exceptions/exception-messages.constants';
 import { HttpStatus } from '@nestjs/common';
-import { Exception } from '../../shared/exception';
+import { Exception } from '../../shared/exceptions/exception';
 
 /**
  * Se lanza cuando el tipo de una carta no se encuentra en

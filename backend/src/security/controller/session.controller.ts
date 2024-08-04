@@ -3,7 +3,7 @@ import { LoginGuard } from '../guards/login.guard';
 import { ApiBody, ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginControllerRequest } from './requests/login.controller.request';
 import { LoginControllerResponse } from './responses/login.controller.response';
-import { ExceptionResponseDTO } from '../../shared/exception.response';
+import { ExceptionResponseDTO } from '../../shared/exceptions/exception.response';
 import { SessionControllerConstants } from './session.controller.constants';
 import { SessionService } from '../session.service';
 import { UserDecorator } from '../user.decorator';

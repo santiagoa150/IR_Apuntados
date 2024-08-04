@@ -1,7 +1,6 @@
 import { ExecutionContext } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Socket } from 'socket.io';
-import { ExtractJwt } from 'passport-jwt';
 import { UserDecoratorType } from '../user.decorator';
 import * as process from 'process';
 
@@ -17,9 +16,13 @@ export class JwtSocketStrategy {
 	 * @param {JwtService} service El servicio de jwt.
 	 */
 	static canActivate(context: ExecutionContext, service: JwtService): boolean {
+		const socket: Socket = context.switchToWs().getClient<Socket>();
 		try {
-			const socket: Socket = context.switchToWs().getClient<Socket>();
-			const token: string = ExtractJwt.fromAuthHeaderAsBearerToken()(socket.handshake.headers.authorization);
+			const rawToken: string = socket.handshake.headers.authorization as string;
+			if (!rawToken || !rawToken.startsWith('Bearer')) return false;
+			const parts: string[] = rawToken.split(' ');
+			if (parts.length != 2) return false;
+			const token: string = parts[1];
 			const payload: UserDecoratorType = service.verify(token, { secret: process.env.JWT_SECRET });
 			socket.handshake.query.user = JSON.stringify({ userId: payload.userId });
 			return true;

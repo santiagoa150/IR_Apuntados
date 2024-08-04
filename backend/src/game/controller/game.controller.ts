@@ -3,7 +3,7 @@ import { Body, Controller, Get, Patch, Post } from '@nestjs/common';
 import { GameControllerConstants } from './game.controller.constants';
 import { ApiCreatedResponse, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthDecorator } from '../../security/auth.decorator';
-import { ExceptionResponseDTO } from '../../shared/exception.response';
+import { ExceptionResponseDTO } from '../../shared/exceptions/exception.response';
 import { GameControllerResponse } from './responses/game.controller.response';
 import { UserDecorator, UserDecoratorType } from '../../security/user.decorator';
 import { CreateGameControllerRequest } from './requests/create-game.controller.request';

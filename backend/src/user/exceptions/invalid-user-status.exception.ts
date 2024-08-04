@@ -1,6 +1,6 @@
-import { Exception } from 'src/shared/exception';
+import { Exception } from 'src/shared/exceptions/exception';
 import { HttpStatus } from '@nestjs/common';
-import { ExceptionMessagesConstants } from '../../shared/exception-messages.constants';
+import { ExceptionMessagesConstants } from '../../shared/exceptions/exception-messages.constants';
 
 /**
  * Excepción lanzada cuando se valida si el estado de un usuario

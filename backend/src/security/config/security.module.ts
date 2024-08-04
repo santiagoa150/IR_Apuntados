@@ -5,8 +5,8 @@ import { SessionService } from '../session.service';
 import { LoginStrategy } from '../guards/login.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { JwtStrategy } from '../guards/jwt.strategy';
-import { GameGuard } from '../guards/game.guard';
 import { GameModule } from '../../game/config/game.module';
+import { GameGuard } from '../guards/game.guard';
 
 /**
  * Clase que representa el módulo de seguridad y sus
@@ -28,8 +28,8 @@ import { GameModule } from '../../game/config/game.module';
 	providers: [
 		LoginStrategy,
 		JwtStrategy,
-		GameGuard,
 		SessionService,
+		GameGuard,
 	],
 	exports: [SessionService],
 })

@@ -5,7 +5,7 @@ import { InvalidCredentialsException } from './exceptions/invalid-credentials.ex
 import { UserId } from '../user/user-id';
 import { JwtService } from '@nestjs/jwt';
 import { UserDecoratorType } from './user.decorator';
-import { ExceptionMessagesConstants } from '../shared/exception-messages.constants';
+import { ExceptionMessagesConstants } from '../shared/exceptions/exception-messages.constants';
 
 /**
  * Clase que contiene los servicios para interactuar con las

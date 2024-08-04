@@ -3,7 +3,7 @@ import { CardDesignControllerConstants } from './card-design.controller.constant
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CardDesignService } from '../card-design.service';
 import { AuthDecorator } from '../../security/auth.decorator';
-import { ExceptionResponseDTO } from '../../shared/exception.response';
+import { ExceptionResponseDTO } from '../../shared/exceptions/exception.response';
 import { GetActiveCardDesignsControllerResponse } from './responses/get-active-card-design.controller.response';
 import { UserDecorator, UserDecoratorType } from '../../security/user.decorator';
 import { UserService } from '../../user/user.service';

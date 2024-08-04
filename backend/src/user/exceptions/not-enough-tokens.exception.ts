@@ -1,6 +1,6 @@
 import {HttpStatus} from '@nestjs/common';
-import { Exception } from '../../shared/exception';
-import { ExceptionMessagesConstants } from '../../shared/exception-messages.constants';
+import { Exception } from '../../shared/exceptions/exception';
+import { ExceptionMessagesConstants } from '../../shared/exceptions/exception-messages.constants';
 
 /**
  * Se lanza cuando un usuario intenta realizar una operación con tokens

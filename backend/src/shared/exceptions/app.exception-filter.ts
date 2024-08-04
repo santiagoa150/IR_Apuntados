@@ -3,6 +3,8 @@ import { ArgumentsHost, Catch, ExceptionFilter, HttpException, Logger } from '@n
 import { HttpArgumentsHost, RpcArgumentsHost, WsArgumentsHost } from '@nestjs/common/interfaces';
 import { Exception } from './exception';
 import { ExceptionResponse, ExceptionResponseDTO } from './exception.response';
+import { Socket } from 'socket.io';
+import { SocketSharedConstants } from '../socket/socket-shared.constants';
 
 /**
  * Clase que se encarga de manejar los errores de la aplicación.
@@ -72,6 +74,12 @@ export class AppExceptionFilter implements ExceptionFilter {
 			response = context.getResponse<Response>();
 			response.status(responseDto.code).json(responseDto);
 			break;
+		case 'ws': {
+			context = host.switchToWs();
+			const client = context.getClient<Socket>();
+			client.emit(SocketSharedConstants.LISTENER_ERROR_MESSAGES, responseDto);
+			break;
+		}
 		default:
 			throw responseDto;
 		}

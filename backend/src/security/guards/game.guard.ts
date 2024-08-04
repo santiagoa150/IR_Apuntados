@@ -29,7 +29,6 @@ export class GameGuard implements CanActivate {
 	 */
 	async canActivate(context: ExecutionContext): Promise<boolean> {
 		try {
-
 			switch (context.getType<ContextType>()) {
 			case 'http': {
 				const request = context.switchToHttp().getRequest();

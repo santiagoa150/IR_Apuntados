@@ -1,7 +1,7 @@
 import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ClassSerializerInterceptor, INestApplication, Logger, ValidationPipe } from '@nestjs/common';
-import { AppExceptionFilter } from './shared/app.exception-filter';
+import { AppExceptionFilter } from './shared/exceptions/app.exception-filter';
 import { DocumentBuilder, OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import * as process from 'process';
 
@@ -37,5 +37,7 @@ async function bootstrap(): Promise<void> {
 
 bootstrap()
 	.then(() => {
-		new Logger().log(`Server running on port ${Number(process.env.APP_PORT)}`);
+		const logger: Logger = new Logger();
+		logger.log(`Server running on :: ${process.env.APP_URL}`);
+		logger.log(`Swagger running on :: ${process.env.APP_URL}/${process.env.APP_DOCS_URI}`);
 	});

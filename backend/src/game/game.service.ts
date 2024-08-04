@@ -17,6 +17,8 @@ import { GameNotFoundException } from './exceptions/game-not-found.exception';
 import { GameIsAlreadyStartedException } from './exceptions/game-is-already-started.exception';
 import { GameExceedsItsPlayerCountException } from './exceptions/game-exceeds-its-player-count.exception';
 import { GameNotUpdatedException } from './exceptions/game-not-updated.exception';
+import { EventBus } from '@nestjs/cqrs';
+import { JoinGameEvent } from './events/join-game/join-game.event';
 
 /**
  * Clase que contiene los servicios para interactuar con los
@@ -31,12 +33,14 @@ export class GameService {
 	/**
 	 * @param {UserService} userService Servicios para interactuar con los usuarios.
 	 * @param {PlayerService} playerService Servicios para interactuar con los jugadores.
+	 * @param {EventBus} eventBus Bus de CQRS para enviar eventos.
 	 * @param {Model<GameDocument>} model Modelo para interactuar con la base de
 	 * datos de los juegos.
 	 */
 	constructor(
 		private readonly userService: UserService,
 		private readonly playerService: PlayerService,
+		private readonly eventBus: EventBus,
 		@Inject(DatabaseConstants.GAME_PROVIDER) private readonly model: Model<GameDocument>,
 	) {
 	}
@@ -154,10 +158,11 @@ export class GameService {
 		const user: User = await this.userService.getById(userId);
 		user.changeStatus(UserStatusConstants.PLAYING);
 		user.removeTokens(game.betByPlayer);
-		await this.playerService.create(userId, gameId, false);
+		const player: Player = await this.playerService.create(userId, gameId, false);
 		await this.userService.update(user);
 		game.addPlayer();
 		const updated: Game = await this.update(game);
+		this.eventBus.publish(new JoinGameEvent(user, player, game));
 		this.logger.log(`[${this.join.name}] FINISH ::`);
 		return updated;
 	}

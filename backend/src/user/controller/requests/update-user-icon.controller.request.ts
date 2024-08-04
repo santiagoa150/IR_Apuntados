@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
-import { ExceptionMessagesConstants } from '../../../shared/exception-messages.constants';
+import { ExceptionMessagesConstants } from '../../../shared/exceptions/exception-messages.constants';
 
 /**
  * Clase que contiene los datos requeridos para actualizar el icono de un usuario.
