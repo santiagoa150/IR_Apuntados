@@ -50,6 +50,12 @@
     }
 }
 
+@media (max-width: 830px) {
+    #home-header-component-container {
+        grid-template-columns: 85% 15%;
+    }
+}
+
 @media (max-width: 650px) {
     #home-header-component-container {
         grid-template-columns: 80% 20%;

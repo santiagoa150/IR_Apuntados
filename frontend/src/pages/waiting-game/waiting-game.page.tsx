@@ -10,6 +10,8 @@ import {PlayerWithUserType} from '../../types/player-with-user.type.ts';
 import {WaitingPlayerListComponent} from './ui/waiting-player-list/waiting-player-list.component.tsx';
 import {WaitingGameActionsComponent} from './ui/waiting-game-actions/waiting-game-actions.component.tsx';
 import {WaitingGameInfoComponent} from './ui/waiting-game-info/waiting-game-info.component.tsx';
+import {useWebSocket} from '../../config/websocket.provider.tsx';
+import {SocketConstants} from '../../utils/constants/socket.constants.ts';
 
 /**
  * Página para esperar un juego.
@@ -19,6 +21,18 @@ export function WaitingGamePage(): JSX.Element {
 
     const [game, setGame] = useState<GameType | undefined>();
     const [players, setPlayers] = useState<PlayerWithUserType[] | undefined>();
+
+    const {socket, connectWebSocket} = useWebSocket();
+
+    useEffect(() => {
+        if (!socket) connectWebSocket();
+    }, []);
+    if (socket) {
+        socket.emit(SocketConstants.GAME_CONNECTION_EVENT);
+        socket.on(SocketConstants.JOIN_PLAYER_LISTENER, (newPlayer: PlayerWithUserType) => {
+            setPlayers(players ? [...players, newPlayer] : [newPlayer]);
+        });
+    }
 
     /**
      * Hooks para la configuración del componente:

@@ -4,6 +4,7 @@ import {CssBaseline, ThemeProvider} from '@mui/material';
 import {AppTheme} from './config/app.theme.tsx';
 import {AppRouter} from './config/app.router.tsx';
 import './main.css';
+import {WebsocketProvider} from './config/websocket.provider.tsx';
 
 /**
  * Define:
@@ -13,6 +14,8 @@ import './main.css';
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <ThemeProvider theme={AppTheme}>
         <CssBaseline/>
-        <RouterProvider router={AppRouter}/>
+        <WebsocketProvider>
+            <RouterProvider router={AppRouter}/>
+        </WebsocketProvider>
     </ThemeProvider>
 );

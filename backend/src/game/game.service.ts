@@ -162,6 +162,9 @@ export class GameService {
 		await this.userService.update(user);
 		game.addPlayer();
 		const updated: Game = await this.update(game);
+		/**
+		 * TODO: Agregar que envié el evento si ya está waiting to start.
+		 */
 		this.eventBus.publish(new JoinGameEvent(user, player, game));
 		this.logger.log(`[${this.join.name}] FINISH ::`);
 		return updated;

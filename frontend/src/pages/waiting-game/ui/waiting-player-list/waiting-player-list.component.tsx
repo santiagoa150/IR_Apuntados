@@ -12,7 +12,9 @@ import {CardSuitsConstants} from '../../../../utils/constants/card-suits.constan
  * @param {PlayerWithUserType[] | undefined} props.players Los jugadores del juego.
  * @constructor
  */
-export function WaitingPlayerListComponent(props: { players: PlayerWithUserType[] | undefined }): JSX.Element {
+export function WaitingPlayerListComponent(props: {
+    players: PlayerWithUserType[] | undefined,
+}): JSX.Element {
 
 
     return (

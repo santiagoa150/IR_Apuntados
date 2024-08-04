@@ -1,5 +1,6 @@
 import {
 	ConnectedSocket,
+	OnGatewayConnection,
 	OnGatewayInit,
 	SubscribeMessage,
 	WebSocketGateway,
@@ -25,7 +26,7 @@ import { PlayerWithUserDTO } from '../../player/player-with-user.dto';
 	cors: true,
 	namespace: GameSocketConstants.GAME_SOCKET_NAMESPACE,
 })
-export class GameSocket implements OnGatewayInit {
+export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 
 	@WebSocketServer() wsServer: Server;
 	private readonly logger: Logger = new Logger(GameSocket.name);
@@ -51,8 +52,9 @@ export class GameSocket implements OnGatewayInit {
 		@GameDecorator() game: GameDTO,
 		@ConnectedSocket() socket: Socket,
 	): void {
-		this.logger.log(`[${this.gameConnection.name}] INIT :: user: ${user.userId}, game: ${game.gameId}`);
+		this.logger.log(`[${this.gameConnection.name}] INIT :: user: ${user.userId}, game: ${game.gameId}, socket: ${socket.id}`);
 		socket.join(game.gameId);
+		socket.data.gameId = game.gameId;
 	}
 
 	/**
@@ -85,7 +87,15 @@ export class GameSocket implements OnGatewayInit {
 	/**
 	 * Evento que se ejecuta cuando se inicializa el websocket.
 	 */
-	afterInit() {
+	afterInit(): void {
 		this.logger.log(`[${this.afterInit.name}] ${GameSocketConstants.GAME_SOCKET_NAMESPACE} Socket initialized.`);
+	}
+
+	/**
+	 * Evento que se ejecuta cuando se conecta un websocket.
+	 * @param client El cliente conectado.
+	 */
+	handleConnection(client: Socket): void {
+		this.logger.log(`[${this.handleConnection.name}] Socket connected : ${client.id}`);
 	}
 }

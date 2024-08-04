@@ -12,6 +12,7 @@ import {BackendUtils} from '../../../../utils/backend.utils.tsx';
 import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
 import {SessionStorageUtils} from '../../../../store/session-storage.utils.ts';
 import {SessionStorageConstants} from '../../../../store/session-storage.constants.ts';
+import {useWebSocket} from '../../../../config/websocket.provider.tsx';
 
 /**
  * Componente en dónde se define el registro de la aplicación.
@@ -46,10 +47,12 @@ export function RegisterComponent(): JSX.Element {
      * - La configuración para los componentes de carga.
      * - La configuración para la redirección exitosa.
      * - La configuración para los componentes de alertas.
+     * - La conexión del web socket.
      */
     const [loading, setLoading] = useState<boolean>(false);
     const [redirect, setRedirect] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const {connectWebSocket} = useWebSocket();
 
     /**
      * Utils para acceder al registro en el backend.
@@ -109,6 +112,7 @@ export function RegisterComponent(): JSX.Element {
             SessionStorageUtils.set<SessionStorageConstants.KEY_ACCESS_TOKEN>(SessionStorageConstants.KEY_ACCESS_TOKEN, res.accessToken);
             SessionStorageUtils.set<SessionStorageConstants.KEY_REFRESH_TOKEN>(SessionStorageConstants.KEY_REFRESH_TOKEN, res.refreshToken);
             setLoading(false);
+            connectWebSocket();
             setRedirect(true);
         }
     };

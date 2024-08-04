@@ -12,6 +12,7 @@ import {BackendConstants} from '../../../../utils/constants/backend.constants.ts
 import {RoutesConstants} from '../../../../config/app.router.tsx';
 import {SessionStorageUtils} from '../../../../store/session-storage.utils.ts';
 import {SessionStorageConstants} from '../../../../store/session-storage.constants.ts';
+import {useWebSocket} from '../../../../config/websocket.provider.tsx';
 
 /**
  * Componente en dónde se define el login de la aplicación.
@@ -39,10 +40,12 @@ export function LoginComponent(): JSX.Element {
      * - La configuración para los componentes de carga.
      * - La configuración para la redirección exitosa.
      * - La configuración para los componentes de alertas.
+     * - El hook para la conexión del websocket.
      */
     const [loading, setLoading] = useState<boolean>(false);
     const [redirect, setRedirect] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
+    const {connectWebSocket} = useWebSocket();
 
     /**
      * Utils para acceder al backend.
@@ -90,6 +93,7 @@ export function LoginComponent(): JSX.Element {
             SessionStorageUtils.set<SessionStorageConstants.KEY_ACCESS_TOKEN>(SessionStorageConstants.KEY_ACCESS_TOKEN, res.accessToken);
             SessionStorageUtils.set<SessionStorageConstants.KEY_REFRESH_TOKEN>(SessionStorageConstants.KEY_REFRESH_TOKEN, res.refreshToken);
             setLoading(false);
+            connectWebSocket();
             setRedirect(true);
         }
     };
