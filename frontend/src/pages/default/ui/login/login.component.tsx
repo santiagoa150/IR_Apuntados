@@ -43,6 +43,7 @@ export function LoginComponent(): JSX.Element {
      * - El hook para la conexión del websocket.
      */
     const [loading, setLoading] = useState<boolean>(false);
+    const [redirectRoute, setRedirectRoute] = useState<string>(RoutesConstants.HOME_ROUTE);
     const [redirect, setRedirect] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>('');
     const {connectWebSocket} = useWebSocket();
@@ -92,8 +93,11 @@ export function LoginComponent(): JSX.Element {
         if (res) {
             LocaleStorageUtils.set<LocaleStorageConstants.KEY_ACCESS_TOKEN>(LocaleStorageConstants.KEY_ACCESS_TOKEN, res.accessToken);
             LocaleStorageUtils.set<LocaleStorageConstants.KEY_REFRESH_TOKEN>(LocaleStorageConstants.KEY_REFRESH_TOKEN, res.refreshToken);
+            LocaleStorageUtils.set<LocaleStorageConstants.KEY_USER_ID>(LocaleStorageConstants.KEY_USER_ID, res.userId);
+            const redirectRoute: string | null = new URLSearchParams(window.location.search).get('redirect');
             setLoading(false);
             connectWebSocket();
+            if (redirectRoute) setRedirectRoute(redirectRoute);
             setRedirect(true);
         }
     };
@@ -141,7 +145,7 @@ export function LoginComponent(): JSX.Element {
                 setRawMessage={setErrorMessage}
             />
             <GlobalLoadingComponent loading={loading}/>
-            {redirect ? <Navigate to={RoutesConstants.HOME_ROUTE}/> : <></>}
+            {redirect ? <Navigate to={redirectRoute}/> : <></>}
         </>
     );
 }

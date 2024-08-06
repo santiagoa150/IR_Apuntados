@@ -1,4 +1,4 @@
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { UserDTO } from '../../user';
 import { Exclude } from 'class-transformer';
 import { DefaultResponse } from '../../../shared/default.response';

@@ -5,6 +5,8 @@ import {HomePage} from '../pages/home/home.page.tsx';
 import {CardDesignPage} from '../pages/card-design/card-design.page.tsx';
 import {WaitingGamePage} from '../pages/waiting-game/waiting-game.page.tsx';
 import {GameGuard} from './game.guard.tsx';
+import {JoinGamePage} from '../pages/join-game/join-game.page.tsx';
+import {GamePage} from '../pages/game/game.page.tsx';
 
 /**
  * Constantes que definen las rutas de la aplicación.
@@ -25,6 +27,10 @@ export enum RoutesConstants {
      */
     DEFAULT_ROUTE = '/',
     /**
+     * Define la ruta del juego.
+     */
+    GAME = '/game/playing',
+    /**
      * Define la ruta del juego de la aplicación.
      */
     WAITING_GAME_ROUTE = '/game/waiting',
@@ -32,7 +38,10 @@ export enum RoutesConstants {
      * Define la ruta del home de la aplicación.
      */
     HOME_ROUTE = '/home',
-    JOIN_GAME = '/game/join'
+    /**
+     * Define la ruta que redirecciona e ingresa a un juego.
+     */
+    JOIN_GAME = '/game/join',
 }
 
 /**
@@ -46,12 +55,20 @@ export const AppRouter = createBrowserRouter([
         element: <GameGuard element={<WaitingGamePage/>}/>
     },
     {
+        path: RoutesConstants.GAME,
+        element: <GameGuard element={<GamePage/>}/>
+    },
+    {
         path: RoutesConstants.CARD_DESIGNS_ROUTE,
         element: <LoginGuard element={<CardDesignPage/>}/>
     },
     {
         path: RoutesConstants.HOME_ROUTE,
         element: <LoginGuard element={<HomePage/>}/>
+    },
+    {
+        path: RoutesConstants.JOIN_GAME,
+        element: <JoinGamePage/>
     },
     {
         path: RoutesConstants.DEFAULT_ROUTE,

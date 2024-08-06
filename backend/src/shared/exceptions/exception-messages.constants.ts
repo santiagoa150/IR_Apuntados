@@ -182,7 +182,7 @@ export enum ExceptionMessagesConstants {
 	/**
 	 * Se utiliza cuando un usuario intenta iniciar un juego del cual no es el creador.
 	 */
-	ONLY_GAME_CREATOR_CAN_START_THE_MATCH_ERROR = 'ONLY_GAME_CREATOR_CAN_START_THE_MATCH_ERROR',
+	ONLY_GAME_HOST_CAN_START_THE_MATCH_ERROR = 'ONLY_GAME_HOST_CAN_START_THE_MATCH_ERROR',
 	/**
 	 * Se utiliza cuando se solicita una contraseña y no se envía.
 	 */

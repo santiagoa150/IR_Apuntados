@@ -54,6 +54,10 @@ export enum BackendConstants {
      * Ruta para acceder al servicio que permite obtener el juego actual de un usuario.
      */
     GET_CURRENT_GAME_URL = '/api/game/current',
+    /**
+     * Ruta para acceder al servicio que permite iniciar una partida.
+     */
+    START_MATCH_URL = '/api/match',
 }
 
 /**
@@ -106,6 +110,10 @@ export const BackendConfigConstants: Record<BackendConstants, BackendConfigType>
         retryRequest: true,
     },
     [BackendConstants.GET_CURRENT_GAME_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
+    },
+    [BackendConstants.START_MATCH_URL]: {
         requireAccessToken: true,
         retryRequest: true,
     }

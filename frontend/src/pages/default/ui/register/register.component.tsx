@@ -111,6 +111,7 @@ export function RegisterComponent(): JSX.Element {
         if (res) {
             LocaleStorageUtils.set<LocaleStorageConstants.KEY_ACCESS_TOKEN>(LocaleStorageConstants.KEY_ACCESS_TOKEN, res.accessToken);
             LocaleStorageUtils.set<LocaleStorageConstants.KEY_REFRESH_TOKEN>(LocaleStorageConstants.KEY_REFRESH_TOKEN, res.refreshToken);
+            LocaleStorageUtils.set<LocaleStorageConstants.KEY_USER_ID>(LocaleStorageConstants.KEY_USER_ID, res.userId);
             setLoading(false);
             connectWebSocket();
             setRedirect(true);

@@ -13,6 +13,10 @@ export enum LocaleStorageConstants {
      * Clave para acceder al token de refresco del usuario.
      */
     KEY_REFRESH_TOKEN = 'KEY_REFRESH_TOKEN',
+    /**
+     * Clave para acceder al id del usuario.
+     */
+    KEY_USER_ID = 'KEY_USER_ID',
 }
 
 /**
@@ -23,6 +27,7 @@ export enum LocaleStorageConstants {
 export const LocaleStorageConfigOf: Record<LocaleStorageConstants, LocaleStorageConfig> = {
     [LocaleStorageConstants.KEY_ACCESS_TOKEN]: {isJson: false},
     [LocaleStorageConstants.KEY_REFRESH_TOKEN]: {isJson: false},
+    [LocaleStorageConstants.KEY_USER_ID]: {isJson: false},
 };
 
 /**
@@ -38,6 +43,7 @@ export type LocaleStorageConfig = {
 export type LocaleStorageData = {
     [LocaleStorageConstants.KEY_REFRESH_TOKEN]: string,
     [LocaleStorageConstants.KEY_ACCESS_TOKEN]: string,
+    [LocaleStorageConstants.KEY_USER_ID]: string,
 };
 
 /**

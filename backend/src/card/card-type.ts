@@ -16,6 +16,6 @@ export class CardType extends DiscreteValueObject {
 	 * @protected
 	 */
 	protected validate(value: string): void {
-		if (!(value in CardTypeConstants)) throw new InvalidCardTypeException();
+		if (!(value.toString() in CardTypeConstants)) throw new InvalidCardTypeException();
 	}
 }

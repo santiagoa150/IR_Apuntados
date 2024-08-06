@@ -12,6 +12,8 @@ import {WaitingGameActionsComponent} from './ui/waiting-game-actions/waiting-gam
 import {WaitingGameInfoComponent} from './ui/waiting-game-info/waiting-game-info.component.tsx';
 import {useWebSocket} from '../../config/websocket.provider.tsx';
 import {SocketConstants} from '../../utils/constants/socket.constants.ts';
+import {Navigate} from 'react-router-dom';
+import {RoutesConstants} from '../../config/app.router.tsx';
 
 /**
  * Página para esperar un juego.
@@ -19,11 +21,18 @@ import {SocketConstants} from '../../utils/constants/socket.constants.ts';
  */
 export function WaitingGamePage(): JSX.Element {
 
+    /**
+     * Hooks para el funcionamiento de la página.
+     */
     const [game, setGame] = useState<GameType | undefined>();
     const [players, setPlayers] = useState<PlayerWithUserType[] | undefined>();
 
-    const {socket, connectWebSocket} = useWebSocket();
+    const [redirect, setRedirect] = useState<boolean>(false);
 
+    /**
+     * Configuración del websocket y los listeners.
+     */
+    const {socket, connectWebSocket} = useWebSocket();
     useEffect(() => {
         if (!socket) connectWebSocket();
     }, []);
@@ -34,6 +43,9 @@ export function WaitingGamePage(): JSX.Element {
         });
         socket.on(SocketConstants.GAME_READY_TO_START_LISTENER, (game: GameType) => {
             setGame(game);
+        });
+        socket.on(SocketConstants.MATCH_STARTED_LISTENER, () => {
+            setRedirect(true);
         });
     }
 
@@ -86,6 +98,7 @@ export function WaitingGamePage(): JSX.Element {
                 rawMessage={errorMessage}
                 setRawMessage={setErrorMessage}
             />
+            {redirect ? <Navigate to={RoutesConstants.GAME}/> : <></>}
         </>
     );
 }

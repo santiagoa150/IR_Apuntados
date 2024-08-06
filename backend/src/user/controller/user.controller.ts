@@ -50,6 +50,7 @@ export class UserController {
 		const user: User = await this.service.create(body.username, body.password);
 		response.accessToken = this.sessionService.generateAccessToken(user.userId);
 		response.refreshToken = this.sessionService.generateRefreshToken(user.userId);
+		response.userId = user.userId.toString();
 		return response;
 	}
 

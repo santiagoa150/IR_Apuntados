@@ -59,8 +59,8 @@ export function CurrentCardDesignComponent(
     /**
      * Datos quemados para el funcionamiento del componente.
      */
-    const top: Array<string> = ['2', '3', '4', '5', '6', '7'];
-    const bottom: Array<string> = ['8', '9', '10', 'J', 'Q', 'K'];
+    const top: Array<string> = ['C2', 'C3', 'C4', 'C5', 'C6', 'C7'];
+    const bottom: Array<string> = ['C8', 'C9', 'C10', 'J', 'Q', 'K'];
     const right: string = 'A';
 
     return (

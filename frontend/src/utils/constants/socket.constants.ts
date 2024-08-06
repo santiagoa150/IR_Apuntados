@@ -19,4 +19,8 @@ export enum SocketConstants {
      * El mensaje que indica que un juego está listo para iniciarse.
      */
     GAME_READY_TO_START_LISTENER = 'GAME_READY_TO_START_LISTENER',
+    /**
+     * El mensaje que indica que una partida fué iniciada.
+     */
+    MATCH_STARTED_LISTENER = 'MATCH_STARTED_LISTENER',
 }

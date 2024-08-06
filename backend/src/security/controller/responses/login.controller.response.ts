@@ -11,4 +11,5 @@ import { ApiProperty } from '@nestjs/swagger';
 export class LoginControllerResponse extends DefaultResponse {
 	@ApiProperty() accessToken: string;
 	@ApiProperty() refreshToken: string;
+	@ApiProperty() userId: string;
 }

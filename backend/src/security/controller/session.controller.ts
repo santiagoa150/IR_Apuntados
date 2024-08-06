@@ -45,6 +45,7 @@ export class SessionController {
 		const userId: UserId = new UserId(user.userId);
 		response.accessToken = this.service.generateAccessToken(userId);
 		response.refreshToken = this.service.generateRefreshToken(userId);
+		response.userId = user.userId;
 		return response;
 	}
 

@@ -3,6 +3,7 @@ import { DatabaseModule } from '../../database/database.module';
 import { MatchService } from '../match.service';
 import { MatchController } from '../controller/match.controller';
 import { GameModule } from '../../game/config/game.module';
+import { CqrsModule } from '@nestjs/cqrs';
 
 /**
  * Clase que representa el módulo de las partidas y sus respectivas configuraciones.\
@@ -14,6 +15,7 @@ import { GameModule } from '../../game/config/game.module';
 @Module({
 	imports: [
 		DatabaseModule,
+		CqrsModule,
 		GameModule,
 	],
 	controllers: [MatchController],

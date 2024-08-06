@@ -8,8 +8,8 @@ import { GameStatusConstants } from '../game/game-status.constants';
 import { MatchCannotBeStartedException } from './exceptions/match-cannot-be-started.exception';
 import { UserId } from '../user/user-id';
 import {
-	OnlyGameCreatorCanStartTheMatchException,
-} from './exceptions/only-game-creator-can-start-the-match.exception';
+	OnlyGameHostCanStartTheMatchException,
+} from './exceptions/only-game-host-can-start-the-match.exception';
 import { MatchStatusConstants } from './match-status.constants';
 import { MatchId } from './match-id';
 import { CardTypeConstants } from '../card/card-type.constants';
@@ -17,6 +17,8 @@ import { CardSuitConstants } from '../card/card-suit.constants';
 import { CardDTO } from '../card/card';
 import { CardValueConstants } from '../card/card-value.constants';
 import { GameService } from '../game/game.service';
+import { EventBus } from '@nestjs/cqrs';
+import { MatchStartedEvent } from '../game/events/match-started/match-started.event';
 
 /**
  * Los servicios asociados a las partidas.
@@ -29,10 +31,12 @@ export class MatchService {
 
 	/**
 	 * @param gameService Servicios de los juegos.
+	 * @param eventBus Bus de eventos de CQRS.
 	 * @param {Model<MatchDocument>} model Modelo para interactuar con la base de datos de las partidas.
 	 */
 	constructor(
 		private readonly gameService: GameService,
+		private readonly eventBus: EventBus,
 		@Inject(DatabaseConstants.MATCH_PROVIDER) private readonly model: Model<MatchDocument>,
 	) {
 		this.defaultCardDeck = MatchService.generateDefaultCardDeck();
@@ -61,8 +65,8 @@ export class MatchService {
 	async startByPlayer(userId: UserId, game: Game): Promise<Match> {
 		this.logger.log(`[${this.startByPlayer.name}] INIT :: user: ${userId}, game: ${game.gameId.toString()}`);
 		if (!game.status.is(GameStatusConstants.WAITING_TO_START)) throw new MatchCannotBeStartedException();
-		if (game.hostId.toString() === userId.toString()) {
-			throw new OnlyGameCreatorCanStartTheMatchException();
+		if (game.hostId.toString() !== userId.toString()) {
+			throw new OnlyGameHostCanStartTheMatchException();
 		}
 		game.changeStatus(GameStatusConstants.ACTIVE);
 		const defaultCards: CardDTO[] = game.currentPlayers < 4 ? this.defaultCardDeck : [...this.defaultCardDeck, ...this.defaultCardDeck];
@@ -79,6 +83,7 @@ export class MatchService {
 		});
 		await new this.model(await match.toDTO()).save();
 		await this.gameService.update(game);
+		await this.eventBus.publish(new MatchStartedEvent(game, match));
 		this.logger.log(`[${this.startByPlayer.name}] FINISH ::`);
 		return match;
 	}

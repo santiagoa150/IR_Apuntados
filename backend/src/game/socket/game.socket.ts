@@ -17,6 +17,7 @@ import { UserDecorator, UserDecoratorType } from '../../security/user.decorator'
 import { User, UserDTO } from '../../user/user';
 import { Player, PlayerDTO } from '../../player/player';
 import { PlayerWithUserDTO } from '../../player/player-with-user.dto';
+import { Match } from '../../match/match';
 
 /**
  * Websocket con socket.io para manejar los eventos de los juegos.
@@ -75,6 +76,21 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 		};
 		this.wsServer.to(game.gameId.toString()).emit(GameSocketConstants.JOIN_PLAYER_LISTENER, args);
 		this.logger.log(`[${this.joinPlayer.name}] FINISH ::`);
+	}
+
+	/**
+	 * Método que notifica que una partida ha sido iniciada.
+	 * @param game El juego en el que se inició la partida.
+	 * @param match La partida iniciada.
+	 */
+	async matchStarted(game: Game, match: Match): Promise<void> {
+		this.logger.log(`[${this.matchStarted.name}] INIT ::`);
+		const args = {
+			match: await match.toDTO(),
+			game: game.toDTO(),
+		};
+		this.wsServer.to(game.gameId.toString()).emit(GameSocketConstants.MATCH_STARTED_LISTENER, args);
+		this.logger.log(`[${this.matchStarted.name}] FINISH ::`);
 	}
 
 	/**

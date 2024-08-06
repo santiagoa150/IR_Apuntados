@@ -11,6 +11,7 @@ export type LoginRequest = {
  */
 export type LoginResponse = {
     success: boolean;
+    userId: string;
     accessToken: string;
     refreshToken: string;
 }

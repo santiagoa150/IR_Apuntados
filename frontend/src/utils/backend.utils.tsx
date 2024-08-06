@@ -63,7 +63,7 @@ export class BackendUtils {
      */
     public async post<Res, Req>(
         url: BackendConstants,
-        body: Req,
+        body?: Req,
         attempts: number = 0
     ): Promise<Res | undefined> {
         const serviceConfig: BackendConfigType = BackendConfigConstants[url];

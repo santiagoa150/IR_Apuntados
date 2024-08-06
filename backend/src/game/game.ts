@@ -159,7 +159,7 @@ export class Game extends DomainBase<GameDTO> {
 			break;
 		}
 		case GameStatusConstants.ACTIVE: {
-			if (!this.status.is(GameStatusConstants.ACTIVE)) throw new GameCannotBeStartedException();
+			if (!this.status.is(GameStatusConstants.WAITING_TO_START)) throw new GameCannotBeStartedException();
 			this._wasInitiated = true;
 			break;
 		}
