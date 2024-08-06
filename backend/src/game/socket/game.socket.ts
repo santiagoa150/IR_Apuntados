@@ -8,7 +8,6 @@ import {
 } from '@nestjs/websockets';
 import { GameSocketConstants } from './game.socket.constants';
 import { Logger, UseFilters } from '@nestjs/common';
-import { GameService } from '../game.service';
 import { Server, Socket } from 'socket.io';
 import { GameAuthDecorator } from '../../security/game-auth.decorator';
 import { GameDecorator } from '../../security/game.decorator';
@@ -30,12 +29,6 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 
 	@WebSocketServer() wsServer: Server;
 	private readonly logger: Logger = new Logger(GameSocket.name);
-
-	/**
-	 * @param gameService Los servicios relacionados con los juegos.
-	 */
-	constructor(private readonly gameService: GameService) {
-	}
 
 	/**
 	 * Método que captura el mensaje GameSocketConstants.GAME_VALIDATE_CONNECTION en dónde
@@ -82,6 +75,17 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 		};
 		this.wsServer.to(game.gameId.toString()).emit(GameSocketConstants.JOIN_PLAYER_LISTENER, args);
 		this.logger.log(`[${this.joinPlayer.name}] FINISH ::`);
+	}
+
+	/**
+	 * Método que notifica que un juego está listo para iniciar.
+	 * @param game El juego que está listo para iniciar.
+	 */
+	gameReadyToStart(game: Game): void {
+		this.logger.log(`[${this.gameReadyToStart.name}] INIT :: game: ${game.gameId.toString()}`);
+		const gameDTO: GameDTO = game.toDTO();
+		this.wsServer.to(gameDTO.gameId).emit(GameSocketConstants.GAME_READY_TO_START_LISTENER, gameDTO);
+		this.logger.log(`[${this.gameReadyToStart.name}] FINISH ::`);
 	}
 
 	/**

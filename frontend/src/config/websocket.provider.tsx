@@ -1,8 +1,8 @@
 import {createContext, ReactNode, useContext, useState} from 'react';
 import {WebsocketContextType} from '../types/websocket-context.type.ts';
 import {io, Socket} from 'socket.io-client';
-import {SessionStorageUtils} from '../store/session-storage.utils.ts';
-import {SessionStorageConstants} from '../store/session-storage.constants.ts';
+import {LocaleStorageUtils} from '../store/locale-storage.utils.ts';
+import {LocaleStorageConstants} from '../store/locale-storage.constants.ts';
 import {SocketConstants} from '../utils/constants/socket.constants.ts';
 
 
@@ -27,7 +27,7 @@ export const WebsocketProvider = ({children}: { children: ReactNode }) => {
      * Método para conectar el websocket.
      */
     const connect = (): void => {
-        const token: string | null = SessionStorageUtils.get<SessionStorageConstants.KEY_ACCESS_TOKEN>(SessionStorageConstants.KEY_ACCESS_TOKEN);
+        const token: string | null = LocaleStorageUtils.get<LocaleStorageConstants.KEY_ACCESS_TOKEN>(LocaleStorageConstants.KEY_ACCESS_TOKEN);
         if (token && !socket) {
             const url: string = `${import.meta.env.VITE_BACKEND_BASE_URL}/${SocketConstants.GAME_SOCKET_NAMESPACE}`;
             const socket = io(url, {

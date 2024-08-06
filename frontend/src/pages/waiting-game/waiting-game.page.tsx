@@ -32,6 +32,9 @@ export function WaitingGamePage(): JSX.Element {
         socket.on(SocketConstants.JOIN_PLAYER_LISTENER, (newPlayer: PlayerWithUserType) => {
             setPlayers(players ? [...players, newPlayer] : [newPlayer]);
         });
+        socket.on(SocketConstants.GAME_READY_TO_START_LISTENER, (game: GameType) => {
+            setGame(game);
+        });
     }
 
     /**
@@ -75,7 +78,7 @@ export function WaitingGamePage(): JSX.Element {
                     <h1>Sala de espera</h1>
                 </div>
                 <WaitingGameInfoComponent game={game}/>
-                <WaitingPlayerListComponent players={players}/>
+                <WaitingPlayerListComponent game={game} players={players}/>
                 <WaitingGameActionsComponent game={game}/>
             </div>
             <AlertComponent

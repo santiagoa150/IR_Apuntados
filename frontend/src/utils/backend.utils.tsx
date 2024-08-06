@@ -1,7 +1,7 @@
 import {BackendConfigConstants, BackendConfigType, BackendConstants} from './constants/backend.constants.ts';
 import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import {SessionStorageUtils} from '../store/session-storage.utils.ts';
-import {SessionStorageConstants} from '../store/session-storage.constants.ts';
+import {LocaleStorageUtils} from '../store/locale-storage.utils.ts';
+import {LocaleStorageConstants} from '../store/locale-storage.constants.ts';
 import {ErrorResponseType} from '../types/error.response.type.ts';
 import {RefreshTokenRequest, RefreshTokenResponse} from '../types/services/refresh-token.ts';
 import {RoutesConstants} from '../config/app.router.tsx';
@@ -120,8 +120,8 @@ export class BackendUtils {
      */
     private processError(serviceConfig: BackendConfigType, e: ErrorResponseType): void {
         if (serviceConfig.requireAccessToken && BackendUtils.extractCode(e) === 401) {
-            SessionStorageUtils.del(SessionStorageConstants.KEY_ACCESS_TOKEN);
-            SessionStorageUtils.del(SessionStorageConstants.KEY_REFRESH_TOKEN);
+            LocaleStorageUtils.del(LocaleStorageConstants.KEY_ACCESS_TOKEN);
+            LocaleStorageUtils.del(LocaleStorageConstants.KEY_REFRESH_TOKEN);
             window.location.href = RoutesConstants.DEFAULT_ROUTE;
         } else {
             const message: string = BackendUtils.extractMessage(e);
@@ -137,14 +137,14 @@ export class BackendUtils {
      * @async
      */
     private async refreshAccessToken(): Promise<void> {
-        const refreshToken = SessionStorageUtils.get<SessionStorageConstants.KEY_REFRESH_TOKEN>(SessionStorageConstants.KEY_REFRESH_TOKEN);
+        const refreshToken = LocaleStorageUtils.get<LocaleStorageConstants.KEY_REFRESH_TOKEN>(LocaleStorageConstants.KEY_REFRESH_TOKEN);
         if (refreshToken) {
             const body: RefreshTokenRequest = {refreshToken};
             return this.post<RefreshTokenResponse, RefreshTokenRequest>(BackendConstants.REFRESH_ACCESS_TOKEN_URL, body)
                 .then((res) => {
                     if (res) {
-                        SessionStorageUtils.set<SessionStorageConstants.KEY_ACCESS_TOKEN>(
-                            SessionStorageConstants.KEY_ACCESS_TOKEN, res.accessToken
+                        LocaleStorageUtils.set<LocaleStorageConstants.KEY_ACCESS_TOKEN>(
+                            LocaleStorageConstants.KEY_ACCESS_TOKEN, res.accessToken
                         );
                     }
                 })
@@ -198,8 +198,8 @@ export class BackendUtils {
             baseURL: import.meta.env.VITE_BACKEND_BASE_URL,
         };
         if (backendConfig.requireAccessToken) {
-            const key: SessionStorageConstants = SessionStorageConstants.KEY_ACCESS_TOKEN;
-            const accessToken = SessionStorageUtils.get<typeof key>(key);
+            const key: LocaleStorageConstants = LocaleStorageConstants.KEY_ACCESS_TOKEN;
+            const accessToken = LocaleStorageUtils.get<typeof key>(key);
             response.headers = {authorization: `Bearer ${accessToken}`};
         }
         return response;

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {SessionStorageConstants} from '../store/session-storage.constants.ts';
-import {SessionStorageUtils} from '../store/session-storage.utils.ts';
+import {LocaleStorageConstants} from '../store/locale-storage.constants.ts';
+import {LocaleStorageUtils} from '../store/locale-storage.utils.ts';
 import {RoutesConstants} from './app.router.tsx';
 import {BackendUtils} from '../utils/backend.utils.tsx';
 import {GetMeResponse} from '../types/services/get-me.ts';
@@ -34,8 +34,8 @@ export const GameGuard = ({element}: { element: React.ReactNode }): React.ReactN
      */
     useEffect(() => {
         async function fetchData(): Promise<void> {
-            const key: SessionStorageConstants = SessionStorageConstants.KEY_ACCESS_TOKEN;
-            const data: string | null = SessionStorageUtils.get<typeof key>(key);
+            const key: LocaleStorageConstants = LocaleStorageConstants.KEY_ACCESS_TOKEN;
+            const data: string | null = LocaleStorageUtils.get<typeof key>(key);
             if (data) {
                 const backendUtils: BackendUtils = new BackendUtils();
                 const res = await backendUtils.get<GetMeResponse, never>(BackendConstants.GET_ME_URL);

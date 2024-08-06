@@ -10,8 +10,8 @@ import {RoutesConstants} from '../../../../config/app.router.tsx';
 import {RegisterRequest, RegisterResponse} from '../../../../types/services/register.ts';
 import {BackendUtils} from '../../../../utils/backend.utils.tsx';
 import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
-import {SessionStorageUtils} from '../../../../store/session-storage.utils.ts';
-import {SessionStorageConstants} from '../../../../store/session-storage.constants.ts';
+import {LocaleStorageUtils} from '../../../../store/locale-storage.utils.ts';
+import {LocaleStorageConstants} from '../../../../store/locale-storage.constants.ts';
 import {useWebSocket} from '../../../../config/websocket.provider.tsx';
 
 /**
@@ -109,8 +109,8 @@ export function RegisterComponent(): JSX.Element {
         const body: RegisterRequest = {username: username.toLowerCase(), password};
         const res = await backendUtils.post<RegisterResponse, RegisterRequest>(BackendConstants.REGISTER_URL, body);
         if (res) {
-            SessionStorageUtils.set<SessionStorageConstants.KEY_ACCESS_TOKEN>(SessionStorageConstants.KEY_ACCESS_TOKEN, res.accessToken);
-            SessionStorageUtils.set<SessionStorageConstants.KEY_REFRESH_TOKEN>(SessionStorageConstants.KEY_REFRESH_TOKEN, res.refreshToken);
+            LocaleStorageUtils.set<LocaleStorageConstants.KEY_ACCESS_TOKEN>(LocaleStorageConstants.KEY_ACCESS_TOKEN, res.accessToken);
+            LocaleStorageUtils.set<LocaleStorageConstants.KEY_REFRESH_TOKEN>(LocaleStorageConstants.KEY_REFRESH_TOKEN, res.refreshToken);
             setLoading(false);
             connectWebSocket();
             setRedirect(true);

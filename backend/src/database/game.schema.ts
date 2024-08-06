@@ -53,6 +53,10 @@ const definition: Required<SchemaDefinition<GameDTO>> = {
 		type: Boolean,
 		required: true,
 	},
+	hostId: {
+		type: String,
+		required: true,
+	},
 };
 
 /**

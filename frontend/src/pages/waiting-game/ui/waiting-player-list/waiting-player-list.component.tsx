@@ -5,6 +5,7 @@ import {LocalLoadingComponent} from '../../../../components/loading/local/local-
 import {buildProfileImageRoute} from '../../../../utils/profile-image.utils.ts';
 import {CardComponent} from '../../../../components/card/card.component.tsx';
 import {CardSuitsConstants} from '../../../../utils/constants/card-suits.constants.ts';
+import {GameType} from '../../../../types/game.type.ts';
 
 /**
  * Componente para listar los jugadores de una página en la sala de espera.
@@ -13,6 +14,7 @@ import {CardSuitsConstants} from '../../../../utils/constants/card-suits.constan
  * @constructor
  */
 export function WaitingPlayerListComponent(props: {
+    game: GameType | undefined,
     players: PlayerWithUserType[] | undefined,
 }): JSX.Element {
 
@@ -33,7 +35,10 @@ export function WaitingPlayerListComponent(props: {
                                             className='waiting-player-list-component-card-image'
                                             src={buildProfileImageRoute(player.icon)}
                                         />
-                                        <h4>{player.username}</h4>
+                                        <div className='waiting-player-list-component-card-texts'>
+                                            <p className={player.isMarked ? 'waiting-player-list-component-card-texts-marked' : ''}>{props.game && props.game.hostId === player.userId ? 'King' : ''}</p>
+                                            <h4>{player.username}</h4>
+                                        </div>
                                     </div>
                                     <div className='waiting-player-list-component-card-bottom'>
                                         <CardComponent

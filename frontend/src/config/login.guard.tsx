@@ -1,6 +1,6 @@
 import React from 'react';
-import {SessionStorageUtils} from '../store/session-storage.utils.ts';
-import {SessionStorageConstants} from '../store/session-storage.constants.ts';
+import {LocaleStorageUtils} from '../store/locale-storage.utils.ts';
+import {LocaleStorageConstants} from '../store/locale-storage.constants.ts';
 import {Navigate, useLocation} from 'react-router-dom';
 import {RoutesConstants} from './app.router.tsx';
 
@@ -11,7 +11,7 @@ import {RoutesConstants} from './app.router.tsx';
  * @constructor
  */
 export const LoginGuard = ({element}: { element: React.ReactNode }): React.ReactNode => {
-    const key: SessionStorageConstants = SessionStorageConstants.KEY_ACCESS_TOKEN;
-    const data: string | null = SessionStorageUtils.get<typeof key>(key);
+    const key: LocaleStorageConstants = LocaleStorageConstants.KEY_ACCESS_TOKEN;
+    const data: string | null = LocaleStorageUtils.get<typeof key>(key);
     return data ? <>{element}</> : <Navigate to={RoutesConstants.DEFAULT_ROUTE} replace state={{from: useLocation()}}/>;
 };

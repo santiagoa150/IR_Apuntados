@@ -39,6 +39,10 @@ export enum ExceptionMessagesConstants {
 	 */
 	DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR = 'DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR',
 	/**
+	 * Se utiliza cuando no se puede iniciar un juego.
+	 */
+	GAME_CANNOT_BE_STARTED_ERROR = 'GAME_CANNOT_BE_STARTED_ERROR',
+	/**
 	 * Se utiliza cuando se intenta agregar un jugador a un juego que ya está lleno.
 	 */
 	GAME_EXCEEDS_ITS_PLAYER_COUNT_ERROR = 'GAME_EXCEEDS_ITS_PLAYER_COUNT_ERROR',
@@ -167,10 +171,18 @@ export enum ExceptionMessagesConstants {
 	 */
 	IS_PUBLIC_MUST_BE_A_BOOLEAN_ERROR = 'IS_PUBLIC_MUST_BE_A_BOOLEAN_ERROR',
 	/**
+	 * Se utiliza cuando una partida no puede ser iniciada.
+	 */
+	MATCH_CANNOT_BE_STARTED_ERROR = 'MATCH_CANNOT_BE_STARTED_ERROR',
+	/**
 	 * Se utiliza cuando un usuario intenta realizar una operación con tokens
 	 * y no hay suficientes.
 	 */
 	NOT_ENOUGH_TOKENS_ERROR = 'NOT_ENOUGH_TOKENS_ERROR',
+	/**
+	 * Se utiliza cuando un usuario intenta iniciar un juego del cual no es el creador.
+	 */
+	ONLY_GAME_CREATOR_CAN_START_THE_MATCH_ERROR = 'ONLY_GAME_CREATOR_CAN_START_THE_MATCH_ERROR',
 	/**
 	 * Se utiliza cuando se solicita una contraseña y no se envía.
 	 */
@@ -247,5 +259,4 @@ export enum ExceptionMessagesConstants {
 	 * Se utiliza cuando se valida un nombre de usuario y no es de tipo string.
 	 */
 	USERNAME_MUST_BE_A_STRING_ERROR = 'USERNAME_MUST_BE_A_STRING_ERROR',
-
 }

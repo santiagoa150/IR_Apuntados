@@ -8,6 +8,13 @@
         background-color: var(--primary);
         color: var(--tertiary);
         margin-right: 10px;
+
+
+    }
+
+    & #waiting-game-actions-component-share-button:disabled {
+        background-color: #cfcecf;
+        color: #9f9a9f;
     }
 
     & #waiting-game-actions-component-start-button {

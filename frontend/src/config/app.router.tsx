@@ -32,6 +32,7 @@ export enum RoutesConstants {
      * Define la ruta del home de la aplicación.
      */
     HOME_ROUTE = '/home',
+    JOIN_GAME = '/game/join'
 }
 
 /**

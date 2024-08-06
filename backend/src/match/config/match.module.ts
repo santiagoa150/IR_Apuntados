@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from '../../database/database.module';
 import { MatchService } from '../match.service';
+import { MatchController } from '../controller/match.controller';
+import { GameModule } from '../../game/config/game.module';
 
 /**
  * Clase que representa el módulo de las partidas y sus respectivas configuraciones.\
@@ -10,7 +12,11 @@ import { MatchService } from '../match.service';
  * @module
  */
 @Module({
-	imports: [DatabaseModule],
+	imports: [
+		DatabaseModule,
+		GameModule,
+	],
+	controllers: [MatchController],
 	providers: [MatchService],
 	exports: [MatchService],
 })

@@ -15,4 +15,8 @@ export enum SocketConstants {
      * El mensaje que indica que un usuario ingresó a un juego.
      */
     JOIN_PLAYER_LISTENER = 'JOIN_PLAYER_LISTENER',
+    /**
+     * El mensaje que indica que un juego está listo para iniciarse.
+     */
+    GAME_READY_TO_START_LISTENER = 'GAME_READY_TO_START_LISTENER',
 }

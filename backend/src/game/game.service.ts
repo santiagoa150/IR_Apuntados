@@ -19,6 +19,7 @@ import { GameExceedsItsPlayerCountException } from './exceptions/game-exceeds-it
 import { GameNotUpdatedException } from './exceptions/game-not-updated.exception';
 import { EventBus } from '@nestjs/cqrs';
 import { JoinGameEvent } from './events/join-game/join-game.event';
+import { GameReadyToStartEvent } from './events/game-ready-to-start/game-ready-to-start.event';
 
 /**
  * Clase que contiene los servicios para interactuar con los
@@ -75,6 +76,7 @@ export class GameService {
 		if (requiredPlayers < 2 || requiredPlayers > 6) throw new InvalidGameRequiredPlayersException();
 		const game: Game = Game.fromDTO({
 			creatorId: request.creatorId.toString(),
+			hostId: request.creatorId.toString(),
 			gameId: GameId.create(),
 			status: GameStatusConstants.WAITING_PLAYERS,
 			requiredPlayers: requiredPlayers,
@@ -162,10 +164,8 @@ export class GameService {
 		await this.userService.update(user);
 		game.addPlayer();
 		const updated: Game = await this.update(game);
-		/**
-		 * TODO: Agregar que envié el evento si ya está waiting to start.
-		 */
 		this.eventBus.publish(new JoinGameEvent(user, player, game));
+		this.eventBus.publish(new GameReadyToStartEvent(game));
 		this.logger.log(`[${this.join.name}] FINISH ::`);
 		return updated;
 	}

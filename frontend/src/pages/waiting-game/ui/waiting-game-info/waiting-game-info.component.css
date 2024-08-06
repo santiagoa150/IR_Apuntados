@@ -25,12 +25,13 @@
         & #waiting-game-info-component-header-right {
             border-radius: 0 10px 10px 0;
         }
-        
+
         @media (max-width: 480px) {
             width: 90%;
 
             & h4 {
-                width: 50%;
+                font-size: 0.9em;
+                width: 80%;
             }
         }
     }

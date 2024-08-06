@@ -4,6 +4,7 @@
 export type GameType = {
     gameId: string;
     creatorId: string;
+    hostId: string;
     status: string;
     name: string;
     requiredPlayers: number;

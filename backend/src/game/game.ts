@@ -5,6 +5,7 @@ import { UserId } from '../user/user-id';
 import { GameStatus } from './game-status';
 import { GameStatusConstants } from './game-status.constants';
 import { GameIsAlreadyStartedException } from './exceptions/game-is-already-started.exception';
+import { GameCannotBeStartedException } from './exceptions/game-cannot-be-started.exception';
 
 /**
  * Clase que representa el objeto de transferencia de un juego.
@@ -13,6 +14,7 @@ import { GameIsAlreadyStartedException } from './exceptions/game-is-already-star
 export class GameDTO {
 	@ApiProperty() gameId: string;
 	@ApiProperty() creatorId: string;
+	@ApiProperty() hostId: string;
 	@ApiProperty() status: string;
 	@ApiProperty() name: string;
 	@ApiProperty() requiredPlayers: number;
@@ -33,16 +35,16 @@ export class Game extends DomainBase<GameDTO> {
 	public readonly gameId: GameId;
 	public readonly status: GameStatus;
 	public readonly betByPlayer: number;
-	public readonly wasInitiated: boolean;
-	private readonly creatorId: UserId;
+	public readonly creatorId: UserId;
+	private readonly _hostId: UserId;
 	private readonly name: string;
 	private readonly requiredPlayers: number;
-	private currentPlayers: number;
 	private readonly isPublic: boolean;
 
 	/**
 	 * @param {GameId} gameId El ID del juego.
 	 * @param {UserId} creatorId El ID del creador del juego.
+	 * @param {UserId} hostId El ID del host del juego.
 	 * @param {GameStatus} status El estado del juego.
 	 * @param {string} name El nombre del juego.
 	 * @param {number} requiredPlayers El total de jugadores requeridos
@@ -55,6 +57,7 @@ export class Game extends DomainBase<GameDTO> {
 	constructor(
 		gameId: GameId,
 		creatorId: UserId,
+		hostId: UserId,
 		status: GameStatus,
 		name: string,
 		requiredPlayers: number,
@@ -66,13 +69,30 @@ export class Game extends DomainBase<GameDTO> {
 		super();
 		this.gameId = gameId;
 		this.creatorId = creatorId;
+		this._hostId = hostId;
 		this.status = status;
 		this.name = name;
 		this.requiredPlayers = requiredPlayers;
-		this.currentPlayers = currentPlayers;
+		this._currentPlayers = currentPlayers;
 		this.betByPlayer = betByPlayer;
 		this.isPublic = isPublic;
-		this.wasInitiated = wasInitiated;
+		this._wasInitiated = wasInitiated;
+	}
+
+	get hostId(): UserId {
+		return this._hostId;
+	}
+
+	private _wasInitiated: boolean;
+
+	get wasInitiated(): boolean {
+		return this._wasInitiated;
+	}
+
+	private _currentPlayers: number;
+
+	get currentPlayers(): number {
+		return this._currentPlayers;
 	}
 
 	/**
@@ -85,6 +105,7 @@ export class Game extends DomainBase<GameDTO> {
 		return new Game(
 			new GameId(dto.gameId),
 			new UserId(dto.creatorId),
+			new UserId(dto.hostId),
 			new GameStatus(dto.status),
 			dto.name,
 			dto.requiredPlayers,
@@ -92,7 +113,8 @@ export class Game extends DomainBase<GameDTO> {
 			dto.betByPlayer,
 			dto.isPublic,
 			dto.wasInitiated,
-		);
+		)
+		;
 	}
 
 	/**
@@ -107,9 +129,10 @@ export class Game extends DomainBase<GameDTO> {
 			creatorId: this.creatorId.toString(),
 			name: this.name,
 			isPublic: this.isPublic,
-			currentPlayers: this.currentPlayers,
+			currentPlayers: this._currentPlayers,
 			requiredPlayers: this.requiredPlayers,
-			wasInitiated: this.wasInitiated,
+			wasInitiated: this._wasInitiated,
+			hostId: this._hostId.toString(),
 		};
 	}
 
@@ -117,8 +140,8 @@ export class Game extends DomainBase<GameDTO> {
 	 * Método que permite agregar un jugador al juego.
 	 */
 	addPlayer(): void {
-		this.currentPlayers++;
-		if (this.currentPlayers === this.requiredPlayers) this.changeStatus(GameStatusConstants.WAITING_TO_START);
+		this._currentPlayers++;
+		if (this._currentPlayers === this.requiredPlayers) this.changeStatus(GameStatusConstants.WAITING_TO_START);
 	}
 
 	/**
@@ -133,6 +156,11 @@ export class Game extends DomainBase<GameDTO> {
 		switch (status) {
 		case GameStatusConstants.WAITING_TO_START: {
 			if (!this.status.is(GameStatusConstants.WAITING_PLAYERS)) throw new GameIsAlreadyStartedException();
+			break;
+		}
+		case GameStatusConstants.ACTIVE: {
+			if (!this.status.is(GameStatusConstants.ACTIVE)) throw new GameCannotBeStartedException();
+			this._wasInitiated = true;
 			break;
 		}
 		}

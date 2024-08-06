@@ -2,8 +2,8 @@ import {JSX, useState} from 'react';
 import {UserType} from '../../../../types/user.type.ts';
 import './profile-config.component.css';
 import {Button, TextField} from '@mui/material';
-import {SessionStorageConstants} from '../../../../store/session-storage.constants.ts';
-import {SessionStorageUtils} from '../../../../store/session-storage.utils.ts';
+import {LocaleStorageConstants} from '../../../../store/locale-storage.constants.ts';
+import {LocaleStorageUtils} from '../../../../store/locale-storage.utils.ts';
 import {Navigate} from 'react-router-dom';
 import {RoutesConstants} from '../../../../config/app.router.tsx';
 import {CardSuitsConstants} from '../../../../utils/constants/card-suits.constants.ts';
@@ -41,8 +41,8 @@ export function ProfileConfigComponent(
      * - Redirige a la página principal.
      */
     const closeSession = () => {
-        const keys: SessionStorageConstants[] = Object.values(SessionStorageConstants);
-        keys.forEach(SessionStorageUtils.del);
+        const keys: LocaleStorageConstants[] = Object.values(LocaleStorageConstants);
+        keys.forEach(LocaleStorageUtils.del);
         document.body.style.overflow = 'unset';
         setRedirect(true);
     };
