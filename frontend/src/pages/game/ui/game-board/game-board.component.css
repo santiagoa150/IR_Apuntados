@@ -14,10 +14,20 @@
             display: flex;
             width: 60%;
             justify-content: space-around;
-            
+
             @media (max-width: 1600px) {
                 width: 80%;
             }
         }
     }
+}
+
+.game-board-card {
+    cursor: pointer;
+}
+
+.game-board-card:hover {
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px gray;
+    transition: box-shadow 0.5s;
 }
