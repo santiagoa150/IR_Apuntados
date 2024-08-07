@@ -7,6 +7,7 @@ import { PlayerModule } from '../../player/config/player.module';
 import { GameSocket } from '../socket/game.socket';
 import { CqrsModule } from '@nestjs/cqrs';
 import Events from '../events';
+import { MatchModule } from '../../match/config/match.module';
 
 /**
  * Clase que representa el módulo de los juegos y sus respectivas
@@ -21,7 +22,8 @@ import Events from '../events';
 		DatabaseModule,
 		CqrsModule,
 		forwardRef(() => UserModule),
-		PlayerModule,
+		forwardRef(() => MatchModule),
+		forwardRef(() => PlayerModule),
 	],
 	controllers: [GameController],
 	providers: [GameService, GameSocket, ...Events],

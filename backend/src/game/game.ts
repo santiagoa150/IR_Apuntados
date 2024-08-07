@@ -6,6 +6,7 @@ import { GameStatus } from './game-status';
 import { GameStatusConstants } from './game-status.constants';
 import { GameIsAlreadyStartedException } from './exceptions/game-is-already-started.exception';
 import { GameCannotBeStartedException } from './exceptions/game-cannot-be-started.exception';
+import { MatchId } from '../match/match-id';
 
 /**
  * Clase que representa el objeto de transferencia de un juego.
@@ -22,6 +23,7 @@ export class GameDTO {
 	@ApiProperty() betByPlayer: number;
 	@ApiProperty() isPublic: boolean;
 	@ApiProperty() wasInitiated: boolean;
+	@ApiProperty() currentMatch?: string;
 }
 
 /**
@@ -53,6 +55,7 @@ export class Game extends DomainBase<GameDTO> {
 	 * @param {number} betByPlayer El valor de apuesta por cada jugador.
 	 * @param {boolean} isPublic Bandera que determina si el juego es público.
 	 * @param {boolean} wasInitiated Bandera que determina si un juego ya se inició.
+	 * @param {MatchId} currentMatch La partida actual del juego.
 	 */
 	constructor(
 		gameId: GameId,
@@ -65,6 +68,7 @@ export class Game extends DomainBase<GameDTO> {
 		betByPlayer: number,
 		isPublic: boolean,
 		wasInitiated: boolean,
+		currentMatch: MatchId | undefined,
 	) {
 		super();
 		this.gameId = gameId;
@@ -77,6 +81,13 @@ export class Game extends DomainBase<GameDTO> {
 		this.betByPlayer = betByPlayer;
 		this.isPublic = isPublic;
 		this._wasInitiated = wasInitiated;
+		this._currentMatch = currentMatch;
+	}
+
+	private _currentMatch?: MatchId;
+
+	set currentMatch(value: MatchId) {
+		this._currentMatch = value;
 	}
 
 	get hostId(): UserId {
@@ -113,8 +124,8 @@ export class Game extends DomainBase<GameDTO> {
 			dto.betByPlayer,
 			dto.isPublic,
 			dto.wasInitiated,
-		)
-		;
+			dto.currentMatch ? new MatchId(dto.currentMatch) : undefined,
+		);
 	}
 
 	/**
@@ -133,6 +144,7 @@ export class Game extends DomainBase<GameDTO> {
 			requiredPlayers: this.requiredPlayers,
 			wasInitiated: this._wasInitiated,
 			hostId: this._hostId.toString(),
+			currentMatch: this._currentMatch?.toString(),
 		};
 	}
 
@@ -154,15 +166,15 @@ export class Game extends DomainBase<GameDTO> {
 		status: GameStatusConstants,
 	): void {
 		switch (status) {
-		case GameStatusConstants.WAITING_TO_START: {
-			if (!this.status.is(GameStatusConstants.WAITING_PLAYERS)) throw new GameIsAlreadyStartedException();
-			break;
-		}
-		case GameStatusConstants.ACTIVE: {
-			if (!this.status.is(GameStatusConstants.WAITING_TO_START)) throw new GameCannotBeStartedException();
-			this._wasInitiated = true;
-			break;
-		}
+			case GameStatusConstants.WAITING_TO_START: {
+				if (!this.status.is(GameStatusConstants.WAITING_PLAYERS)) throw new GameIsAlreadyStartedException();
+				break;
+			}
+			case GameStatusConstants.ACTIVE: {
+				if (!this.status.is(GameStatusConstants.WAITING_TO_START)) throw new GameCannotBeStartedException();
+				this._wasInitiated = true;
+				break;
+			}
 		}
 		this.status.change(status);
 	}

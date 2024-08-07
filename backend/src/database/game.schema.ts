@@ -49,6 +49,10 @@ const definition: Required<SchemaDefinition<GameDTO>> = {
 		type: String,
 		required: true,
 	},
+	currentMatch: {
+		type: String,
+		required: false,
+	},
 	wasInitiated: {
 		type: Boolean,
 		required: true,

@@ -16,6 +16,10 @@ import { GameDecorator } from '../../security/game.decorator';
 import { PlayerService } from '../../player/player.service';
 import { GameId } from '../game-id';
 import { JoinGameControllerRequest } from './requests/join-game-controller.request';
+import { GameStatusConstants } from '../game-status.constants';
+import { MatchService } from '../../match/match.service';
+import { MatchId } from '../../match/match-id';
+import { Match } from '../../match/match';
 
 /**
  * Clase que contiene los puntos de entrada a la aplicación
@@ -29,10 +33,12 @@ export class GameController {
 	/**
 	 * @param {GameService} service Los servicios que permiten interactuar con los juegos.
 	 * @param {PlayerService} playerService Los servicios que permiten interactuar con los jugadores.
+	 * @param {MatchService} matchService Los servicios que permiten interactuar con las partidas.
 	 */
 	constructor(
 		private readonly service: GameService,
 		private readonly playerService: PlayerService,
+		private readonly matchService: MatchService,
 	) {
 	}
 
@@ -79,6 +85,10 @@ export class GameController {
 			new GameId(game.gameId),
 			new UserId(user.userId),
 		);
+		if (game.status === GameStatusConstants.ACTIVE) {
+			const match: Match = await this.matchService.getById(new MatchId(game.currentMatch));
+			response.discardedCards = await match.discardedCards.toDTO();
+		}
 		return response;
 	}
 

@@ -1,4 +1,4 @@
-import { CanActivate, ContextType, ExecutionContext, Injectable } from '@nestjs/common';
+import { CanActivate, ContextType, ExecutionContext, Injectable, Logger } from '@nestjs/common';
 import { GameService } from '../../game/game.service';
 import { Game } from '../../game/game';
 import { UserIsNotPartOfAGameException } from '../../user/exceptions/user-is-not-part-of-a-game.exception';
@@ -13,6 +13,8 @@ import { UserId } from '../../user/user-id';
  */
 @Injectable()
 export class GameGuard implements CanActivate {
+
+	private readonly logger: Logger = new Logger(GameGuard.name);
 
 	/**
 	 * @param {GameService} gameService Los servicios para interactuar con los juegos.
@@ -46,6 +48,7 @@ export class GameGuard implements CanActivate {
 			}
 			return true;
 		} catch (e) {
+			this.logger.error(`[${this.canActivate.name}] Error :: ${e.message}`);
 			throw new UserIsNotPartOfAGameException();
 		}
 	}

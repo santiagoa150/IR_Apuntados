@@ -6,5 +6,9 @@ export enum GameConstants {
     /**
      * El estado de un juego listo para iniciar.
      */
-    GAME_STATUS_WAITING_TO_START = 'WAITING_TO_START'
+    GAME_STATUS_WAITING_TO_START = 'WAITING_TO_START',
+    /**
+     * El estado de un juego activo.
+     */
+    GAME_STATUS_ACTIVE = 'ACTIVE'
 }

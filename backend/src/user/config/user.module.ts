@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { DatabaseModule } from '../../database/database.module';
 import { UserController } from '../controller/user.controller';
 import { UserService } from '../user.service';
@@ -16,7 +16,7 @@ import { CardDesignModule } from '../../card-design/config/card-design.module';
 @Module({
 	imports: [
 		DatabaseModule,
-		SecurityModule,
+		forwardRef(() => SecurityModule),
 		CardDesignModule,
 	],
 	controllers: [UserController],

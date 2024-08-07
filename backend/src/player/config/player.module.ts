@@ -1,6 +1,9 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { DatabaseModule } from '../../database/database.module';
 import { PlayerService } from '../player.service';
+import { PlayerController } from '../controller/player.controller';
+import { GameModule } from '../../game/config/game.module';
+import { UserModule } from '../../user/config/user.module';
 
 /**
  * Clase que representa el módulo de los jugadores y sus respectivas
@@ -9,7 +12,12 @@ import { PlayerService } from '../player.service';
  * - Los servicios de los jugadores.
  */
 @Module({
-	imports: [DatabaseModule],
+	controllers: [PlayerController],
+	imports: [
+		DatabaseModule,
+		forwardRef(() => GameModule),
+		forwardRef(() => UserModule),
+	],
 	providers: [PlayerService],
 	exports: [PlayerService],
 })

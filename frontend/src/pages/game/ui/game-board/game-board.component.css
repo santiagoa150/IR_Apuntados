@@ -1,0 +1,23 @@
+#game-board-component-container {
+    grid-column: 2/3;
+    grid-row: 1/2;
+    display: grid;
+    grid-template-columns: 20% 80%;
+
+    & #game-board-cards-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+
+        & #game-board-trips-container, & #game-board-quads-container {
+            display: flex;
+            width: 60%;
+            justify-content: space-around;
+            
+            @media (max-width: 1600px) {
+                width: 80%;
+            }
+        }
+    }
+}

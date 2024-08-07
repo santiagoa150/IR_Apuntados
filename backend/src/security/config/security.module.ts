@@ -22,7 +22,7 @@ import { GameGuard } from '../guards/game.guard';
 	imports: [
 		JwtModule.register({ global: true }),
 		forwardRef(() => UserModule),
-		GameModule,
+		forwardRef(() => GameModule),
 	],
 	controllers: [SessionController],
 	providers: [

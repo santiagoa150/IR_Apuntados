@@ -175,6 +175,10 @@ export enum ExceptionMessagesConstants {
 	 */
 	MATCH_CANNOT_BE_STARTED_ERROR = 'MATCH_CANNOT_BE_STARTED_ERROR',
 	/**
+	 * Se utiliza para indicar que no se encontró una partida solicitada.
+	 */
+	MATCH_NOT_FOUND_ERROR = 'MATCH_NOT_FOUND_ERROR',
+	/**
 	 * Se utiliza cuando un usuario intenta realizar una operación con tokens
 	 * y no hay suficientes.
 	 */

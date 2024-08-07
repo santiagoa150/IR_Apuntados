@@ -33,17 +33,10 @@ export class PlayerDTO {
  */
 export class Player extends DomainBase<PlayerDTO> {
 
-	private readonly playerId: PlayerId;
 	public readonly gameId: GameId;
+	private readonly playerId: PlayerId;
 	private readonly userId: UserId;
-	private readonly status: PlayerStatus;
 	private readonly isActive: boolean;
-	private readonly trips1?: Trips;
-	private readonly trips2?: Trips;
-	private readonly quads?: Quads;
-	private readonly score?: number;
-	private readonly position?: number;
-	private readonly kicker?: Card;
 
 	/**
 	 * @param {PlayerId} playerId El id del jugador.
@@ -75,14 +68,56 @@ export class Player extends DomainBase<PlayerDTO> {
 		this.playerId = playerId;
 		this.gameId = gameId;
 		this.userId = userId;
-		this.status = status;
+		this._status = status;
 		this.isActive = isActive;
-		this.trips1 = trips1;
-		this.trips2 = trips2;
-		this.quads = quads;
-		this.score = score;
-		this.position = position;
-		this.kicker = kicker;
+		this._trips1 = trips1;
+		this._trips2 = trips2;
+		this._quads = quads;
+		this._score = score;
+		this._position = position;
+		this._kicker = kicker;
+	}
+
+	private _trips1?: Trips;
+
+	set trips1(value: Trips) {
+		this._trips1 = value;
+	}
+
+	private _trips2?: Trips;
+
+	set trips2(value: Trips) {
+		this._trips2 = value;
+	}
+
+	private _quads?: Quads;
+
+	set quads(value: Quads) {
+		this._quads = value;
+	}
+
+	private _score?: number;
+
+	set score(value: number) {
+		this._score = value;
+	}
+
+	private _kicker?: Card;
+
+	set kicker(value: Card) {
+		this._kicker = value;
+	}
+
+	private _status: PlayerStatus;
+
+	set status(value: PlayerStatus) {
+		this._status = value;
+	}
+
+	private _position?: number;
+
+	set position(value: number) {
+		this._position = value;
 	}
 
 	/**
@@ -101,6 +136,7 @@ export class Player extends DomainBase<PlayerDTO> {
 
 		const quads: Quads = Array.isArray(dto.quads) ?
 			await Promise.all(dto.quads.map(async (q) => Card.fromDTO(q))) as Quads : undefined;
+
 		return new Player(
 			new PlayerId(dto.playerId),
 			new GameId(dto.gameId),
@@ -121,24 +157,25 @@ export class Player extends DomainBase<PlayerDTO> {
 	 * @returns {PlayerDTO} El objeto de transferencia.
 	 * @async
 	 */
-	async toDTO(): Promise<PlayerDTO> {
-		const trips1: TripsDTO = Array.isArray(this.trips1) ?
-			await Promise.all(this.trips1.map(async (t) => t.toDTO())) as TripsDTO : undefined;
+	public async toDTO(): Promise<PlayerDTO> {
+		const trips1: TripsDTO = Array.isArray(this._trips1) ?
+			await Promise.all(this._trips1.map(async (t) => t.toDTO())) as TripsDTO : undefined;
 
-		const trips2: TripsDTO = Array.isArray(this.trips2) ?
-			await Promise.all(this.trips2.map(async (t) => t.toDTO())) as TripsDTO : undefined;
+		const trips2: TripsDTO = Array.isArray(this._trips2) ?
+			await Promise.all(this._trips2.map(async (t) => t.toDTO())) as TripsDTO : undefined;
 
-		const quads: QuadsDTO = Array.isArray(this.quads) ?
-			await Promise.all(this.quads.map(async (q) => q.toDTO())) as QuadsDTO : undefined;
+		const quads: QuadsDTO = Array.isArray(this._quads) ?
+			await Promise.all(this._quads.map(async (q) => q.toDTO())) as QuadsDTO : undefined;
+
 		return {
 			gameId: this.gameId.toString(),
 			isActive: this.isActive,
-			kicker: this.kicker?.toDTO(),
+			kicker: this._kicker?.toDTO(),
 			playerId: this.playerId.toString(),
-			position: this.position,
+			position: this._position,
 			quads,
-			score: this.score,
-			status: this.status.toString(),
+			score: this._score,
+			status: this._status.toString(),
 			trips1,
 			trips2,
 			userId: this.userId.toString(),

@@ -14,6 +14,7 @@ import {useWebSocket} from '../../config/websocket.provider.tsx';
 import {SocketConstants} from '../../utils/constants/socket.constants.ts';
 import {Navigate} from 'react-router-dom';
 import {RoutesConstants} from '../../config/app.router.tsx';
+import {GameConstants} from '../../utils/constants/game.constants.ts';
 
 /**
  * Página para esperar un juego.
@@ -72,6 +73,7 @@ export function WaitingGamePage(): JSX.Element {
         async function fetchData(): Promise<void> {
             const res = await backendUtils.get<GetCurrentGameDetailResponse, never>(BackendConstants.GET_CURRENT_GAME_URL);
             if (res) {
+                if (res.game.status === GameConstants.GAME_STATUS_ACTIVE) setRedirect(true);
                 setGame(res.game);
                 setPlayers(res.players);
             }
@@ -99,6 +101,7 @@ export function WaitingGamePage(): JSX.Element {
                 setRawMessage={setErrorMessage}
             />
             {redirect ? <Navigate to={RoutesConstants.GAME}/> : <></>}
+
         </>
     );
 }
