@@ -4,8 +4,8 @@ import {CardDesignTitleConstants} from '../../../../utils/constants/card-design.
 import {CardComponent} from '../../../../components/card/card.component.tsx';
 import {CardSuitsConstants} from '../../../../utils/constants/card-suits.constants.ts';
 import {CardDesignType} from '../../../../types/card-design.type.ts';
-import ClickImage from '../../../../assets/images/icons/click.png';
-import ShoppingCart from '../../../../assets/images/icons/shopping-cart.png';
+import ClickImage from '../../../../../public/assets/images/icons/click.png';
+import ShoppingCart from '../../../../../public/assets/images/icons/shopping-cart.png';
 import './card-design-article.component.css';
 
 /**

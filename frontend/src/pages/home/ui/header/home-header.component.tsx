@@ -2,7 +2,7 @@ import {JSX} from 'react';
 import {Link} from 'react-router-dom';
 import {Button, ButtonGroup} from '@mui/material';
 import {RoutesConstants} from '../../../../config/app.router.tsx';
-import TutorialPDF from '../../../../assets/documents/Tutorial.pdf';
+import TutorialPDF from '../../../../../public/assets/documents/Tutorial.pdf';
 import './home-header.component.css';
 import {UserType} from '../../../../types/user.type.ts';
 import {LocalLoadingComponent} from '../../../../components/loading/local/local-loading.component.tsx';

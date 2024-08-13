@@ -17,9 +17,9 @@ import {
     changeSameTrip,
     changeTripToQuad
 } from './game.board.utils.ts';
-import CardDeckImage from '../../../../assets/images/game/card-deck.jpg';
-import DiscardedCardsImage from '../../../../assets/images/game/discarded-cards.jpg';
-import EmptyDiscardedCardsImage from '../../../../assets/images/game/empty-discarded-cards.jpg';
+import CardDeckImage from '../../../../../public/assets/images/game/card-deck.jpg';
+import DiscardedCardsImage from '../../../../../public/assets/images/game/discarded-cards.jpg';
+import EmptyDiscardedCardsImage from '../../../../../public/assets/images/game/empty-discarded-cards.jpg';
 import {PlayerConstants} from '../../../../utils/constants/player.constants.ts';
 
 /**

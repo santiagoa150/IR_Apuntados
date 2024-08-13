@@ -13,7 +13,7 @@ import {AlertTypeConstants} from '../../../../utils/constants/alert.constants.ts
 import {Navigate} from 'react-router-dom';
 import {RoutesConstants} from '../../../../config/app.router.tsx';
 import {JoinGameRequest, JoinGameResponse} from '../../../../types/services/join-game.ts';
-import NoMatchesImage from '../../../../assets/images/icons/no-matches.png';
+import NoMatchesImage from '../../../../../public/assets/images/icons/no-matches.png';
 
 /**
  * Componente que permite ingresar a un juego.
