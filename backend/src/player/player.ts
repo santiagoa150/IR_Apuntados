@@ -24,6 +24,7 @@ export class PlayerDTO {
 	@ApiProperty() score?: number;
 	@ApiProperty() position?: number;
 	@ApiProperty() kicker?: CardDTO;
+	@ApiProperty() cardsMap?: Map<string, number>;
 }
 
 /**
@@ -50,6 +51,7 @@ export class Player extends DomainBase<PlayerDTO> {
 	 * @param {Trips} trips2 La terna 2 del jugador.
 	 * @param {Quads} quads La cuarta del jugador.
 	 * @param {Card} kicker La sobrante del jugador.
+	 * @param {Map<string, number>} cardsMap Map que guarda la cantidad de cartas que tiene un usuario de un tipo.
 	 */
 	constructor(
 		playerId: PlayerId,
@@ -63,6 +65,7 @@ export class Player extends DomainBase<PlayerDTO> {
 		score?: number,
 		position?: number,
 		kicker?: Card,
+		cardsMap?: Map<string, number>,
 	) {
 		super();
 		this.playerId = playerId;
@@ -76,6 +79,13 @@ export class Player extends DomainBase<PlayerDTO> {
 		this._score = score;
 		this._position = position;
 		this._kicker = kicker;
+		this._cardsMap = cardsMap;
+	}
+
+	private _cardsMap?: Map<string, number>;
+
+	set cardsMap(value: Map<string, number>) {
+		this._cardsMap = value;
 	}
 
 	private _trips1?: Trips;
@@ -149,6 +159,7 @@ export class Player extends DomainBase<PlayerDTO> {
 			dto.score,
 			dto.position,
 			dto.kicker ? Card.fromDTO(dto.kicker) : undefined,
+			new Map(dto.cardsMap),
 		);
 	}
 
@@ -179,6 +190,7 @@ export class Player extends DomainBase<PlayerDTO> {
 			trips1,
 			trips2,
 			userId: this.userId.toString(),
+			cardsMap: new Map(this._cardsMap),
 		};
 	}
 }

@@ -68,6 +68,7 @@ export class PlayerService {
 		this.logger.log(`[${this.dealCards.name}] INIT :: match: ${match.matchId.toString()}`);
 		const turns: number[] = Array.from({ length: match.currentPlayers }, (_, i) => i + 1);
 		for (const player of (await this.getByGame(match.gameId))) {
+			const cardsMap: Map<string, number> = new Map<string, number>();
 			const position: number = turns[Math.floor(Math.random() * turns.length)];
 			turns.splice(turns.indexOf(position), 1);
 			const newStatus: PlayerStatus = new PlayerStatus(position === 1 ? PlayerStatusConstants.IN_TURN : PlayerStatusConstants.WAITING_TURN);
@@ -79,21 +80,41 @@ export class PlayerService {
 
 			for (let i = 0; i < (position === 1 ? 11 : 10); i++) {
 				const random: number = Math.floor(Math.random() * match.cardDeck.cards.length);
-				if (i < 3) trip1.push(match.cardDeck.cards[random]);
-				else if (i < 6) trip2.push(match.cardDeck.cards[random]);
-				else if (i < 10) quads.push(match.cardDeck.cards[random]);
-				else player.kicker = match.cardDeck.cards[random];
+				const card: Card = match.cardDeck.cards[random];
+				if (i < 3) trip1.push(card);
+				else if (i < 6) trip2.push(card);
+				else if (i < 10) quads.push(card);
+				else player.kicker = card;
 				match.cardDeck.cards.splice(random, 1);
+
+				const mapId: string = card.type.toString() + card.suit.toString();
+				if (cardsMap.has(mapId)) cardsMap.set(mapId, cardsMap.get(mapId) + 1);
+				else cardsMap.set(mapId, 1);
 			}
 
 			player.trips1 = trip1 as Trips;
 			player.trips2 = trip2 as Trips;
 			player.quads = quads as Quads;
+			player.cardsMap = cardsMap;
 			const { playerId, ...toUpdate } = await player.toDTO();
 			await this.model.updateOne({ playerId }, toUpdate);
 		}
 		this.logger.log(`[${this.dealCards.name}] FINISH ::`);
 		return match;
+	}
+
+	async passShift(
+		userId: UserId,
+		gameId: GameId,
+		trips1: Trips,
+		trips2: Trips,
+		quads: Quads,
+		kicker: Card,
+	): Promise<Player> {
+		this.logger.log(`[${this.passShift.name}] INIT :: userId: ${userId?.toString()}`);
+		console.log(gameId, trips1, trips2, quads, kicker);
+		this.logger.log(`[${this.passShift.name}] FINISH ::`);
+		return;
 	}
 
 	/**

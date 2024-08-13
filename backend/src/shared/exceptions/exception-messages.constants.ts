@@ -35,6 +35,14 @@ export enum ExceptionMessagesConstants {
 	 */
 	CARD_DESIGN_WITHOUT_PURCHASING_ERROR = 'CARD_DESIGN_WITHOUT_PURCHASING_ERROR',
 	/**
+	 * Se utiliza para indicar que la pinta de una carta es requerida.
+	 */
+	CARD_SUIT_IS_REQUIRED_ERROR = 'CARD_SUIT_IS_REQUIRED_ERROR',
+	/**
+	 * Se utiliza para indicar que el tipo de una carta es requerida.
+	 */
+	CARD_TYPE_IS_REQUIRED_ERROR = 'CARD_TYPE_IS_REQUIRED_ERROR',
+	/**
 	 * Se utiliza cuando se solicita el diseño de cartas que no existe.
 	 */
 	DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR = 'DEFAULT_CARD_DESIGN_NOT_FOUND_ERROR',
@@ -163,6 +171,10 @@ export enum ExceptionMessagesConstants {
 	 */
 	INVALID_USER_STATUS_ERROR = 'INVALID_USER_STATUS_ERROR',
 	/**
+	 * Se utiliza para indicar que la sobrante de un jugador es requerido.
+	 */
+	KICKER_IS_REQUIRED_ERROR = 'KICKER_IS_REQUIRED_ERROR',
+	/**
 	 * Se utiliza cuando se solicita el parámetro "isPublic" y no se envía.
 	 */
 	IS_PUBLIC_IS_REQUIRED_ERROR = 'IS_PUBLIC_IS_REQUIRED_ERROR',
@@ -183,6 +195,18 @@ export enum ExceptionMessagesConstants {
 	 * y no hay suficientes.
 	 */
 	NOT_ENOUGH_TOKENS_ERROR = 'NOT_ENOUGH_TOKENS_ERROR',
+	/**
+	 * Se utiliza para informar que la terna 1 solo puede tener 3 cartas.
+	 */
+	ONLY_3_CARDS_ARE_REQUIRED_IN_TRIPS_1_ERROR = 'ONLY_3_CARDS_ARE_REQUIRED_IN_TRIPS_1_ERROR',
+	/**
+	 * Se utiliza para informar que la terna 2 solo puede tener 3 cartas.
+	 */
+	ONLY_3_CARDS_ARE_REQUIRED_IN_TRIPS_2_ERROR = 'ONLY_3_CARDS_ARE_REQUIRED_IN_TRIPS_2_ERROR',
+	/**
+	 * Se utiliza para informar que la cuarta solo puede tener 4 cartas.
+	 */
+	ONLY_4_CARDS_ARE_REQUIRED_IN_QUADS_ERROR = 'ONLY_4_CARDS_ARE_REQUIRED_IN_QUADS_ERROR',
 	/**
 	 * Se utiliza cuando un usuario intenta iniciar un juego del cual no es el creador.
 	 */

@@ -17,6 +17,10 @@ import {
     changeSameTrip,
     changeTripToQuad
 } from './game.board.utils.ts';
+import CardDeckImage from '../../../../assets/images/game/card-deck.jpg';
+import DiscardedCardsImage from '../../../../assets/images/game/discarded-cards.jpg';
+import EmptyDiscardedCardsImage from '../../../../assets/images/game/empty-discarded-cards.jpg';
+import {PlayerConstants} from '../../../../utils/constants/player.constants.ts';
 
 /**
  *  Componente que define el tablero del juego.
@@ -27,7 +31,7 @@ import {
 export function GameBoardComponent(props: { discardedCards: DiscardedCardsType | undefined }): JSX.Element {
 
     /**
-     * Hookas para el almacenamiento y gestión de los elementos del jugador.
+     * Hooks para el almacenamiento y gestión de los elementos del jugador.
      */
     const [player, setPlayer] = useState<PlayerType | undefined>();
     const [trips1, setTrips1] = useState<[CardType, CardType, CardType] | undefined>();
@@ -121,8 +125,25 @@ export function GameBoardComponent(props: { discardedCards: DiscardedCardsType |
     return (
         <>
             <div id='game-board-component-container' className='component-container'>
-                <div>
+                <div id='game-board-maze-container'>
+                    <img
+                        className='game-board-maze-container-item'
+                        id='game-board-card-deck'
+                        alt=''
+                        src={CardDeckImage}
+                    />
+                    <div id='game-board-discarded-cards-container'>
+                        <img
 
+                            className={`game-board-maze-container-item ${
+                                player && player.status === PlayerConstants.IN_TURN_PLAYER_STATUS && kicker
+                                    ? 'game-element-available' : ''}
+                                `}
+                            id='game-board-discarded-cards-image'
+                            alt=''
+                            src={props.discardedCards && props.discardedCards.cards.length > 0 ? DiscardedCardsImage : EmptyDiscardedCardsImage}
+                        />
+                    </div>
                 </div>
                 <div id='game-board-cards-container'>
                     {

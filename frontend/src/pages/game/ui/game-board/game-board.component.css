@@ -20,6 +20,31 @@
             }
         }
     }
+
+    & #game-board-maze-container {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        justify-content: space-around;
+
+        & .game-board-maze-container-item {
+            transition: box-shadow 0.5s;
+            box-shadow: 1px 1px 5px gray;
+        }
+
+        & .game-board-maze-container-item:hover {
+            box-shadow: 5px 5px 5px gray;
+        }
+
+        & #game-board-discarded-cards-container, & #game-board-card-deck {
+            width: 60%;
+            height: max-content;
+        }
+
+        & #game-board-discarded-cards-image {
+            width: 100%;
+        }
+    }
 }
 
 .game-board-card {
@@ -30,4 +55,73 @@
     border-radius: 15px;
     box-shadow: 5px 5px 5px gray;
     transition: box-shadow 0.5s;
+}
+
+.game-element-available {
+    --d: 3000ms;
+    --angle: 90deg;
+    --gradX: 100%;
+    --gradY: 50%;
+    --c1: yellow;
+    --c2: var(--secondary);
+    cursor: pointer;
+    border: 0.20rem solid;
+    border-image: conic-gradient(from var(--angle), var(--c2), var(--c1) 0.1turn, var(--c1) 0.15turn, var(--c2) 0.25turn) 30;
+    animation: borderRotate var(--d) linear infinite forwards;
+}
+
+@keyframes borderRotate {
+    100% {
+        --angle: 420deg;
+    }
+}
+
+@keyframes borderRadial {
+    20% {
+        --gradX: 100%;
+        --gradY: 50%;
+    }
+    40% {
+        --gradX: 100%;
+        --gradY: 100%;
+    }
+    60% {
+        --gradX: 50%;
+        --gradY: 100%;
+    }
+    80% {
+        --gradX: 0%;
+        --gradY: 50%;
+    }
+    100% {
+        --gradX: 50%;
+        --gradY: 0%;
+    }
+}
+
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 90deg;
+    inherits: true;
+}
+
+@property --gradX {
+    syntax: '<percentage>';
+    initial-value: 50%;
+    inherits: true;
+}
+
+@property --gradY {
+    syntax: '<percentage>';
+    initial-value: 0%;
+    inherits: true;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }

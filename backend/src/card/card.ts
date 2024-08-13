@@ -20,8 +20,8 @@ export class CardDTO {
  */
 export class Card extends DomainBase<CardDTO> {
 
-	private readonly type: CardType;
-	private readonly suit: CardSuit;
+	private readonly _type: CardType;
+	private readonly _suit: CardSuit;
 	private readonly value: number;
 
 	/**
@@ -31,9 +31,18 @@ export class Card extends DomainBase<CardDTO> {
 	 */
 	constructor(type: CardType, suit: CardSuit, value: number) {
 		super();
-		this.type = type;
-		this.suit = suit;
+		this._type = type;
+		this._suit = suit;
 		this.value = value;
+	}
+
+
+	get type(): CardType {
+		return this._type;
+	}
+
+	get suit(): CardSuit {
+		return this._suit;
 	}
 
 	/**
@@ -56,8 +65,8 @@ export class Card extends DomainBase<CardDTO> {
 	 */
 	toDTO(): CardDTO {
 		return {
-			type: this.type.toString(),
-			suit: this.suit.toString(),
+			type: this._type.toString(),
+			suit: this._suit.toString(),
 			value: this.value.valueOf(),
 		};
 	}
