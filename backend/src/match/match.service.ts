@@ -14,11 +14,13 @@ import { CardTypeConstants } from '../card/card-type.constants';
 import { CardSuitConstants } from '../card/card-suit.constants';
 import { CardDTO } from '../card/card';
 import { CardValueConstants } from '../card/card-value.constants';
-import { GameService } from '../game/game.service';
 import { EventBus } from '@nestjs/cqrs';
 import { MatchStartedEvent } from '../game/events/match-started/match-started.event';
 import { PlayerService } from '../player/player.service';
 import { MatchNotFoundException } from './exceptions/match-not-found.exception';
+import { InvalidMatchStatusException } from './exceptions/invalid-match-status.exception';
+import { Player } from '../player/player';
+import { CardWithDesign } from '../card/card-with-design';
 
 /**
  * Los servicios asociados a las partidas.
@@ -30,13 +32,11 @@ export class MatchService {
 	private readonly defaultCardDeck: CardDTO[];
 
 	/**
-	 * @param gameService Servicios de los juegos.
 	 * @param playerService Los servicios de los jugadores.
-	 * @param eventBus Bus de eventos de CQRS.
+	 * @param {EventBus} eventBus Bus de eventos de CQRS.
 	 * @param {Model<MatchDocument>} model Modelo para interactuar con la base de datos de las partidas.
 	 */
 	constructor(
-		private readonly gameService: GameService,
 		private readonly playerService: PlayerService,
 		private readonly eventBus: EventBus,
 		@Inject(DatabaseConstants.MATCH_PROVIDER) private readonly model: Model<MatchDocument>,
@@ -66,7 +66,7 @@ export class MatchService {
 	 * @throws {MatchCannotBeStartedException} Cuando la partida no está lista para ser iniciada.
 	 * @throws {OnlyGameHostCanStartTheMatchException} Indica que solo el host de la partida puede iniciar la partida.
 	 */
-	async startByPlayer(userId: UserId, game: Game): Promise<Match> {
+	async startByPlayer(userId: UserId, game: Game): Promise<{ match: Match, game: Game }> {
 		this.logger.log(`[${this.startByPlayer.name}] INIT :: user: ${userId}, game: ${game.gameId.toString()}`);
 		if (!game.status.is(GameStatusConstants.WAITING_TO_START)) throw new MatchCannotBeStartedException();
 		if (game.hostId.toString() !== userId.toString()) {
@@ -89,10 +89,9 @@ export class MatchService {
 		});
 		match = await this.playerService.dealCards(match);
 		await new this.model(await match.toDTO()).save();
-		await this.gameService.update(game);
 		await this.eventBus.publish(new MatchStartedEvent(game, match));
 		this.logger.log(`[${this.startByPlayer.name}] FINISH ::`);
-		return match;
+		return { match, game };
 	}
 
 	/**
@@ -109,5 +108,23 @@ export class MatchService {
 		if (throwExceptionIfNotFound && !mapped) throw new MatchNotFoundException();
 		this.logger.log(`[${this.getById.name}] FINISH ::`);
 		return mapped;
+	}
+
+	/**
+	 * Método que permite a una partida pasar el turno.
+	 * @param {Match} match La partida que pasará el turno.
+	 * @param {CardWithDesign} kicker La sobrante.
+	 * @param {Player} currentPlayer El jugador actual.
+	 * @returns {Match} La partida actualizada.
+	 * @throws {InvalidMatchStatusException} Cuando el estado de la partida no es apto para pasar de turno.
+	 */
+	async passShift(match: Match, kicker: CardWithDesign, currentPlayer: Player): Promise<Match> {
+		this.logger.log(`[${this.passShift.name}] INIT :: match: ${match.matchId.toString()}`);
+		if (!match.status.is(MatchStatusConstants.PLAYING)) throw new InvalidMatchStatusException();
+		match.passShift(currentPlayer.position, kicker);
+		const { matchId, ...toUpdate } = await match.toDTO();
+		await this.model.updateOne({ matchId: matchId }, toUpdate);
+		this.logger.log(`[${this.passShift.name}] FINISH ::`);
+		return match;
 	}
 }

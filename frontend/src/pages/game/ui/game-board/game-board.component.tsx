@@ -21,6 +21,8 @@ import CardDeckImage from '../../../../../public/assets/images/game/card-deck.jp
 import DiscardedCardsImage from '../../../../../public/assets/images/game/discarded-cards.jpg';
 import EmptyDiscardedCardsImage from '../../../../../public/assets/images/game/empty-discarded-cards.jpg';
 import {PlayerConstants} from '../../../../utils/constants/player.constants.ts';
+import {PassShiftRequest, PassShiftResponse} from '../../../../types/services/pass-shift.ts';
+import {GlobalLoadingComponent} from '../../../../components/loading/global/global-loading.component.tsx';
 
 /**
  *  Componente que define el tablero del juego.
@@ -28,7 +30,10 @@ import {PlayerConstants} from '../../../../utils/constants/player.constants.ts';
  *  @param props.discardedCards Las cartas desechadas de la partida.
  * @constructor
  */
-export function GameBoardComponent(props: { discardedCards: DiscardedCardsType | undefined }): JSX.Element {
+export function GameBoardComponent(props: {
+    discardedCards: DiscardedCardsType | undefined,
+    currentPlayer: PlayerType | undefined
+}): JSX.Element {
 
     /**
      * Hooks para el almacenamiento y gestión de los elementos del jugador.
@@ -39,6 +44,11 @@ export function GameBoardComponent(props: { discardedCards: DiscardedCardsType |
     const [quads, setQuads] = useState<[CardType, CardType, CardType, CardType] | undefined>();
     const [kicker, setKicker] = useState<CardType | undefined>();
     const [currentDesign, setCurrentDesign] = useState<string | undefined>();
+
+    /**
+     * Hooks para el funcionamiento del componente.
+     */
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         async function fetchData(): Promise<void> {
@@ -53,9 +63,18 @@ export function GameBoardComponent(props: { discardedCards: DiscardedCardsType |
                 setCurrentDesign(res.currentDesignName);
             }
         }
-
         fetchData().then();
     }, []);
+
+    useEffect(() => {
+        if (props.currentPlayer && player && player.playerId == props.currentPlayer.playerId) {
+            setPlayer(props.currentPlayer);
+            setTrips1(props.currentPlayer.trips1);
+            setTrips2(props.currentPlayer.trips2);
+            setQuads(props.currentPlayer.quads);
+            setKicker(props.currentPlayer.kicker);
+        }
+    }, [props.currentPlayer]);
 
     /**
      * Evento utilizado cuando se inicia a mover la carta.
@@ -122,21 +141,49 @@ export function GameBoardComponent(props: { discardedCards: DiscardedCardsType |
         }
     };
 
+    const discardedCardsAction = async (): Promise<void> => {
+        if (kicker) {
+            if (trips1 && trips2 && quads) {
+                setLoading(true);
+                const backendUtils: BackendUtils = new BackendUtils(() => {
+                    setLoading(false);
+                });
+                const res = await backendUtils.patch<PassShiftResponse, PassShiftRequest>(BackendConstants.PASS_SHIFT_URL, {
+                    kicker, quads, trips1, trips2,
+                });
+                if (res) {
+                    setPlayer(res.player);
+                    setTrips1(res.player.trips1);
+                    setTrips2(res.player.trips2);
+                    setQuads(res.player.quads);
+                    setKicker(res.player.kicker);
+                    setCurrentDesign(res.currentDesignName);
+                }
+                setLoading(false);
+            }
+        } else {
+            console.log('Not implemented.');
+        }
+    };
+
     return (
         <>
             <div id='game-board-component-container' className='component-container'>
                 <div id='game-board-maze-container'>
                     <img
-                        className='game-board-maze-container-item'
+                        className={`game-board-maze-container-item ${
+                            player && player.status === PlayerConstants.IN_TURN_PLAYER_STATUS && !kicker
+                                ? 'game-element-available' : ''
+                        }`}
                         id='game-board-card-deck'
                         alt=''
                         src={CardDeckImage}
                     />
                     <div id='game-board-discarded-cards-container'>
                         <img
-
+                            onClick={discardedCardsAction}
                             className={`game-board-maze-container-item ${
-                                player && player.status === PlayerConstants.IN_TURN_PLAYER_STATUS && kicker
+                                player && player.status === PlayerConstants.IN_TURN_PLAYER_STATUS
                                     ? 'game-element-available' : ''}
                                 `}
                             id='game-board-discarded-cards-image'
@@ -233,6 +280,7 @@ export function GameBoardComponent(props: { discardedCards: DiscardedCardsType |
                     }
                 </div>
             </div>
+            <GlobalLoadingComponent loading={loading}/>
         </>
     );
 }

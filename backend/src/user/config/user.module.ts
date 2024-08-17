@@ -4,6 +4,7 @@ import { UserController } from '../controller/user.controller';
 import { UserService } from '../user.service';
 import { SecurityModule } from '../../security/config/security.module';
 import { CardDesignModule } from '../../card-design/config/card-design.module';
+import { CqrsModule } from '@nestjs/cqrs';
 
 /**
  * Clase que representa el módulo de los usuarios y sus
@@ -16,6 +17,7 @@ import { CardDesignModule } from '../../card-design/config/card-design.module';
 @Module({
 	imports: [
 		DatabaseModule,
+		CqrsModule,
 		forwardRef(() => SecurityModule),
 		CardDesignModule,
 	],

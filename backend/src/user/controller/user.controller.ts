@@ -16,6 +16,8 @@ import { CardDesignId } from '../../card-design/card-design-id';
 import { DefaultResponse } from '../../shared/default.response';
 import { UpdateUserIconController } from './requests/update-user-icon.controller.request';
 import { UserIcon } from '../user-icon';
+import { CardDesignService } from '../../card-design/card-design.service';
+import { CardDesign } from '../../card-design/card-design';
 
 /**
  * Clase que contiene los puntos de entrada a la aplicación
@@ -30,10 +32,12 @@ export class UserController {
 	/**
 	 * @param {UserService} service Los servicios que permiten interactuar con los usuarios.
 	 * @param {SessionService} sessionService Los servicios que permiten interactuar con la sesión del usuario.
+	 * @param {CardDesignService} cardDesignService Los servicios que permiten actualizar con los diseños de cartas del usuario.
 	 */
 	constructor(
 		private readonly service: UserService,
 		private readonly sessionService: SessionService,
+		private readonly cardDesignService: CardDesignService,
 	) {
 	}
 
@@ -47,7 +51,8 @@ export class UserController {
 	@ApiResponse({ type: ExceptionResponseDTO })
 	async create(@Body() body: CreateUserControllerRequest): Promise<CreateUserControllerResponse> {
 		const response: CreateUserControllerResponse = new CreateUserControllerResponse();
-		const user: User = await this.service.create(body.username, body.password);
+		const defaultDesign: CardDesign = await this.cardDesignService.getDefault();
+		const user: User = await this.service.create(body.username, body.password, defaultDesign);
 		response.accessToken = this.sessionService.generateAccessToken(user.userId);
 		response.refreshToken = this.sessionService.generateRefreshToken(user.userId);
 		response.userId = user.userId.toString();
@@ -87,10 +92,8 @@ export class UserController {
 		@UserDecorator() user: UserDecoratorType,
 	): Promise<GetUserControllerResponse> {
 		const response: GetUserControllerResponse = new GetUserControllerResponse();
-		const data: User = await this.service.updateCardDesign(
-			new UserId(user.userId),
-			new CardDesignId(body.cardDesignId),
-		);
+		const cardDesign: CardDesign = await this.cardDesignService.getActiveById(new CardDesignId(body.cardDesignId));
+		const data: User = await this.service.updateCardDesign(new UserId(user.userId), cardDesign);
 		response.user = new GetUserResponseData(data.toDTO());
 		return response;
 	}

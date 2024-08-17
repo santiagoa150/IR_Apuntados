@@ -8,14 +8,17 @@ import {BackendUtils} from '../../utils/backend.utils.tsx';
 import {GameType} from '../../types/game.type.ts';
 import {PlayerWithUserType} from '../../types/player-with-user.type.ts';
 import {GamePlayersListComponent} from './ui/game-players-list/game-players-list.component.tsx';
-import {DiscardedCardsType} from "../../types/discarded-cards.type.ts";
-import {GameBoardComponent} from "./ui/game-board/game-board.component.tsx";
+import {DiscardedCardsType} from '../../types/discarded-cards.type.ts';
+import {GameBoardComponent} from './ui/game-board/game-board.component.tsx';
+import {PlayerType} from '../../types/player.type.ts';
 
 /**
  * Página para jugar un juego.
  * @constructor
  */
 export function GamePage(): JSX.Element {
+
+    const [currentPlayer, setCurrentPlayer] = useState<PlayerType | undefined>();
 
     /**
      * Configuración de los websockets.
@@ -26,6 +29,16 @@ export function GamePage(): JSX.Element {
     }, []);
     if (socket) {
         socket.emit(SocketConstants.GAME_CONNECTION_EVENT);
+        socket.on(SocketConstants.SHIFT_CHANGED_LISTENER, async (data: { player: PlayerType }) => {
+            const backendUtils: BackendUtils = new BackendUtils();
+            const res = await backendUtils.get<GetCurrentGameDetailResponse, never>(BackendConstants.GET_CURRENT_GAME_URL);
+            if (res) {
+                setGame(res.game);
+                setPlayers(res.players);
+                setDiscardedCards(res.discardedCards);
+            }
+            setCurrentPlayer(data.player);
+        });
     }
 
     /**
@@ -56,7 +69,7 @@ export function GamePage(): JSX.Element {
         <>
             <div className='page-container' id='game-page-container'>
                 <GamePlayersListComponent players={players} game={game}/>
-                <GameBoardComponent discardedCards={discardedCards}/>
+                <GameBoardComponent discardedCards={discardedCards} currentPlayer={currentPlayer}/>
             </div>
         </>
     );

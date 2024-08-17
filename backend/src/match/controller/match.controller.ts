@@ -9,6 +9,7 @@ import { GameDecorator } from '../../security/game.decorator';
 import { Game, GameDTO } from '../../game/game';
 import { UserId } from '../../user/user-id';
 import { DefaultResponse } from '../../shared/default.response';
+import { GameService } from '../../game/game.service';
 
 /**
  * Clase que contiene los puntos de entrada de la aplicación para las partidas.
@@ -18,10 +19,12 @@ import { DefaultResponse } from '../../shared/default.response';
 export class MatchController {
 
 	/**
-	 * @param service Los servicios de la partida.
+	 * @param {MatchService} service Los servicios de la partida.
+	 * @param {GameService} gameService Los servicios para acceder a los procesos de los juegos.
 	 */
 	constructor(
 		private readonly service: MatchService,
+		private readonly gameService: GameService,
 	) {
 	}
 
@@ -40,7 +43,8 @@ export class MatchController {
 		@GameDecorator() game: GameDTO,
 	): Promise<DefaultResponse> {
 		const response: DefaultResponse = new DefaultResponse();
-		await this.service.startByPlayer(new UserId(user.userId), Game.fromDTO(game));
+		const data = await this.service.startByPlayer(new UserId(user.userId), Game.fromDTO(game));
+		await this.gameService.update(data.game);
 		return response;
 	}
 }

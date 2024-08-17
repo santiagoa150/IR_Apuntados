@@ -90,6 +90,10 @@ export class Game extends DomainBase<GameDTO> {
 		this._currentMatch = value;
 	}
 
+	get currentMatch(): MatchId {
+		return this._currentMatch;
+	}
+
 	get hostId(): UserId {
 		return this._hostId;
 	}
@@ -160,21 +164,22 @@ export class Game extends DomainBase<GameDTO> {
 	 * Método que permite cambiar el estado de un juego, haciendo las
 	 * respectivas validaciones.
 	 * @param {GameStatusConstants} status El nuevo estado del juego.
-	 * @throws {GameIsAlreadyStartedException} Si lanza si un juego ya ha sido empezado y se intenta ingresar a un juego.
+	 * @throws {GameIsAlreadyStartedException} Se lanza si un juego ya ha sido empezado y se intenta ingresar a un juego.
+	 * @throws {GameCannotBeStartedException} Se lanza si el juego aún no está esperando para empezar.
 	 */
 	changeStatus(
 		status: GameStatusConstants,
 	): void {
 		switch (status) {
-			case GameStatusConstants.WAITING_TO_START: {
-				if (!this.status.is(GameStatusConstants.WAITING_PLAYERS)) throw new GameIsAlreadyStartedException();
-				break;
-			}
-			case GameStatusConstants.ACTIVE: {
-				if (!this.status.is(GameStatusConstants.WAITING_TO_START)) throw new GameCannotBeStartedException();
-				this._wasInitiated = true;
-				break;
-			}
+		case GameStatusConstants.WAITING_TO_START: {
+			if (!this.status.is(GameStatusConstants.WAITING_PLAYERS)) throw new GameIsAlreadyStartedException();
+			break;
+		}
+		case GameStatusConstants.ACTIVE: {
+			if (!this.status.is(GameStatusConstants.WAITING_TO_START)) throw new GameCannotBeStartedException();
+			this._wasInitiated = true;
+			break;
+		}
 		}
 		this.status.change(status);
 	}

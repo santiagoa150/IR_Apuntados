@@ -7,8 +7,8 @@ import { Match } from '../../../match/match';
 export class MatchStartedEvent {
 
 	/**
-	 * @param game El juego al que pertenece la partida.
-	 * @param match La partida iniciada.
+	 * @param {Game} game El juego al que pertenece la partida.
+	 * @param {Match} match La partida iniciada.
 	 */
 	constructor(
 		public readonly game: Game,

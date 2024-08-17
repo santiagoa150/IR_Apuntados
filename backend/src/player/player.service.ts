@@ -12,10 +12,15 @@ import { PlayerStatusConstants } from './player-status.constants';
 import { PlayerWithUserDTO } from './player-with-user.dto';
 import { PlayerQueries } from './player.queries';
 import { Match } from '../match/match';
-import { PlayerStatus } from './player-status';
 import { Card } from '../card/card';
 import { Trips } from '../card/trips';
 import { Quads } from '../card/quads';
+import { Game } from '../game/game';
+import { GameStatusConstants } from '../game/game-status.constants';
+import { InvalidGameStatusException } from '../game/exceptions/invalid-game-status.exception';
+import { MatchStatusConstants } from '../match/match-status.constants';
+import { InvalidMatchStatusException } from '../match/exceptions/invalid-match-status.exception';
+import { PlayerDoesNotHaveThisCardException } from './exceptions/player-does-not-have-this-card.exception';
 
 /**
  * Los servicios asociados a los jugadores.
@@ -29,9 +34,7 @@ export class PlayerService {
 	 * @param {Model<PlayerDocument>} model Modelo para interactuar con la
 	 * base de datos de los jugadores.
 	 */
-	constructor(
-		@Inject(DatabaseConstants.PLAYER_PROVIDER) private readonly model: Model<PlayerDocument>,
-	) {
+	constructor(@Inject(DatabaseConstants.PLAYER_PROVIDER) private readonly model: Model<PlayerDocument>) {
 	}
 
 	/**
@@ -71,9 +74,8 @@ export class PlayerService {
 			const cardsMap: Map<string, number> = new Map<string, number>();
 			const position: number = turns[Math.floor(Math.random() * turns.length)];
 			turns.splice(turns.indexOf(position), 1);
-			const newStatus: PlayerStatus = new PlayerStatus(position === 1 ? PlayerStatusConstants.IN_TURN : PlayerStatusConstants.WAITING_TURN);
 			player.position = position;
-			player.status = newStatus;
+			player.changeStatus(position === 1 ? PlayerStatusConstants.IN_TURN : PlayerStatusConstants.WAITING_TURN);
 			player.score = 0;
 
 			const trip1: Card[] = [], trip2: Card[] = [], quads: Card[] = [];
@@ -96,25 +98,82 @@ export class PlayerService {
 			player.trips2 = trip2 as Trips;
 			player.quads = quads as Quads;
 			player.cardsMap = cardsMap;
-			const { playerId, ...toUpdate } = await player.toDTO();
-			await this.model.updateOne({ playerId }, toUpdate);
+			await this.update(player);
 		}
 		this.logger.log(`[${this.dealCards.name}] FINISH ::`);
 		return match;
 	}
 
+	/**
+	 * Método que permite que un usuario pase el turno en una partida.
+	 * - Actualiza el jugador con el turno actual.
+	 * - Determina el jugador con el turno siguiente.
+	 * @param {UserId} userId El usuario que pasa el turno.
+	 * @param {Game} game El juego en el que se está pasando turno.
+	 * @param {Match} match La partida actual del juego.
+	 * @param {Trips} trips1 La nueva terna 1 del jugador.
+	 * @param {Trips} trips2 La nueva terna 2 del jugador.
+	 * @param {Quads} quads La nueva cuarta del jugador.
+	 * @param {Card} kicker La sobrante del jugador.
+	 * @returns {Player} El jugador actualizado.
+	 * @throws {PlayerDoesNotHaveThisCardException} Cuando se intenta actualizar la posición de una carta que no tiene el jugador.
+	 */
 	async passShift(
 		userId: UserId,
-		gameId: GameId,
+		game: Game,
+		match: Match,
 		trips1: Trips,
 		trips2: Trips,
 		quads: Quads,
 		kicker: Card,
-	): Promise<Player> {
+	): Promise<{ player: Player, nextPlayer: Player }> {
 		this.logger.log(`[${this.passShift.name}] INIT :: userId: ${userId?.toString()}`);
-		console.log(gameId, trips1, trips2, quads, kicker);
+		if (!game.status.is(GameStatusConstants.ACTIVE)) throw new InvalidGameStatusException();
+		const player: Player = await this.getActiveByUserId(userId);
+		if (!match.status.is(MatchStatusConstants.PLAYING)) throw new InvalidMatchStatusException();
+
+		/* Las validaciones del usuario. */
+		const cardsMapCopy: Map<string, number> = new Map(player.cardsMap);
+		const validateCard = (c: Card) => {
+			const cardIdentifier: string = c.type.toString() + c.suit.toString();
+			if (cardsMapCopy.has(cardIdentifier)) {
+				const total: number = cardsMapCopy.get(cardIdentifier);
+				if (total <= 0) throw new PlayerDoesNotHaveThisCardException();
+				cardsMapCopy.set(cardIdentifier, total - 1);
+			}
+		};
+
+		/* Actualización de los datos del jugador. */
+		trips1.forEach(c => validateCard(c));
+		trips2.forEach(c => validateCard(c));
+		quads.forEach(c => validateCard(c));
+		validateCard(kicker);
+		player.trips1 = trips1;
+		player.trips2 = trips2;
+		player.quads = quads;
+		player.kicker = null;
+		player.changeStatus(PlayerStatusConstants.WAITING_TURN);
+
+		/* Ajusta los datos del siguiente jugador. */
+		const nextPlayer: Player = await this.getByGameAndPosition(game.gameId, match.getNextPosition(player.position));
+		nextPlayer.changeStatus(PlayerStatusConstants.IN_TURN);
+
+		await this.update(player);
+		await this.update(nextPlayer);
+
 		this.logger.log(`[${this.passShift.name}] FINISH ::`);
-		return;
+		return { player, nextPlayer };
+	}
+
+	/**
+	 * Actualiza los datos de un jugador.
+	 * @param {Player} player El jugador que será actualizado.
+	 */
+	async update(player: Player): Promise<void> {
+		this.logger.log(`[${this.update.name}] INIT :: id: ${player.playerId.toString()}`);
+		const { playerId, ...toUpdate } = await player.toDTO();
+		await this.model.updateOne({ playerId }, toUpdate);
+		this.logger.log(`[${this.update.name}] FINISH ::`);
 	}
 
 	/**
@@ -178,6 +237,23 @@ export class PlayerService {
 				};
 			}));
 		this.logger.log(`[${this.getWithUserByGame.name}] FINISH ::`);
+		return mapped;
+	}
+
+	/**
+	 * Busca un jugador por un juego y su posición.
+	 * @param {GameId} gameId El juego al que pertenece el jugador.
+	 * @param {number} position La posición del jugador solicitado.
+	 * @param {boolean} [throwExceptionIfNotFound=true] Determina si se debe lanzar una excepción cuando un jugador no se encuentra.
+	 * @throws {PlayerNotFoundException} Si el booleano throwExceptionIfNotFound es verdadero y el jugador no se encuentra.
+	 * @returns {Player} El jugador solicitado.
+	 */
+	async getByGameAndPosition(gameId: GameId, position: number, throwExceptionIfNotFound: boolean = true): Promise<Player> {
+		this.logger.log(`[${this.getByGameAndPosition.name}] INIT :: game: ${gameId.toString()} pos: ${position}`);
+		const found: PlayerDocument = await this.model.findOne({ gameId: gameId.toString(), position });
+		const mapped: Player = found ? await Player.fromDTO(found) : undefined;
+		if (throwExceptionIfNotFound && !mapped) throw new PlayerNotFoundException();
+		this.logger.log(`[${this.getByGameAndPosition.name}] FINISH ::`);
 		return mapped;
 	}
 }

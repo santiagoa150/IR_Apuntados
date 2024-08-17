@@ -62,6 +62,10 @@ export enum BackendConstants {
      * Ruta para acceder al servicio que permite iniciar una partida.
      */
     START_MATCH_URL = '/api/match',
+    /**
+     * Ruta para acceder al servicio que permite pasar una partida.
+     */
+    PASS_SHIFT_URL = '/api/player/pass-shift'
 }
 
 /**
@@ -122,6 +126,10 @@ export const BackendConfigConstants: Record<BackendConstants, BackendConfigType>
         retryRequest: true,
     },
     [BackendConstants.START_MATCH_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
+    },
+    [BackendConstants.PASS_SHIFT_URL]: {
         requireAccessToken: true,
         retryRequest: true,
     }

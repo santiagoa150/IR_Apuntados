@@ -4,7 +4,7 @@ import {PlayerWithUserType} from '../../../../types/player-with-user.type.ts';
 import {buildProfileImageRoute} from '../../../../utils/profile-image.utils.ts';
 import {LocalLoadingComponent} from '../../../../components/loading/local/local-loading.component.tsx';
 import {GameType} from '../../../../types/game.type.ts';
-import {PlayerConstants} from "../../../../utils/constants/player.constants.ts";
+import {PlayerConstants} from '../../../../utils/constants/player.constants.ts';
 
 /**
  * Componente de la lista de jugadores de un juego.

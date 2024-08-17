@@ -7,6 +7,8 @@ import { PlayerId } from './player-id';
 import { GameId } from '../game/game-id';
 import { UserId } from '../user/user-id';
 import { PlayerStatus } from './player-status';
+import { PlayerStatusConstants } from './player-status.constants';
+import { InvalidPlayerStatusException } from './exceptions/invalid-player-status.exception';
 
 /**
  * Clase que representa el objeto de transferencia de un jugador.
@@ -35,7 +37,7 @@ export class PlayerDTO {
 export class Player extends DomainBase<PlayerDTO> {
 
 	public readonly gameId: GameId;
-	private readonly playerId: PlayerId;
+	private readonly _playerId: PlayerId;
 	private readonly userId: UserId;
 	private readonly isActive: boolean;
 
@@ -68,7 +70,7 @@ export class Player extends DomainBase<PlayerDTO> {
 		cardsMap?: Map<string, number>,
 	) {
 		super();
-		this.playerId = playerId;
+		this._playerId = playerId;
 		this.gameId = gameId;
 		this.userId = userId;
 		this._status = status;
@@ -80,6 +82,10 @@ export class Player extends DomainBase<PlayerDTO> {
 		this._position = position;
 		this._kicker = kicker;
 		this._cardsMap = cardsMap;
+	}
+
+	get playerId(): PlayerId {
+		return this._playerId;
 	}
 
 	private _cardsMap?: Map<string, number>;
@@ -125,6 +131,10 @@ export class Player extends DomainBase<PlayerDTO> {
 	}
 
 	private _position?: number;
+
+	get position(): number {
+		return this._position;
+	}
 
 	set position(value: number) {
 		this._position = value;
@@ -181,8 +191,8 @@ export class Player extends DomainBase<PlayerDTO> {
 		return {
 			gameId: this.gameId.toString(),
 			isActive: this.isActive,
-			kicker: this._kicker?.toDTO(),
-			playerId: this.playerId.toString(),
+			kicker: this._kicker ? this._kicker.toDTO() : null,
+			playerId: this._playerId.toString(),
 			position: this._position,
 			quads,
 			score: this._score,
@@ -192,5 +202,30 @@ export class Player extends DomainBase<PlayerDTO> {
 			userId: this.userId.toString(),
 			cardsMap: new Map(this._cardsMap),
 		};
+	}
+
+	/**
+	 * Método que permite cambiar el estado de un jugador, haciendo las respectivas validaciones.
+	 * @param {PlayerStatusConstants} status El nuevo estado del jugador.
+	 * @throws {InvalidPlayerStatusException} Si no se cumple algunas de las restricciones del negocio.
+	 */
+	changeStatus(status: PlayerStatusConstants): void {
+		switch (status) {
+		case PlayerStatusConstants.IN_TURN: {
+			if (
+				!this._status.is(PlayerStatusConstants.WAITING_GAME)
+					&& !this._status.is(PlayerStatusConstants.WAITING_TURN)
+			) throw new InvalidPlayerStatusException();
+			break;
+		}
+		case PlayerStatusConstants.WAITING_TURN: {
+			if (
+				!this._status.is(PlayerStatusConstants.WAITING_GAME)
+					&& !this._status.is(PlayerStatusConstants.IN_TURN)
+			) throw new InvalidPlayerStatusException();
+			break;
+		}
+		}
+		this._status.change(status);
 	}
 }

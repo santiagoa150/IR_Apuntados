@@ -5,6 +5,8 @@ import { DomainBase } from '../shared/domain.base';
 import { GameId } from '../game/game-id';
 import { MatchId } from './match-id';
 import { MatchStatus } from './match-status';
+import { Card } from '../card/card';
+import { CardWithDesign } from '../card/card-with-design';
 
 /**
  * El objeto de transferencia de datos de una partida.
@@ -32,8 +34,6 @@ export class Match extends DomainBase<MatchDTO> {
 	private readonly _status: MatchStatus;
 	private readonly _initialPlayers: number;
 	private readonly _currentPlayers: number;
-	private readonly _currentShift: number;
-	private readonly _totalShifts: number;
 	private readonly _discardedCards: DiscardedCards;
 	private readonly _cardDeck: CardDeck;
 
@@ -71,6 +71,18 @@ export class Match extends DomainBase<MatchDTO> {
 		this._cardDeck = cardDeck;
 	}
 
+	private _currentShift: number;
+
+	get currentShift(): number {
+		return this._currentShift;
+	}
+
+	private _totalShifts: number;
+
+	get totalShifts(): number {
+		return this._totalShifts;
+	}
+
 	get gameId(): GameId {
 		return this._gameId;
 	}
@@ -89,14 +101,6 @@ export class Match extends DomainBase<MatchDTO> {
 
 	get currentPlayers(): number {
 		return this._currentPlayers;
-	}
-
-	get currentShift(): number {
-		return this._currentShift;
-	}
-
-	get totalShifts(): number {
-		return this._totalShifts;
 	}
 
 	get discardedCards(): DiscardedCards {
@@ -142,5 +146,27 @@ export class Match extends DomainBase<MatchDTO> {
 			status: this._status.toString(),
 			totalShifts: this._totalShifts,
 		};
+	}
+
+	/**
+	 * Método que determina cuál es el turno siguiente de una partida.
+	 * @param {number} current El jugador actual en turno.
+	 * @returns {number} El siguiente turno.
+	 */
+	getNextPosition(current: number): number {
+		let rawNext: number = current + 1;
+		if (rawNext > this._currentPlayers) rawNext = 1;
+		return rawNext;
+	}
+
+	/**
+	 * Método que permite a una partida pasar el turno.
+	 * @param {number} current El turno del jugador actual.
+	 * @param {CardWithDesign} kicker La sobrante que se agregará a la partida.
+	 */
+	passShift(current: number, kicker: CardWithDesign): void {
+		this._currentShift = this.getNextPosition(current);
+		this._totalShifts += 1;
+		this._discardedCards.cards.push(kicker);
 	}
 }

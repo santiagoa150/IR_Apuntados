@@ -220,6 +220,10 @@ export enum ExceptionMessagesConstants {
 	 */
 	PASSWORD_MUST_BE_A_STRING_ERROR = 'PASSWORD_MUST_BE_A_STRING_ERROR',
 	/**
+	 * Se utiliza cuando un jugador no tiene una carta especificada.
+	 */
+	PLAYER_DOES_NOT_HAVE_THIS_CARD_ERROR = 'PLAYER_DOES_NOT_HAVE_THIS_CARD_ERROR',
+	/**
 	 * Se utiliza cuando se solicita un jugador que no existe.
 	 */
 	PLAYER_NOT_FOUND_ERROR = 'PLAYER_NOT_FOUND_ERROR',

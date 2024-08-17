@@ -21,8 +21,7 @@ export class SessionService {
 	 * @param {JwtService} jwtService Servicio para generar jwt tokens.
 	 * @param {UserService} userService Servicio de los usuarios.
 	 */
-	constructor(
-		private readonly jwtService: JwtService,
+	constructor(private readonly jwtService: JwtService,
 		private readonly userService: UserService,
 	) {
 	}

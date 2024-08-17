@@ -105,6 +105,22 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 	}
 
 	/**
+	 * Evento que notifica que un turno ha cambiado.
+	 * @param {Game} game El juego en el que cambió el turno.
+	 * @param {Match} match La partida en la que se cambió el turno.
+	 * @param {Player} nextPlayer El siguiente jugador en turno.
+	 */
+	async shiftChanged(game: Game, match: Match, nextPlayer: Player): Promise<void> {
+		this.logger.log(`[${this.shiftChanged.name}] INIT ::`);
+		const playerDTO: PlayerDTO = await nextPlayer.toDTO();
+		this.wsServer.to(game.gameId.toString()).emit(GameSocketConstants.SHIFT_CHANGED_LISTENER, {
+			matchId: match.matchId.toString(),
+			player: playerDTO,
+		});
+		this.logger.log(`[${this.shiftChanged.name}] FINISH ::`);
+	}
+
+	/**
 	 * Evento que se ejecuta cuando se inicializa el websocket.
 	 */
 	afterInit(): void {

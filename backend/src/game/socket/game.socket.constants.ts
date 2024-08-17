@@ -22,4 +22,8 @@ export enum GameSocketConstants {
 	 * El mensaje que indica que una partida fué iniciada.
 	 */
 	MATCH_STARTED_LISTENER = 'MATCH_STARTED_LISTENER',
+	/**
+	 * El mensaje que indica que un turno ha cambiado.
+	 */
+	SHIFT_CHANGED_LISTENER = 'SHIFT_CHANGED_LISTENER',
 }

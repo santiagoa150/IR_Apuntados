@@ -8,18 +8,20 @@ import { ExceptionResponseDTO } from '../../shared/exceptions/exception.response
 import { Player } from '../player';
 import { UserDecorator, UserDecoratorType } from '../../security/user.decorator';
 import { UserId } from '../../user/user-id';
-
-
 import { User } from '../../user/user';
 import { UserService } from '../../user/user.service';
 import { GameDecorator } from '../../security/game.decorator';
-import { GameDTO } from '../../game/game';
-import { GameId } from '../../game/game-id';
+import { Game, GameDTO } from '../../game/game';
 import { PassShiftCard, PassShiftControllerRequest } from './requests/pass-shift.controller.request';
 import { Card } from '../../card/card';
 import { CardValueConstants } from '../../card/card-value.constants';
 import { Trips } from '../../card/trips';
 import { Quads } from '../../card/quads';
+import { Match } from '../../match/match';
+import { MatchService } from '../../match/match.service';
+import { EventBus } from '@nestjs/cqrs';
+import { ShiftChangedEvent } from '../../game/events/shift-changed/shift-changed.event';
+import { CardWithDesign } from '../../card/card-with-design';
 
 /**
  * El controlador de los jugadores.
@@ -29,12 +31,16 @@ import { Quads } from '../../card/quads';
 export class PlayerController {
 
 	/**
-	 * @param userService Los servicios de los usuarios.
-	 * @param playerService Los servicios de los jugadores.
+	 * @param {UserService} userService Los servicios de los usuarios.
+	 * @param {PlayerService} playerService Los servicios de los jugadores.
+	 * @param {MatchService} matchService Los servicios para acceder a los procesos de las partidas.
+	 * @param {EventBus} eventBus El bus de eventos para ejecutar con CQRS.
 	 */
 	constructor(
 		private readonly userService: UserService,
 		private readonly playerService: PlayerService,
+		private readonly matchService: MatchService,
+		private readonly eventBus: EventBus,
 	) {
 	}
 
@@ -62,8 +68,8 @@ export class PlayerController {
 	/**
 	 * Punto de entrada PATCh para pasar el turno en una partida.
 	 * @param {PassShiftControllerRequest} body Los argumentos necesarios para el funcionamiento.
-	 * @param {UserDecoratorType} user El usuario que ejecuta el servicio.
-	 * @param {GameDTO} game El juego en el que se está pasando el turno.
+	 * @param {UserDecoratorType} userDecorator El usuario que ejecuta el servicio.
+	 * @param {GameDTO} gameDTO El juego en el que se está pasando el turno.
 	 * @returns {PlayerControllerResponse} La respuesta genérica de los controladores de los jugadores.
 	 */
 	@Patch(PlayerControllerConstants.PASS_SHIFT_URL)
@@ -72,8 +78,8 @@ export class PlayerController {
 	@ApiResponse({ type: ExceptionResponseDTO })
 	async passShift(
 		@Body() body: PassShiftControllerRequest,
-		@UserDecorator() user: UserDecoratorType,
-		@GameDecorator() game: GameDTO,
+		@UserDecorator() userDecorator: UserDecoratorType,
+		@GameDecorator() gameDTO: GameDTO,
 	): Promise<PlayerControllerResponse> {
 		const response: PlayerControllerResponse = new PlayerControllerResponse();
 		const mapper = (c: PassShiftCard) => Card.fromDTO({
@@ -81,15 +87,35 @@ export class PlayerController {
 			type: c.type,
 			value: CardValueConstants[c.type],
 		});
-		const updated: Player = await this.playerService.passShift(
-			new UserId(user.userId),
-			new GameId(game.gameId),
+		const game: Game = Game.fromDTO(gameDTO);
+		const match: Match = await this.matchService.getById(game.currentMatch);
+		const user: User = await this.userService.getById(new UserId(userDecorator.userId));
+
+		console.log(body.trips1);
+		console.log(body.trips2);
+		console.log(body.quads);
+		console.log(body.kicker);
+
+		const data = await this.playerService.passShift(
+			user.userId,
+			game,
+			match,
 			body.trips1.map(c => mapper(c)) as Trips,
 			body.trips2.map(c => mapper(c)) as Trips,
 			body.quads.map(c => mapper(c)) as Quads,
 			mapper(body.kicker),
 		);
-		response.player = await updated.toDTO();
+		const kickerWithDesign = CardWithDesign.fromDTO({
+			cardDesignId: user.currentDesignId.toString(),
+			cardDesignName: user.currentDesignName,
+			suit: body.kicker.suit,
+			type: body.kicker.type,
+			value: CardValueConstants[body.kicker.type],
+		});
+		const updatedMatch: Match = await this.matchService.passShift(match, kickerWithDesign, data.player);
+		this.eventBus.publish(new ShiftChangedEvent(game, updatedMatch, data.nextPlayer));
+		response.player = await data.player.toDTO();
+		response.currentDesignName = user.currentDesignName;
 		return response;
 	}
 }
