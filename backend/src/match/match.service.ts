@@ -27,7 +27,6 @@ import { CardWithDesign } from '../card/card-with-design';
  */
 @Injectable()
 export class MatchService {
-
 	private readonly logger: Logger = new Logger(MatchService.name);
 	private readonly defaultCardDeck: CardDTO[];
 
@@ -66,7 +65,7 @@ export class MatchService {
 	 * @throws {MatchCannotBeStartedException} Cuando la partida no está lista para ser iniciada.
 	 * @throws {OnlyGameHostCanStartTheMatchException} Indica que solo el host de la partida puede iniciar la partida.
 	 */
-	async startByPlayer(userId: UserId, game: Game): Promise<{ match: Match, game: Game }> {
+	async startByPlayer(userId: UserId, game: Game): Promise<{ match: Match; game: Game }> {
 		this.logger.log(`[${this.startByPlayer.name}] INIT :: user: ${userId}, game: ${game.gameId.toString()}`);
 		if (!game.status.is(GameStatusConstants.WAITING_TO_START)) throw new MatchCannotBeStartedException();
 		if (game.hostId.toString() !== userId.toString()) {
@@ -75,7 +74,8 @@ export class MatchService {
 		const matchId: MatchId = new MatchId(MatchId.create());
 		game.changeStatus(GameStatusConstants.ACTIVE);
 		game.currentMatch = matchId;
-		const defaultCards: CardDTO[] = game.currentPlayers < 4 ? this.defaultCardDeck : [...this.defaultCardDeck, ...this.defaultCardDeck];
+		const defaultCards: CardDTO[] =
+			game.currentPlayers < 4 ? this.defaultCardDeck : [...this.defaultCardDeck, ...this.defaultCardDeck];
 		let match: Match = await Match.fromDTO({
 			gameId: game.gameId.toString(),
 			status: MatchStatusConstants.PLAYING,
@@ -122,9 +122,19 @@ export class MatchService {
 		this.logger.log(`[${this.passShift.name}] INIT :: match: ${match.matchId.toString()}`);
 		if (!match.status.is(MatchStatusConstants.PLAYING)) throw new InvalidMatchStatusException();
 		match.passShift(currentPlayer.position, kicker);
-		const { matchId, ...toUpdate } = await match.toDTO();
-		await this.model.updateOne({ matchId: matchId }, toUpdate);
+		await this.update(match);
 		this.logger.log(`[${this.passShift.name}] FINISH ::`);
 		return match;
+	}
+
+	/**
+	 * Método que actualiza una partida.
+	 * @param {Match} match La partida que se actualizará.
+	 */
+	async update(match: Match): Promise<void> {
+		this.logger.log(`[${this.update.name}] INIT ::`);
+		const { matchId, ...toUpdate } = await match.toDTO();
+		await this.model.updateOne({ matchId: matchId }, toUpdate);
+		this.logger.log(`[${this.update.name}] FINISH ::`);
 	}
 }

@@ -65,7 +65,11 @@ export enum BackendConstants {
     /**
      * Ruta para acceder al servicio que permite pasar una partida.
      */
-    PASS_SHIFT_URL = '/api/player/pass-shift'
+    PASS_SHIFT_URL = '/api/player/pass-shift',
+    /**
+     * Ruta para acceder al servicio que permite jalar una carta desde el mazo.
+     */
+    PULL_FROM_CARD_DECK_URL = '/api/player/pull-from-card-deck'
 }
 
 /**
@@ -130,6 +134,10 @@ export const BackendConfigConstants: Record<BackendConstants, BackendConfigType>
         retryRequest: true,
     },
     [BackendConstants.PASS_SHIFT_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
+    },
+    [BackendConstants.PULL_FROM_CARD_DECK_URL]: {
         requireAccessToken: true,
         retryRequest: true,
     }

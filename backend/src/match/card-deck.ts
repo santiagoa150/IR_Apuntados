@@ -14,7 +14,7 @@ export class CardDeckDTO {
  */
 export class CardDeck extends DomainBase<CardDeckDTO> {
 
-	private readonly _cards: Card[];
+	private _cards: Card[];
 
 	/**
 	 * @param cards Las cartas disponibles en el mazo de cartas.
@@ -26,6 +26,10 @@ export class CardDeck extends DomainBase<CardDeckDTO> {
 
 	get cards(): Card[] {
 		return this._cards;
+	}
+
+	set cards(value: Card[]) {
+		this._cards = value;
 	}
 
 	/**

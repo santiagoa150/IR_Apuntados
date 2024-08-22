@@ -56,7 +56,7 @@ export enum ExceptionMessagesConstants {
 	GAME_EXCEEDS_ITS_PLAYER_COUNT_ERROR = 'GAME_EXCEEDS_ITS_PLAYER_COUNT_ERROR',
 	/**
 	 * Se utiliza cuando se intenta ingresar a un juego que
-	 * ya fué iniciado.
+	 * ya fue iniciado.
 	 */
 	GAME_IS_ALREADY_STARTED = 'GAME_IS_ALREADY_STARTED',
 	/**
@@ -69,7 +69,7 @@ export enum ExceptionMessagesConstants {
 	GAME_ID_MUST_BE_A_STRING_ERROR = 'GAME_ID_MUST_BE_A_STRING_ERROR',
 	/**
 	 * Se utiliza cuando se intenta acceder a los recursos de un juego
-	 * que ya fué finalizado.
+	 * que ya fue finalizado.
 	 */
 	GAME_IS_ALREADY_FINISHED_ERROR = 'GAME_IS_ALREADY_FINISHED_ERROR',
 	/**
@@ -219,6 +219,10 @@ export enum ExceptionMessagesConstants {
 	 * Se utiliza cuando se valida una contraseña y no es de tipo string.
 	 */
 	PASSWORD_MUST_BE_A_STRING_ERROR = 'PASSWORD_MUST_BE_A_STRING_ERROR',
+	/**
+	 * Se utiliza cuando un jugador intenta jalar carta y ya lo ha hecho.
+	 */
+	PLAYER_ALREADY_PULL_CARD_ERROR = 'PLAYER_ALREADY_PULL_CARD_ERROR',
 	/**
 	 * Se utiliza cuando un jugador no tiene una carta especificada.
 	 */

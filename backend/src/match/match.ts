@@ -5,8 +5,8 @@ import { DomainBase } from '../shared/domain.base';
 import { GameId } from '../game/game-id';
 import { MatchId } from './match-id';
 import { MatchStatus } from './match-status';
-import { Card } from '../card/card';
 import { CardWithDesign } from '../card/card-with-design';
+import { Card } from '../card/card';
 
 /**
  * El objeto de transferencia de datos de una partida.
@@ -28,7 +28,6 @@ export class MatchDTO {
  * @extends {DomainBase<MatchDTO>}
  */
 export class Match extends DomainBase<MatchDTO> {
-
 	private readonly _gameId: GameId;
 	private readonly _matchId: MatchId;
 	private readonly _status: MatchStatus;
@@ -168,5 +167,32 @@ export class Match extends DomainBase<MatchDTO> {
 		this._currentShift = this.getNextPosition(current);
 		this._totalShifts += 1;
 		this._discardedCards.cards.push(kicker);
+	}
+
+	/**
+	 * Rellena la baraja de cartas de una partida a partir de las cartas descartadas.
+	 */
+	fillCardDeck(): void {
+		this._cardDeck.cards = this._discardedCards.cards;
+		this._discardedCards.cards = [];
+	}
+
+	/**
+	 * Jala una carta del mazo de cartas.
+	 * @returns La carta jalada y un booleano que determina si el mazo fue rellenado.
+	 */
+	pullFromDeck(): { card: Card; filledDeck: boolean } {
+		let filledDeck: boolean = false;
+		const length: number = this._cardDeck.cards.length;
+		if (length === 0) {
+			this.fillCardDeck();
+			filledDeck = true;
+		}
+		const cardDeck: Card[] = this.cardDeck.cards;
+		const cardNumber: number = Math.floor(Math.random() * length);
+		const card: Card = cardDeck[cardNumber];
+		cardDeck.splice(cardNumber, 1);
+		this._cardDeck.cards = cardDeck;
+		return { card, filledDeck };
 	}
 }

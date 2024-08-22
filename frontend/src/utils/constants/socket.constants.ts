@@ -20,11 +20,15 @@ export enum SocketConstants {
      */
     GAME_READY_TO_START_LISTENER = 'GAME_READY_TO_START_LISTENER',
     /**
-     * El mensaje que indica que una partida fué iniciada.
+     * El mensaje que indica que una partida fue iniciada.
      */
     MATCH_STARTED_LISTENER = 'MATCH_STARTED_LISTENER',
     /**
      * El mensaje que indica que un turno ha cambiado.
      */
     SHIFT_CHANGED_LISTENER = 'SHIFT_CHANGED_LISTENER',
+    /**
+     * El mensaje que indica que un mazo de cartas fue rellenado.
+     */
+    CARD_DECK_FILLED_LISTENER = 'CARD_DECK_FILLED_LISTENER'
 }

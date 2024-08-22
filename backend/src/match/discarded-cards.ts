@@ -11,7 +11,7 @@ export class DiscardedCardsDTO {
 
 export class DiscardedCards extends DomainBase<DiscardedCardsDTO> {
 
-	private readonly _cards: CardWithDesign[];
+	private _cards: CardWithDesign[];
 
 	/**
 	 * @param cards Las cartas desechadas.
@@ -23,6 +23,10 @@ export class DiscardedCards extends DomainBase<DiscardedCardsDTO> {
 
 	get cards(): CardWithDesign[] {
 		return this._cards;
+	}
+
+	set cards(value: CardWithDesign[]) {
+		this._cards = value;
 	}
 
 	/**

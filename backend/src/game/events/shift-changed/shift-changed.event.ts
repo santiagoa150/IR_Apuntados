@@ -3,7 +3,7 @@ import { Game } from '../../game';
 import { Player } from '../../../player/player';
 
 /**
- * Evento para indicar que un turno
+ * Evento para indicar que un turno cambió.
  */
 export class ShiftChangedEvent {
 

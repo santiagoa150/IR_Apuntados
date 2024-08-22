@@ -18,6 +18,7 @@ import { User, UserDTO } from '../../user/user';
 import { Player, PlayerDTO } from '../../player/player';
 import { PlayerWithUserDTO } from '../../player/player-with-user.dto';
 import { Match } from '../../match/match';
+import { GameId } from '../game-id';
 
 /**
  * Websocket con socket.io para manejar los eventos de los juegos.
@@ -27,7 +28,6 @@ import { Match } from '../../match/match';
 	namespace: GameSocketConstants.GAME_SOCKET_NAMESPACE,
 })
 export class GameSocket implements OnGatewayInit, OnGatewayConnection {
-
 	@WebSocketServer() wsServer: Server;
 	private readonly logger: Logger = new Logger(GameSocket.name);
 
@@ -46,7 +46,9 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 		@GameDecorator() game: GameDTO,
 		@ConnectedSocket() socket: Socket,
 	): void {
-		this.logger.log(`[${this.gameConnection.name}] INIT :: user: ${user.userId}, game: ${game.gameId}, socket: ${socket.id}`);
+		this.logger.log(
+			`[${this.gameConnection.name}] INIT :: user: ${user.userId}, game: ${game.gameId}, socket: ${socket.id}`,
+		);
 		socket.join(game.gameId);
 		socket.data.gameId = game.gameId;
 	}
@@ -58,7 +60,9 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 	 * @param game El juego al que ingresó.
 	 */
 	async joinPlayer(user: User, player: Player, game: Game): Promise<void> {
-		this.logger.log(`[${this.joinPlayer.name}] INIT :: user: ${user.userId.toString()}, game: ${game.gameId.toString()}`);
+		this.logger.log(
+			`[${this.joinPlayer.name}] INIT :: user: ${user.userId.toString()}, game: ${game.gameId.toString()}`,
+		);
 		const playerDTO: PlayerDTO = await player.toDTO();
 		const userDTO: UserDTO = user.toDTO();
 		const args: PlayerWithUserDTO = {
@@ -118,6 +122,19 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 			player: playerDTO,
 		});
 		this.logger.log(`[${this.shiftChanged.name}] FINISH ::`);
+	}
+
+	/**
+	 * Evento que notifica que el mazo de cartas ha sido actualizado.
+	 * @param {GameId} gameId El juego al que se le notificará el evento.
+	 * @param {Match} match La partida en la que se rellenó el mazo.
+	 */
+	async cardDeckFilled(gameId: GameId, match: Match): Promise<void> {
+		this.logger.log(`[${this.cardDeckFilled.name}] INIT ::`);
+		this.wsServer.to(gameId.toString()).emit(GameSocketConstants.CARD_DECK_FILLED_LISTENER, {
+			discardedCards: await match.discardedCards.toDTO(),
+		});
+		this.logger.log(`[${this.cardDeckFilled.name}] FINISH ::`);
 	}
 
 	/**

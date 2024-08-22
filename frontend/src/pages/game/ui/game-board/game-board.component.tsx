@@ -1,5 +1,5 @@
 import './game-board.component.css';
-import React, {JSX, useEffect, useState} from 'react';
+import React, {Dispatch, JSX, SetStateAction, useEffect, useState} from 'react';
 import {DiscardedCardsType} from '../../../../types/discarded-cards.type.ts';
 import {PlayerType} from '../../../../types/player.type.ts';
 import {BackendConstants} from '../../../../utils/constants/backend.constants.ts';
@@ -23,6 +23,7 @@ import EmptyDiscardedCardsImage from '../../../../../public/assets/images/game/e
 import {PlayerConstants} from '../../../../utils/constants/player.constants.ts';
 import {PassShiftRequest, PassShiftResponse} from '../../../../types/services/pass-shift.ts';
 import {GlobalLoadingComponent} from '../../../../components/loading/global/global-loading.component.tsx';
+import {PullFromCardDeckResponse} from '../../../../types/services/pull-from-card-deck.ts';
 
 /**
  *  Componente que define el tablero del juego.
@@ -32,6 +33,7 @@ import {GlobalLoadingComponent} from '../../../../components/loading/global/glob
  */
 export function GameBoardComponent(props: {
     discardedCards: DiscardedCardsType | undefined,
+    setDiscardedCards: Dispatch<SetStateAction<DiscardedCardsType | undefined>>
     currentPlayer: PlayerType | undefined
 }): JSX.Element {
 
@@ -46,6 +48,20 @@ export function GameBoardComponent(props: {
     const [currentDesign, setCurrentDesign] = useState<string | undefined>();
 
     /**
+     * Función que permite guardar los datos de un jugador en los hooks.
+     * @param {PlayerType} player El jugador que se guardará.
+     * @param {string} [design] El diseño de cartas del jugador.
+     */
+    const setPlayerData = (player: PlayerType, design?: string): void => {
+        setPlayer(player);
+        setTrips1(player.trips1);
+        setTrips2(player.trips2);
+        setQuads(player.quads);
+        setKicker(player.kicker);
+        if (design) setCurrentDesign(design);
+    };
+
+    /**
      * Hooks para el funcionamiento del componente.
      */
     const [loading, setLoading] = useState<boolean>(false);
@@ -54,25 +70,15 @@ export function GameBoardComponent(props: {
         async function fetchData(): Promise<void> {
             const backendUtils: BackendUtils = new BackendUtils();
             const res = await backendUtils.get<GetCurrentPlayerResponse, never>(BackendConstants.GET_CURRENT_PLAYER_URL);
-            if (res) {
-                setPlayer(res.player);
-                setTrips1(res.player.trips1);
-                setTrips2(res.player.trips2);
-                setQuads(res.player.quads);
-                setKicker(res.player.kicker);
-                setCurrentDesign(res.currentDesignName);
-            }
+            if (res) setPlayerData(res.player, res.currentDesignName);
         }
+
         fetchData().then();
     }, []);
 
     useEffect(() => {
         if (props.currentPlayer && player && player.playerId == props.currentPlayer.playerId) {
-            setPlayer(props.currentPlayer);
-            setTrips1(props.currentPlayer.trips1);
-            setTrips2(props.currentPlayer.trips2);
-            setQuads(props.currentPlayer.quads);
-            setKicker(props.currentPlayer.kicker);
+            setPlayerData(props.currentPlayer);
         }
     }, [props.currentPlayer]);
 
@@ -141,6 +147,9 @@ export function GameBoardComponent(props: {
         }
     };
 
+    /**
+     * Ejecuta las acciones respectivas para las cartas descartadas.
+     */
     const discardedCardsAction = async (): Promise<void> => {
         if (kicker) {
             if (trips1 && trips2 && quads) {
@@ -151,18 +160,26 @@ export function GameBoardComponent(props: {
                 const res = await backendUtils.patch<PassShiftResponse, PassShiftRequest>(BackendConstants.PASS_SHIFT_URL, {
                     kicker, quads, trips1, trips2,
                 });
-                if (res) {
-                    setPlayer(res.player);
-                    setTrips1(res.player.trips1);
-                    setTrips2(res.player.trips2);
-                    setQuads(res.player.quads);
-                    setKicker(res.player.kicker);
-                    setCurrentDesign(res.currentDesignName);
-                }
+                if (res) setPlayerData(res.player, res.currentDesignName);
                 setLoading(false);
             }
         } else {
             console.log('Not implemented.');
+        }
+    };
+
+    /**
+     * Ejecuta las acciones respectivas para el mazo de la partida.
+     */
+    const cardDeckActions = async (): Promise<void> => {
+        if (!kicker && player && player.status === PlayerConstants.IN_TURN_PLAYER_STATUS) {
+            setLoading(true);
+            const backendUtils: BackendUtils = new BackendUtils(() => {
+                setLoading(false);
+            });
+            const res = await backendUtils.patch<PullFromCardDeckResponse, unknown>(BackendConstants.PULL_FROM_CARD_DECK_URL, {});
+            if (res) setPlayerData(res.player);
+            setLoading(false);
         }
     };
 
@@ -171,6 +188,7 @@ export function GameBoardComponent(props: {
             <div id='game-board-component-container' className='component-container'>
                 <div id='game-board-maze-container'>
                     <img
+                        onClick={cardDeckActions}
                         className={`game-board-maze-container-item ${
                             player && player.status === PlayerConstants.IN_TURN_PLAYER_STATUS && !kicker
                                 ? 'game-element-available' : ''

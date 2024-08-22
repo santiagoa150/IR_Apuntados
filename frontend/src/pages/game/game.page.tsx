@@ -26,20 +26,26 @@ export function GamePage(): JSX.Element {
     const {socket, connectWebSocket} = useWebSocket();
     useEffect(() => {
         if (!socket) connectWebSocket();
-    }, []);
-    if (socket) {
-        socket.emit(SocketConstants.GAME_CONNECTION_EVENT);
-        socket.on(SocketConstants.SHIFT_CHANGED_LISTENER, async (data: { player: PlayerType }) => {
-            const backendUtils: BackendUtils = new BackendUtils();
-            const res = await backendUtils.get<GetCurrentGameDetailResponse, never>(BackendConstants.GET_CURRENT_GAME_URL);
-            if (res) {
-                setGame(res.game);
-                setPlayers(res.players);
-                setDiscardedCards(res.discardedCards);
-            }
-            setCurrentPlayer(data.player);
-        });
-    }
+    }, [socket]);
+
+    useEffect(() => {
+        if (socket) {
+            socket.emit(SocketConstants.GAME_CONNECTION_EVENT);
+            socket.on(SocketConstants.SHIFT_CHANGED_LISTENER, async (data: { player: PlayerType }) => {
+                const backendUtils: BackendUtils = new BackendUtils();
+                const res = await backendUtils.get<GetCurrentGameDetailResponse, never>(BackendConstants.GET_CURRENT_GAME_URL);
+                if (res) {
+                    setGame(res.game);
+                    setPlayers(res.players);
+                    setDiscardedCards(res.discardedCards);
+                }
+                setCurrentPlayer(data.player);
+            });
+            socket.on(SocketConstants.CARD_DECK_FILLED_LISTENER, ({discardedCards}: { discardedCards: DiscardedCardsType }) => {
+                setDiscardedCards(discardedCards);
+            });
+        }
+    }, [socket]);
 
     /**
      * Hooks para el funcionamiento de la página.
@@ -69,7 +75,11 @@ export function GamePage(): JSX.Element {
         <>
             <div className='page-container' id='game-page-container'>
                 <GamePlayersListComponent players={players} game={game}/>
-                <GameBoardComponent discardedCards={discardedCards} currentPlayer={currentPlayer}/>
+                <GameBoardComponent
+                    discardedCards={discardedCards}
+                    setDiscardedCards={setDiscardedCards}
+                    currentPlayer={currentPlayer}
+                />
             </div>
         </>
     );

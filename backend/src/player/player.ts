@@ -35,7 +35,6 @@ export class PlayerDTO {
  * @extends {DomainBase<PlayerDTO>}
  */
 export class Player extends DomainBase<PlayerDTO> {
-
 	public readonly gameId: GameId;
 	private readonly _playerId: PlayerId;
 	private readonly userId: UserId;
@@ -126,6 +125,10 @@ export class Player extends DomainBase<PlayerDTO> {
 
 	private _status: PlayerStatus;
 
+	get status(): PlayerStatus {
+		return this._status;
+	}
+
 	set status(value: PlayerStatus) {
 		this._status = value;
 	}
@@ -140,6 +143,10 @@ export class Player extends DomainBase<PlayerDTO> {
 		this._position = value;
 	}
 
+	get kicker(): Card {
+		return this._kicker;
+	}
+
 	/**
 	 * Convierte el objeto de transferencia de un jugador al modelo de dominio.
 	 * @param {PlayerDTO} dto El objeto de transferencia.
@@ -148,14 +155,17 @@ export class Player extends DomainBase<PlayerDTO> {
 	 * @async
 	 */
 	static async fromDTO(dto: PlayerDTO): Promise<Player> {
-		const trips1: Trips = Array.isArray(dto.trips1) ?
-			await Promise.all(dto.trips1.map(async (t) => Card.fromDTO(t))) as Trips : undefined;
+		const trips1: Trips = Array.isArray(dto.trips1)
+			? ((await Promise.all(dto.trips1.map(async (t) => Card.fromDTO(t)))) as Trips)
+			: undefined;
 
-		const trips2: Trips = Array.isArray(dto.trips2) ?
-			await Promise.all(dto.trips2.map(async (t) => Card.fromDTO(t))) as Trips : undefined;
+		const trips2: Trips = Array.isArray(dto.trips2)
+			? ((await Promise.all(dto.trips2.map(async (t) => Card.fromDTO(t)))) as Trips)
+			: undefined;
 
-		const quads: Quads = Array.isArray(dto.quads) ?
-			await Promise.all(dto.quads.map(async (q) => Card.fromDTO(q))) as Quads : undefined;
+		const quads: Quads = Array.isArray(dto.quads)
+			? ((await Promise.all(dto.quads.map(async (q) => Card.fromDTO(q)))) as Quads)
+			: undefined;
 
 		return new Player(
 			new PlayerId(dto.playerId),
@@ -179,14 +189,17 @@ export class Player extends DomainBase<PlayerDTO> {
 	 * @async
 	 */
 	public async toDTO(): Promise<PlayerDTO> {
-		const trips1: TripsDTO = Array.isArray(this._trips1) ?
-			await Promise.all(this._trips1.map(async (t) => t.toDTO())) as TripsDTO : undefined;
+		const trips1: TripsDTO = Array.isArray(this._trips1)
+			? ((await Promise.all(this._trips1.map(async (t) => t.toDTO()))) as TripsDTO)
+			: undefined;
 
-		const trips2: TripsDTO = Array.isArray(this._trips2) ?
-			await Promise.all(this._trips2.map(async (t) => t.toDTO())) as TripsDTO : undefined;
+		const trips2: TripsDTO = Array.isArray(this._trips2)
+			? ((await Promise.all(this._trips2.map(async (t) => t.toDTO()))) as TripsDTO)
+			: undefined;
 
-		const quads: QuadsDTO = Array.isArray(this._quads) ?
-			await Promise.all(this._quads.map(async (q) => q.toDTO())) as QuadsDTO : undefined;
+		const quads: QuadsDTO = Array.isArray(this._quads)
+			? ((await Promise.all(this._quads.map(async (q) => q.toDTO()))) as QuadsDTO)
+			: undefined;
 
 		return {
 			gameId: this.gameId.toString(),
@@ -213,16 +226,18 @@ export class Player extends DomainBase<PlayerDTO> {
 		switch (status) {
 		case PlayerStatusConstants.IN_TURN: {
 			if (
-				!this._status.is(PlayerStatusConstants.WAITING_GAME)
-					&& !this._status.is(PlayerStatusConstants.WAITING_TURN)
-			) throw new InvalidPlayerStatusException();
+				!this._status.is(PlayerStatusConstants.WAITING_GAME) &&
+					!this._status.is(PlayerStatusConstants.WAITING_TURN)
+			)
+				throw new InvalidPlayerStatusException();
 			break;
 		}
 		case PlayerStatusConstants.WAITING_TURN: {
 			if (
-				!this._status.is(PlayerStatusConstants.WAITING_GAME)
-					&& !this._status.is(PlayerStatusConstants.IN_TURN)
-			) throw new InvalidPlayerStatusException();
+				!this._status.is(PlayerStatusConstants.WAITING_GAME) &&
+					!this._status.is(PlayerStatusConstants.IN_TURN)
+			)
+				throw new InvalidPlayerStatusException();
 			break;
 		}
 		}

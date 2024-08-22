@@ -22,6 +22,9 @@ import { MatchService } from '../../match/match.service';
 import { EventBus } from '@nestjs/cqrs';
 import { ShiftChangedEvent } from '../../game/events/shift-changed/shift-changed.event';
 import { CardWithDesign } from '../../card/card-with-design';
+import { MatchId } from '../../match/match-id';
+import { GameId } from '../../game/game-id';
+import { CardDeckFilledEvent } from '../../game/events/card-deck-filled/card-deck-filled.event';
 
 /**
  * El controlador de los jugadores.
@@ -29,7 +32,6 @@ import { CardWithDesign } from '../../card/card-with-design';
 @Controller(PlayerControllerConstants.CONTROLLER_PREFIX)
 @ApiTags(PlayerControllerConstants.CONTROLLER_TAG)
 export class PlayerController {
-
 	/**
 	 * @param {UserService} userService Los servicios de los usuarios.
 	 * @param {PlayerService} playerService Los servicios de los jugadores.
@@ -41,8 +43,7 @@ export class PlayerController {
 		private readonly playerService: PlayerService,
 		private readonly matchService: MatchService,
 		private readonly eventBus: EventBus,
-	) {
-	}
+	) {}
 
 	/**
 	 * Punto de entrada GET para obtener el jugador actual de un usuario.
@@ -53,9 +54,7 @@ export class PlayerController {
 	@GameAuthDecorator()
 	@ApiOkResponse({ type: PlayerControllerResponse })
 	@ApiResponse({ type: ExceptionResponseDTO })
-	async getCurrentPlayer(
-		@UserDecorator() user: UserDecoratorType,
-	): Promise<PlayerControllerResponse> {
+	async getCurrentPlayer(@UserDecorator() user: UserDecoratorType): Promise<PlayerControllerResponse> {
 		const response: PlayerControllerResponse = new PlayerControllerResponse();
 		const userId: UserId = new UserId(user.userId);
 		const userData: User = await this.userService.getById(userId);
@@ -82,27 +81,22 @@ export class PlayerController {
 		@GameDecorator() gameDTO: GameDTO,
 	): Promise<PlayerControllerResponse> {
 		const response: PlayerControllerResponse = new PlayerControllerResponse();
-		const mapper = (c: PassShiftCard) => Card.fromDTO({
-			suit: c.suit,
-			type: c.type,
-			value: CardValueConstants[c.type],
-		});
+		const mapper = (c: PassShiftCard) =>
+			Card.fromDTO({
+				suit: c.suit,
+				type: c.type,
+				value: CardValueConstants[c.type],
+			});
 		const game: Game = Game.fromDTO(gameDTO);
 		const match: Match = await this.matchService.getById(game.currentMatch);
 		const user: User = await this.userService.getById(new UserId(userDecorator.userId));
-
-		console.log(body.trips1);
-		console.log(body.trips2);
-		console.log(body.quads);
-		console.log(body.kicker);
-
 		const data = await this.playerService.passShift(
 			user.userId,
 			game,
 			match,
-			body.trips1.map(c => mapper(c)) as Trips,
-			body.trips2.map(c => mapper(c)) as Trips,
-			body.quads.map(c => mapper(c)) as Quads,
+			body.trips1.map((c) => mapper(c)) as Trips,
+			body.trips2.map((c) => mapper(c)) as Trips,
+			body.quads.map((c) => mapper(c)) as Quads,
 			mapper(body.kicker),
 		);
 		const kickerWithDesign = CardWithDesign.fromDTO({
@@ -116,6 +110,32 @@ export class PlayerController {
 		this.eventBus.publish(new ShiftChangedEvent(game, updatedMatch, data.nextPlayer));
 		response.player = await data.player.toDTO();
 		response.currentDesignName = user.currentDesignName;
+		return response;
+	}
+
+	/**
+	 * Punto de entrada PATCH que permite jalar una carta del mazo.
+	 * @param {UserDecoratorType} userDecorator El usuario que está jalando la carta.
+	 * @param {GameDTO} game El juego en el que se está jalando la carta.
+	 * @returns {PlayerControllerResponse} La respuesta genérica de los controladores de los jugadores.
+	 */
+	@Patch(PlayerControllerConstants.PULL_FROM_CARD_DECK)
+	@GameAuthDecorator()
+	@ApiOkResponse({ type: PlayerControllerResponse })
+	@ApiResponse({ type: ExceptionResponseDTO })
+	async pullFromCardDeck(
+		@UserDecorator() userDecorator: UserDecoratorType,
+		@GameDecorator() game: GameDTO,
+	): Promise<PlayerControllerResponse> {
+		const response: PlayerControllerResponse = new PlayerControllerResponse();
+		const gameId: GameId = new GameId(game.gameId);
+		const match: Match = await this.matchService.getById(new MatchId(game.currentMatch));
+		const user: User = await this.userService.getById(new UserId(userDecorator.userId));
+		const data = await this.playerService.pullFromCardDeck(user.userId, gameId, match);
+		await this.matchService.update(match);
+		if (data.filledDeck) this.eventBus.publish(new CardDeckFilledEvent(gameId, match));
+		response.player = await data.player.toDTO();
+		response.currentDesignName = user.currentDesignName.toString();
 		return response;
 	}
 }

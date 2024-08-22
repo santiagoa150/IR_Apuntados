@@ -19,4 +19,8 @@ export enum PlayerControllerConstants {
 	 * Url del servicio para que un jugador pase el turno.
 	 */
 	PASS_SHIFT_URL = 'pass-shift',
+	/**
+	 * Url del servicio para que un jugador jale una carta de las cartas desechadas.
+	 */
+	PULL_FROM_CARD_DECK = 'pull-from-card-deck'
 }
