@@ -10,7 +10,7 @@ import { InvalidGameStatusException } from './exceptions/invalid-game-status.exc
 export class GameStatus extends StatusValueObject<GameStatusConstants> {
 
 	/**
-	 * Método que determina si el estado de un juego no es válido.
+	 * Función que determina si el estado de un juego no es válido.
 	 * @param {string} value El estado del juego.
 	 * @throws {InvalidGameStatusException} Se lanza si el estado de un juego no es válido.
 	 * @protected

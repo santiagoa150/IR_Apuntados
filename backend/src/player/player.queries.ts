@@ -10,7 +10,7 @@ import { PipelineStage } from 'mongoose';
 export abstract class PlayerQueries {
 
 	/**
-	 * Método que permite construir la query para traer todos los jugadores
+	 * Función que permite construir la query para traer todos los jugadores
 	 * de un juego con la información de sus usuarios.
 	 * @param {GameId} gameId El juego que se consulta.
 	 * @returns {Array<PipelineStage>} La query construida.

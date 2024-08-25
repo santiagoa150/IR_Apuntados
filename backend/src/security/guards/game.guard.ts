@@ -23,7 +23,7 @@ export class GameGuard implements CanActivate {
 	}
 
 	/**
-	 * Método que define la lógica para la guardia de los juegos.
+	 * Función que define la lógica para la guardia de los juegos.
 	 * @param {ExecutionContext} context El contexto en el que se ejecuta la guardia.
 	 * @returns {boolean} Siempre se retorna true cuando se pueden acceder a los recursos del juego.
 	 * @throws {UserIsNotPartOfAGameException} Se lanza cuando un usuario no tiene

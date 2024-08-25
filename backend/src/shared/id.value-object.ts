@@ -18,8 +18,7 @@ export abstract class IdValueObject extends StringValueObject {
 	}
 
 	/**
-	 * Método abstracto que debe validar un ID de la aplicación.
-	 *
+	 * Función abstracta que debe validar un ID de la aplicación.
 	 * @param {string} value El valor a validar.
 	 * @protected
 	 */

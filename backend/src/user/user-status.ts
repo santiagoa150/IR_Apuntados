@@ -10,7 +10,7 @@ import { InvalidUserStatusException } from './exceptions/invalid-user-status.exc
 export class UserStatus extends StatusValueObject<UserStatusConstants> {
 
 	/**
-	 * Método que determina si el estado de un usuario no es válido.
+	 * Función que determina si el estado de un usuario no es válido.
 	 * @param {string} value El estado del usuario.
 	 * @protected
 	 * @throws {InvalidUserStatusException} Se lanza si el estado de un usuario no es válido.

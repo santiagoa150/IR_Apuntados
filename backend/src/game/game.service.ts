@@ -47,7 +47,7 @@ export class GameService {
 	}
 
 	/**
-	 * Método que permite crear un juego.
+	 * Función que permite crear un juego.
 	 * @param request Datos requeridos para crear un juego.
 	 * @param {UserId} request.creatorId El creador del juego.
 	 * @param {number} request.requiredPlayers La cantidad de jugadores requeridos para iniciar
@@ -57,7 +57,7 @@ export class GameService {
 	 * @param {string} request.name El nombre del juego.
 	 * @throws {InvalidGameRequiredPlayersException} Se lanza si el valor del parámetro "requiredPlayers"
 	 * no cumple con las características requeridas por el sistema.
-	 * @returns {Promise<Game>} El juego creado.
+	 * @returns {Promise<Game>} El juego generado.
 	 */
 	async create(
 		request: {
@@ -94,7 +94,7 @@ export class GameService {
 	}
 
 	/**
-	 * Método que permite buscar un juego por su ID y validar su existencia
+	 * Función que permite buscar un juego por su ID y validar su existencia
 	 * @param {GameId} gameId El juego que se solicita.
 	 * @param {boolean} [throwExceptionIfNotFound=true] Bandera para determinar si se debe lanzar
 	 * una excepción cuando el juego solicitado no existe.
@@ -113,7 +113,7 @@ export class GameService {
 	}
 
 	/**
-	 * Método que permite buscar un juego mediante un jugador.
+	 * Función que permite buscar un juego mediante un jugador.
 	 * @param {UserId} userId El usuario que corresponde al jugador.
 	 * @returns {Promise<Game>} El juego encontrado.
 	 */
@@ -127,7 +127,7 @@ export class GameService {
 	}
 
 	/**
-	 * Método que permite traer todos los juegos públicos.
+	 * Función que permite traer todos los juegos públicos.
 	 * @returns {Array<Game>} Todos los juegos públicos disponibles.
 	 */
 	async getPublicAndEmpty(): Promise<Array<Game>> {
@@ -143,7 +143,7 @@ export class GameService {
 	}
 
 	/**
-	 * Método que permite a un usuario ingresar a un juego.
+	 * Función que permite a un usuario ingresar a un juego.
 	 * @param {GameId} gameId El juego al que se va a ingresar.
 	 * @param {UserId} userId El usuario que desea ingresar.
 	 * @returns {Game} El juego al que se ingresó.
@@ -171,7 +171,7 @@ export class GameService {
 	}
 
 	/**
-	 * Método que permite actualizar toda la información de un juego.
+	 * Función que permite actualizar toda la información de un juego.
 	 * @param {Game} game El juego que se está actualizando.
 	 * @returns {Promise<Game>} El juego actualizado.
 	 * @throws {GameNotUpdatedException} Se lanza cuando la solicitud de actualización

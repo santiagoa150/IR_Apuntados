@@ -9,7 +9,7 @@ import { PipelineStage } from 'mongoose';
 export abstract class CardDesignQueries {
 
 	/**
-	 * Método que permite construir la query para traer todos los diseños
+	 * Función que permite construir la query para traer todos los diseños
 	 * de carta disponibles.
 	 * @param {Set<string>} userCardDesigns Los diseños de carta del usuario que consulta.
 	 * @returns {Array<PipelineStage>} La query construída.

@@ -23,7 +23,7 @@ export class JwtGuard extends AuthGuard('jwt') {
 	}
 
 	/**
-	 * Método principal de la lógica de la guardia.
+	 * Función principal de la lógica de la guardia.
 	 * @param {ExecutionContext} context El contexto de ejecución.
 	 * @throws {UnauthorizedException} Cuando el usuario no tiene acceso al recurso.
 	 */

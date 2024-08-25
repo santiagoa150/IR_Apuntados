@@ -18,8 +18,7 @@ export abstract class StatusValueObject<T extends string> extends DiscreteValueO
 	}
 
 	/**
-	 * Método que permite validar si el estado corresponde a un
-	 * valor cualquiera.
+	 * Función que permite validar si el estado corresponde a un valor cualquiera.
 	 * @param {T} value El valor a comparar.
 	 * @returns {boolean} Determina si el valor es válido.
 	 */
@@ -28,8 +27,7 @@ export abstract class StatusValueObject<T extends string> extends DiscreteValueO
 	}
 
 	/**
-	 * Método que se encarga de cambiar el estado de un objeto
-	 * por otro.
+	 * Función que se encarga de cambiar el estado de un objeto por otro.
 	 * @param {T} value El nuevo estado.
 	 */
 	change(value: T): void {

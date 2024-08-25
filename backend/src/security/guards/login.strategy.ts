@@ -23,7 +23,7 @@ export class LoginStrategy extends PassportStrategy(Strategy) {
 	}
 
 	/**
-	 * Método que define la lógica para el inicio de sesión de la aplicación.
+	 * Función que define la lógica para el inicio de sesión de la aplicación.
 	 *
 	 * @param {string} username El nombre de usuario de quién inicia sesión.
 	 * @param {string} password La contraseña de quién inicia sesión.

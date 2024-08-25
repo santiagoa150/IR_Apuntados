@@ -10,7 +10,7 @@ import * as uuid from 'uuid';
 export class CardDesignId extends IdValueObject {
 
 	/**
-	 * Método encargado de validar las características del ID
+	 * Función encargada de validar las características del ID
 	 * de un diseño de carta.
 	 * @param {string} value El ID para validar.
 	 * @protected

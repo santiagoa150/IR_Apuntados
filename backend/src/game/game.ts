@@ -153,7 +153,7 @@ export class Game extends DomainBase<GameDTO> {
 	}
 
 	/**
-	 * Método que permite agregar un jugador al juego.
+	 * Función que permite agregar un jugador al juego.
 	 */
 	addPlayer(): void {
 		this._currentPlayers++;
@@ -161,7 +161,7 @@ export class Game extends DomainBase<GameDTO> {
 	}
 
 	/**
-	 * Método que permite cambiar el estado de un juego, haciendo las
+	 * Función que permite cambiar el estado de un juego, haciendo las
 	 * respectivas validaciones.
 	 * @param {GameStatusConstants} status El nuevo estado del juego.
 	 * @throws {GameIsAlreadyStartedException} Se lanza si un juego ya ha sido empezado y se intenta ingresar a un juego.

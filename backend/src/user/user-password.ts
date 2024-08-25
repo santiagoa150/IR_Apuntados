@@ -18,7 +18,7 @@ export class UserPassword extends StringValueObject {
 	private static regexp: RegExp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z])(?=.*[!#$%&()*,\-.:;<>?^_{|}~¡¿])\S{8,}$/;
 
 	/**
-	 * Método que permite construir la contraseña de un usuario.
+	 * Función que permite construir la contraseña de un usuario.
 	 * @param {string} value El valor básico de la contraseña.
 	 * @returns {string} El valor generado.
 	 */
@@ -27,8 +27,7 @@ export class UserPassword extends StringValueObject {
 	}
 
 	/**
-	 * Método que permite validar la estructura de una contraseña
-	 * de usuario.
+	 * Función que permite validar la estructura de una contraseña de usuario.
 	 * @param {string} value El valor para validar.
 	 * @throws {InvalidPasswordError} Si la contraseña no cumple con las
 	 * características requeridas por el sistema se lanza la excepción.
@@ -38,8 +37,7 @@ export class UserPassword extends StringValueObject {
 	}
 
 	/**
-	 * Método que permite comparar la contraseña con un valor
-	 * cualquiera.
+	 * Función que permite comparar la contraseña con un valor cualquiera.
 	 * @param {string} value El valor que se quiere comparar
 	 * @returns {boolean} Determina si los valores son iguales.
 	 */

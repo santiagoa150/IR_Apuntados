@@ -11,7 +11,7 @@ import * as process from 'process';
 export class JwtSocketStrategy {
 
 	/**
-	 * Método en dónde se define la lógica de la estrategia.
+	 * Función en dónde se define la lógica de la estrategia.
 	 * @param {ExecutionContext} context El contexto de ejecución.
 	 * @param {JwtService} service El servicio de jwt.
 	 */

@@ -10,7 +10,7 @@ import { InvalidGameIdException } from './exceptions/invalid-game-id.exception';
 export class GameId extends IdValueObject {
 
 	/**
-	 * Método encargado de generar los IDS de los juegos.
+	 * Función encargada de generar los IDS de los juegos.
 	 * @returns {string} El ID generado.
 	 * @static
 	 */
@@ -19,7 +19,7 @@ export class GameId extends IdValueObject {
 	}
 
 	/**
-	 * Método encargado de validar las características del ID de un juego.
+	 * Función encargada de validar las características del ID de un juego.
 	 * @param {string} value El ID para validar.
 	 * @throws {InvalidUserIdException} En caso de que el ID no sea válido se lanza la excepción.
 	 * @protected

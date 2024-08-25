@@ -32,7 +32,7 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 	private readonly logger: Logger = new Logger(GameSocket.name);
 
 	/**
-	 * Método que captura el mensaje GameSocketConstants.GAME_VALIDATE_CONNECTION en dónde
+	 * Evento que captura el mensaje GameSocketConstants.GAME_VALIDATE_CONNECTION en dónde
 	 * se conecta a un usuario a la room de los juegos.
 	 * @param user El usuario que ingresa al juego.
 	 * @param game El juego al que se conecta.
@@ -54,7 +54,7 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 	}
 
 	/**
-	 * Método que notifica que un usuario ingresó a un juego.
+	 * Función que notifica que un usuario ingresó a un juego.
 	 * @param user El usuario ingresado.
 	 * @param player El jugador generado.
 	 * @param game El juego al que ingresó.
@@ -83,7 +83,7 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 	}
 
 	/**
-	 * Método que notifica que una partida ha sido iniciada.
+	 * Función que notifica que una partida ha sido iniciada.
 	 * @param game El juego en el que se inició la partida.
 	 * @param match La partida iniciada.
 	 */
@@ -98,7 +98,7 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 	}
 
 	/**
-	 * Método que notifica que un juego está listo para iniciar.
+	 * Función que notifica que un juego está listo para iniciar.
 	 * @param game El juego que está listo para iniciar.
 	 */
 	gameReadyToStart(game: Game): void {
@@ -109,7 +109,7 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 	}
 
 	/**
-	 * Evento que notifica que un turno ha cambiado.
+	 * Función que notifica que un turno ha cambiado.
 	 * @param {Game} game El juego en el que cambió el turno.
 	 * @param {Match} match La partida en la que se cambió el turno.
 	 * @param {Player} nextPlayer El siguiente jugador en turno.
@@ -125,7 +125,7 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 	}
 
 	/**
-	 * Evento que notifica que el mazo de cartas ha sido actualizado.
+	 * Función que notifica que el mazo de cartas ha sido actualizado.
 	 * @param {GameId} gameId El juego al que se le notificará el evento.
 	 * @param {Match} match La partida en la que se rellenó el mazo.
 	 */

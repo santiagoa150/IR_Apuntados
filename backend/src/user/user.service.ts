@@ -34,12 +34,12 @@ export class UserService {
 	}
 
 	/**
-	 * Método que permite crear un usuario.
+	 * Función que permite crear un usuario.
 	 * @param {string} username El nombre de usuario.
 	 * @param {string} password La contraseña del usuario.
 	 * @param {CardDesign} defaultDesign El diseño de cartas por defecto con el que se debe registrar el usuario.
 	 * @returns {Promise<User>} El usuario creado.
-	 * @throws {UserAlreadyExistsException} Se lanza cuando se intenta crear un usuario que ya existe.
+	 * @throws {UserAlreadyExistsException} Se lanza cuando se intenta generar un usuario que ya existe.
 	 */
 	async create(username: string, password: string, defaultDesign: CardDesign): Promise<User> {
 		this.logger.log(`[${this.create.name}] INIT :: username: ${username}`);
@@ -62,7 +62,7 @@ export class UserService {
 	}
 
 	/**
-	 * Método que permite buscar un usuario por su id y validar su existencia.
+	 * Función que permite buscar un usuario por su id y validar su existencia.
 	 * @param {UserId} userId El usuario que se solicita.
 	 * @param {boolean} [throwExceptionIfNotFound=true] Bandera para determinar si se debe lanzar
 	 * una excepción cuando el usuario solicitado no existe.
@@ -81,8 +81,7 @@ export class UserService {
 	}
 
 	/**
-	 * Método que permite buscar un usuario por su username y validar
-	 * su existencia.
+	 * Función que permite buscar un usuario por su username y validar su existencia.
 	 * @param {string} username El usuario que se solicita.
 	 * @param {boolean} [throwExceptionIfNotFound=true] Bandera para determinar si se debe lanzar
 	 * una excepción cuando el usuario solicitado no existe.
@@ -101,7 +100,7 @@ export class UserService {
 	}
 
 	/**
-	 * Método que permite actualizar toda la información de un usuario.
+	 * Función que permite actualizar toda la información de un usuario.
 	 * @param {User} user El usuario que se está actualizando
 	 * @return {User} El usuario actualizado.
 	 * @throws {UserNotUpdatedException} Se lanza cuando la solicitud de actualización no se
@@ -121,7 +120,7 @@ export class UserService {
 	}
 
 	/**
-	 * Método que permite actualizar el diseño de carta de un usuario.
+	 * Función que permite actualizar el diseño de carta de un usuario.
 	 * @param {UserId} userId El usuario que se quiere actualizar.
 	 * @param {CardDesign} cardDesign El diseño de carta que se quiere actualizar.
 	 * @returns {Promise<User>} El usuario actualizado.
@@ -140,7 +139,7 @@ export class UserService {
 	}
 
 	/**
-	 * Método que permite actualizar el icono de un usuario.
+	 * Función que permite actualizar el icono de un usuario.
 	 * @param userId El usuario que se quiere actualizar.
 	 * @param userIcon El nuevo icono del usuario.
 	 * @returns El usuario actualizado.

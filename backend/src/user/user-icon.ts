@@ -10,7 +10,7 @@ import { DiscreteValueObject } from '../shared/discrete.value-object';
 export class UserIcon extends DiscreteValueObject {
 
 	/**
-	 * Método que permite seleccionar un icono de usuario aleatoriamente
+	 * Función que permite seleccionar un icono de usuario aleatoriamente
 	 * @returns {string} El icono seleccionado.
 	 * @static
 	 */
@@ -20,7 +20,7 @@ export class UserIcon extends DiscreteValueObject {
 	}
 
 	/**
-	 * Método que determina si el icono de un usuario no es válido.
+	 * Función que determina si el icono de un usuario no es válido.
 	 * @param {string} value El icono de un usuario.
 	 * @protected
 	 * @throws {InvalidUserIconException} Se lanza si el icono del usuario no es válido.

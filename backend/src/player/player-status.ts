@@ -10,7 +10,7 @@ import { InvalidPlayerStatusException } from './exceptions/invalid-player-status
 export class PlayerStatus extends StatusValueObject<PlayerStatusConstants> {
 
 	/**
-	 * Método que determina si el estado de un jugador no es válido.
+	 * Función que determina si el estado de un jugador no es válido.
 	 * @param {string} value El estado del jugador.
 	 * @throws {InvalidPlayerStatusException} Se lanza si el estado del jugador no es válido.
 	 * @protected

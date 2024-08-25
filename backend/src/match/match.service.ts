@@ -44,7 +44,7 @@ export class MatchService {
 	}
 
 	/**
-	 * Método que genera las cartas por defecto de un mazo de cartas.
+	 * Función que genera las cartas por defecto de un mazo de cartas.
 	 * @returns Las objetos de transferencia de datos de las cartas.
 	 */
 	static generateDefaultCardDeck(): CardDTO[] {
@@ -58,7 +58,7 @@ export class MatchService {
 	}
 
 	/**
-	 * Método que inicia una partida por un jugador.
+	 * Función que inicia una partida por un jugador.
 	 * @param userId El jugador que inicia la partida.
 	 * @param game El juego iniciado.
 	 * @returns La partida generada.
@@ -95,7 +95,7 @@ export class MatchService {
 	}
 
 	/**
-	 * Método que busca una partida por su id y opcionalmente permite lanzar una excepción si no se encuentra.
+	 * Función que busca una partida por su id y opcionalmente permite lanzar una excepción si no se encuentra.
 	 * @param {MatchId} matchId La partida solicitada.
 	 * @param {boolean} [throwExceptionIfNotFound=true] Booleano que determina si se debe lanzar una excepción cuando la partida no se encuentra.
 	 * @returns {Promise<Match>} La partida encontrada.
@@ -111,7 +111,7 @@ export class MatchService {
 	}
 
 	/**
-	 * Método que permite a una partida pasar el turno.
+	 * Función que permite a una partida pasar el turno.
 	 * @param {Match} match La partida que pasará el turno.
 	 * @param {CardWithDesign} kicker La sobrante.
 	 * @param {Player} currentPlayer El jugador actual.
@@ -128,7 +128,7 @@ export class MatchService {
 	}
 
 	/**
-	 * Método que actualiza una partida.
+	 * Función que actualiza una partida.
 	 * @param {Match} match La partida que se actualizará.
 	 */
 	async update(match: Match): Promise<void> {

@@ -27,7 +27,7 @@ export class SessionService {
 	}
 
 	/**
-	 * Método que permite generar el token de acceso para un usuario.
+	 * Función que permite generar el token de acceso para un usuario.
 	 * @param {UserId} userId El id que se guardará en el token.
 	 * @returns {string} El token de acceso generado.
 	 */
@@ -40,7 +40,7 @@ export class SessionService {
 	}
 
 	/**
-	 * Método que permite generar el token para refrescar el token de acceso de un usuario.
+	 * Función que permite generar el token para refrescar el token de acceso de un usuario.
 	 * @param {UserId} userId El id que se guardará en el token.
 	 * @returns {string} El token de refresco generado.
 	 */
@@ -53,7 +53,7 @@ export class SessionService {
 	}
 
 	/**
-	 * Método que permite refrescar el token de acceso de un usuario.
+	 * Función que permite refrescar el token de acceso de un usuario.
 	 * @param {string} refreshToken El token que permite al usuario refrescar su token de acceso.
 	 * @return {string} El nuevo token de acceso.
 	 */
@@ -69,8 +69,7 @@ export class SessionService {
 	}
 
 	/**
-	 * Método que contiene la lógica del inicio de sesión para los
-	 * usuarios.
+	 * Función que contiene la lógica del inicio de sesión para los usuarios.
 	 * @param {string} username El usuario que solicita el inicio de sesión.
 	 * @param {string} password Las credenciales del usuario.
 	 * @returns {Promise<User>} Se Retorna el usuario que solicita sesión.

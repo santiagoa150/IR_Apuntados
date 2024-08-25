@@ -13,10 +13,8 @@ import { SocketSharedConstants } from '../socket/socket-shared.constants';
  */
 @Catch()
 export class AppExceptionFilter implements ExceptionFilter {
-
 	/**
-	 * Método que se encarga de resolver el mensaje de error de
-	 * una excepción desconocida.
+	 * Función que se encarga de resolver el mensaje de error de una excepción desconocida.
 	 *
 	 * @static
 	 * @param exception La excepción desconocida.
@@ -42,9 +40,7 @@ export class AppExceptionFilter implements ExceptionFilter {
 	}
 
 	/**
-	 * Método que se encarga de resolver el código de error de
-	 * una excepción desconocida.
-	 *
+	 * Función que se encarga de resolver el código de error de una excepción desconocida.
 	 * @param {Error} exception La excepción desconocida.
 	 * @returns {number | undefined} El código de error resuelto, en caso de no
 	 * poder resolver el código retorna undefined.
@@ -54,18 +50,13 @@ export class AppExceptionFilter implements ExceptionFilter {
 	}
 
 	/**
-	 * Método que se encarga de enviar al usuario final la respuesta de error
-	 * dependiendo del contexto de ejecución.
-	 *
+	 * Función que se encarga de enviar al usuario final la respuesta de error dependiendo del contexto de ejecución.
 	 * @param {ArgumentsHost} host El contexto de ejecución.
 	 * @param {ExceptionResponseDTO} responseDto La respuesta para enviar.
 	 * @private
 	 * @static
 	 */
-	private static setExceptionResponse(
-		host: ArgumentsHost,
-		responseDto: ExceptionResponseDTO,
-	): void {
+	private static setExceptionResponse(host: ArgumentsHost, responseDto: ExceptionResponseDTO): void {
 		let context: RpcArgumentsHost | HttpArgumentsHost | WsArgumentsHost;
 		let response: Response;
 		switch (host.getType()) {
@@ -86,9 +77,7 @@ export class AppExceptionFilter implements ExceptionFilter {
 	}
 
 	/**
-	 * Método que recibe las excepciónes del sistema y las mapea para enviar
-	 * al usuario final.
-	 *
+	 * Función que recibe las excepciónes del sistema y las mapea para enviar al usuario final.
 	 * @param {Error} exception La excepción que se quiere mapear
 	 * @param {ArgumentsHost} host El contexto de ejecución.
 	 */

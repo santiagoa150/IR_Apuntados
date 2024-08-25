@@ -38,7 +38,7 @@ export class PlayerService {
 	constructor(@Inject(DatabaseConstants.PLAYER_PROVIDER) private readonly model: Model<PlayerDocument>) {}
 
 	/**
-	 * Método que permite crear un jugador.
+	 * Función que permite crear un jugador.
 	 * @param {UserId} userId El id del usuario.
 	 * @param {GameId} gameId El juego al que se asocia el jugador.
 	 * @param {boolean} [validateUser=true] Determina si se debe validar el usuario.
@@ -60,7 +60,7 @@ export class PlayerService {
 	}
 
 	/**
-	 * Método que permite repartir las cartas a los jugadores de una partida.
+	 * Función que permite repartir las cartas a los jugadores de una partida.
 	 * @param {Match} match La partida en la que se reparten las cartas.
 	 * @returns {Match} La partida después de haber repartido las cartas.
 	 */
@@ -104,7 +104,7 @@ export class PlayerService {
 	}
 
 	/**
-	 * Método que permite que un usuario pase el turno en una partida.
+	 * Función que permite que un usuario pase el turno en una partida.
 	 * - Actualiza el jugador con el turno actual.
 	 * - Determina el jugador con el turno siguiente.
 	 * @param {UserId} userId El usuario que pasa el turno.
@@ -214,7 +214,7 @@ export class PlayerService {
 	}
 
 	/**
-	 * Método que permite buscar un jugador por su userId y validar su existencia.
+	 * Función que permite buscar un jugador por su userId y validar su existencia.
 	 * @param {UserId} userId El jugador que se solicita.
 	 * @param {boolean} [throwExceptionIfNotFound=true] Bandera para determinar si se debe lanzar
 	 * una excepción cuando el jugador solicitado no existe.
@@ -233,7 +233,7 @@ export class PlayerService {
 	}
 
 	/**
-	 * Método que permite buscar todos los participantes de un juego.
+	 * Función que permite buscar todos los participantes de un juego.
 	 * @param {GameId} gameId El juego solicitado.
 	 * @returns {Promise<Player[]>} Los jugadores encontrados.
 	 */
@@ -246,7 +246,7 @@ export class PlayerService {
 	}
 
 	/**
-	 * Método que permite buscar los participantes de un juego con la
+	 * Función que permite buscar los participantes de un juego con la
 	 * información de sus usuarios.
 	 * @param {GameId} gameId El juego solicitado.
 	 * @param {UserId} userId El usuario que ejecuta el servicio.

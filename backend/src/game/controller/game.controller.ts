@@ -45,8 +45,8 @@ export class GameController {
 	/**
 	 * Controlador POST que permite crear un juego.
 	 * @param {CreateGameControllerRequest} body Los datos requeridos para crear el juego.
-	 * @param {UserDecoratorType} user El usuario que crea el juego.
-	 * @returns {GameControllerResponse} La respuesta con el juego creado.
+	 * @param {UserDecoratorType} user El usuario que está generando el juego.
+	 * @returns {GameControllerResponse} La respuesta con el juego generado.
 	 */
 	@Post()
 	@AuthDecorator()
@@ -65,7 +65,7 @@ export class GameController {
 	}
 
 	/**
-	 * Método GET que permite traer el juego actual de un jugador.
+	 * Controlador GET que permite traer el juego actual de un jugador.
 	 * @param {UserDTO} user Los datos de autenticación del usuario.
 	 * @param {GameDTO} game El juego solicitado.
 	 * @returns {GetPublicGamesControllerResponse} La respuesta del controlador
@@ -93,7 +93,7 @@ export class GameController {
 	}
 
 	/**
-	 * Método GET que permite traer todos los juegos públicos y disponibles.
+	 * Controlador GET que permite traer todos los juegos públicos y disponibles.
 	 * @returns {GetPublicGamesControllerResponse} La respuesta que contiene los juegos públicos
 	 * disponibles.
 	 */
@@ -109,7 +109,7 @@ export class GameController {
 	}
 
 	/**
-	 * Método PATCH que permite que un jugador ingrese a un juego.
+	 * Controlador PATCH que permite que un jugador ingrese a un juego.
 	 * @param {JoinGameControllerRequest} body Los datos requeridos para ingresar a un juego.
 	 * @param {UserDecoratorType} user El usuario que ingresa al juego.
 	 * @returns {GameControllerConstants} La respuesta del controlador con el juego al que se ingresó.

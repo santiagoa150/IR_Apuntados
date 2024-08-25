@@ -10,7 +10,7 @@ import { InvalidMatchIdException } from './exceptions/invalid-match-id.exception
 export class MatchId extends IdValueObject {
 
 	/**
-	 * Método encargado de generar los IDS de las partidas.
+	 * Función encargada de generar los IDS de las partidas.
 	 * @returns {string} El ID generado.
 	 * @static
 	 */
@@ -19,7 +19,7 @@ export class MatchId extends IdValueObject {
 	}
 
 	/**
-	 * Método encargado de validar las características del ID de una partida.
+	 * Función encargada de validar las características del ID de una partida.
 	 * @param {string} value El ID para validar.
 	 * @throws {InvalidMatchIdException} Cuando el ID enviado no es válido.
 	 * @protected

@@ -10,7 +10,7 @@ import { InvalidCardSuitException } from './exceptions/invalid-card-suit-excepti
 export class CardSuit extends DiscreteValueObject {
 
 	/**
-	 * Método que determina si la pinta de una carta no es válida.
+	 * Función que determina si la pinta de una carta no es válida.
 	 * @param {string} value La pinta de la carta.
 	 * @throws {InvalidCardSuitException} Se lanza si la pinta de una carta no es válida.
 	 * @protected

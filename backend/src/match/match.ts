@@ -148,7 +148,7 @@ export class Match extends DomainBase<MatchDTO> {
 	}
 
 	/**
-	 * Método que determina cuál es el turno siguiente de una partida.
+	 * Función que determina cuál es el turno siguiente de una partida.
 	 * @param {number} current El jugador actual en turno.
 	 * @returns {number} El siguiente turno.
 	 */
@@ -159,7 +159,7 @@ export class Match extends DomainBase<MatchDTO> {
 	}
 
 	/**
-	 * Método que permite a una partida pasar el turno.
+	 * Función que permite a una partida pasar el turno.
 	 * @param {number} current El turno del jugador actual.
 	 * @param {CardWithDesign} kicker La sobrante que se agregará a la partida.
 	 */

@@ -117,8 +117,7 @@ export class User extends DomainBase<UserDTO> {
 	}
 
 	/**
-	 * Método que permite cambiar el estado de un usuario, haciendo las
-	 * respectivas validaciones.
+	 * Función que permite cambiar el estado de un usuario, haciendo las respectivas validaciones.
 	 * @param {UserStatusConstants} status El nuevo estado del usuario.
 	 * @throws {UserIsAlreadyPlayingException} Si lanza si un usuario ya está jugando y se intenta ingresar a un juego.
 	 */
@@ -135,8 +134,7 @@ export class User extends DomainBase<UserDTO> {
 	}
 
 	/**
-	 * Método que permite restar tokens a un usuario, haciendo las
-	 * respectivas validaciones.
+	 * Función que permite restar tokens a un usuario, haciendo las respectivas validaciones.
 	 * @param {number} value La cantidad de tokens a restar.
 	 * @throws {NotEnoughTokensException} Se lanza si la cantidad que se desea restar
 	 * supera la cantidad de tokens disponibles.

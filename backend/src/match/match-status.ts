@@ -10,7 +10,7 @@ import { InvalidMatchStatusException } from './exceptions/invalid-match-status.e
 export class MatchStatus extends StatusValueObject<MatchStatusConstants> {
 
 	/**
-	 * Método que determina si el estado de una partida no es válido.
+	 * Función que determina si el estado de una partida no es válido.
 	 * @param {string} value El estado de la partida.
 	 * @throws {InvalidMatchStatusException} Cuando el estado no es válido.
 	 * @protected

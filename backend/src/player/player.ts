@@ -218,7 +218,7 @@ export class Player extends DomainBase<PlayerDTO> {
 	}
 
 	/**
-	 * Método que permite cambiar el estado de un jugador, haciendo las respectivas validaciones.
+	 * Función que permite cambiar el estado de un jugador, haciendo las respectivas validaciones.
 	 * @param {PlayerStatusConstants} status El nuevo estado del jugador.
 	 * @throws {InvalidPlayerStatusException} Si no se cumple algunas de las restricciones del negocio.
 	 */

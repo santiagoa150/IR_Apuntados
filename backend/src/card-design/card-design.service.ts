@@ -28,7 +28,7 @@ export class CardDesignService {
 	}
 
 	/**
-	 * Método que permite buscar todos los diseños de cartas disponibles y si
+	 * Función que permite buscar todos los diseños de cartas disponibles y si
 	 * son seleccionables o no.
 	 * @param {Set<string>} userCardDesigns Los diseños de cartas del usuario.
 	 * @returns {Promise<Array<{ cardDesign: CardDesign, canSelect: boolean }>>} Los
@@ -52,7 +52,7 @@ export class CardDesignService {
 	}
 
 	/**
-	 * Método que permite buscar un diseño de carta activo por ID.
+	 * Función que permite buscar un diseño de carta activo por ID.
 	 * @param {CardDesignId} cardDesignId El diseño de carta que se solicita.
 	 * @param {boolean} [throwExceptionIfNotFound=true] Bandera para determinar si se debe lanzar
 	 * una excepción cuando el usuario solicitado no existe.
@@ -74,7 +74,7 @@ export class CardDesignService {
 	}
 
 	/**
-	 * Método que permite buscar el diseño de carta por defecto del sistema.
+	 * Función que permite buscar el diseño de carta por defecto del sistema.
 	 * @returns {Promise<CardDesign>} Se retorna el diseño solicitado.
 	 * @throws {DefaultCardDesignNotFoundException} Se lanza cuando no se encuentra
 	 * el diseño de carta solicitado.

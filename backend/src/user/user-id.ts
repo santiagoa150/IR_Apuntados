@@ -10,7 +10,7 @@ import { v4, validate } from 'uuid';
 export class UserId extends IdValueObject {
 
 	/**
-	 * Método encargado de generar los IDS de los usuarios.
+	 * Función encargada de generar los IDS de los usuarios.
 	 * @returns {string} El ID generado.
 	 * @static
 	 */
@@ -19,8 +19,7 @@ export class UserId extends IdValueObject {
 	}
 
 	/**
-	 * Método encargado de validar las características del ID
-	 * de un usuario.
+	 * Función encargada de validar las características del ID de un usuario.
 	 * @param {string} value El ID para validar.
 	 * @protected
 	 * @throws {InvalidUserIdException} En caso de que el ID no sea válido se lanza la excepción.

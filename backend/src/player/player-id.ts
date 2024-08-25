@@ -10,7 +10,7 @@ import { InvalidPlayerIdException } from './exceptions/invalid-player-id.excepti
 export class PlayerId extends IdValueObject {
 
 	/**
-	 * Método encargado de generar los IDS de los jugadores.
+	 * Función encargada de generar los IDS de los jugadores.
 	 * @returns {string} El ID generado.
 	 * @static
 	 */
@@ -19,7 +19,7 @@ export class PlayerId extends IdValueObject {
 	}
 
 	/**
-	 * Método encargado de validar las características del ID
+	 * Función encargada de validar las características del ID
 	 * de un jugador.
 	 * @param {string} value El ID para validar.
 	 * @protected

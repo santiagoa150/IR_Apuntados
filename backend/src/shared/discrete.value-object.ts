@@ -12,7 +12,7 @@ export abstract class DiscreteValueObject extends StringValueObject {
 	}
 
 	/**
-	 * Método encargado de validar si el estado de un objeto es válido.
+	 * Función encargada de validar si el estado de un objeto es válido.
 	 * @param {string} value El estado para validar.
 	 */
 	protected abstract validate(value: string): void;
