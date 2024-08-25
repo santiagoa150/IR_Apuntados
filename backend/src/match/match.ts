@@ -7,6 +7,7 @@ import { MatchId } from './match-id';
 import { MatchStatus } from './match-status';
 import { CardWithDesign } from '../card/card-with-design';
 import { Card } from '../card/card';
+import { NoDiscardedCardsException } from './exceptions/no-discarded-cards.exception';
 
 /**
  * El objeto de transferencia de datos de una partida.
@@ -188,11 +189,26 @@ export class Match extends DomainBase<MatchDTO> {
 			this.fillCardDeck();
 			filledDeck = true;
 		}
-		const cardDeck: Card[] = this.cardDeck.cards;
+		const cardDeck: Card[] = this._cardDeck.cards;
 		const cardNumber: number = Math.floor(Math.random() * length);
 		const card: Card = cardDeck[cardNumber];
 		cardDeck.splice(cardNumber, 1);
 		this._cardDeck.cards = cardDeck;
 		return { card, filledDeck };
+	}
+
+	/**
+	 * Jala una carta de las cartas desechadas.
+	 * @returns La carta jalada.
+	 * @throws {NoDiscardedCardsException} Cuando no hay cartas desechadas.
+	 */
+	pullFromDiscardedCards(): CardWithDesign {
+		const length: number = this._discardedCards.cards.length;
+		if (length === 0) throw new NoDiscardedCardsException();
+		const discardedCards: CardWithDesign[] = this._discardedCards.cards;
+		const card: CardWithDesign = discardedCards[length - 1];
+		discardedCards.splice(length - 1, 1);
+		this._discardedCards.cards = discardedCards;
+		return card;
 	}
 }

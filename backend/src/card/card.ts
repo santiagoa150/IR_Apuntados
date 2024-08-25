@@ -22,7 +22,7 @@ export class Card extends DomainBase<CardDTO> {
 
 	private readonly _type: CardType;
 	private readonly _suit: CardSuit;
-	private readonly value: number;
+	private readonly _value: number;
 
 	/**
 	 * @param {CardType} type El tipo de la carta.
@@ -33,7 +33,7 @@ export class Card extends DomainBase<CardDTO> {
 		super();
 		this._type = type;
 		this._suit = suit;
-		this.value = value;
+		this._value = value;
 	}
 
 
@@ -43,6 +43,10 @@ export class Card extends DomainBase<CardDTO> {
 
 	get suit(): CardSuit {
 		return this._suit;
+	}
+
+	get value(): number {
+		return this._value;
 	}
 
 	/**
@@ -67,7 +71,7 @@ export class Card extends DomainBase<CardDTO> {
 		return {
 			type: this._type.toString(),
 			suit: this._suit.toString(),
-			value: this.value.valueOf(),
+			value: this._value.valueOf(),
 		};
 	}
 }

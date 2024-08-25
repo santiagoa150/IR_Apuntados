@@ -30,5 +30,9 @@ export enum SocketConstants {
     /**
      * El mensaje que indica que un mazo de cartas fue rellenado.
      */
-    CARD_DECK_FILLED_LISTENER = 'CARD_DECK_FILLED_LISTENER'
+    CARD_DECK_FILLED_LISTENER = 'CARD_DECK_FILLED_LISTENER',
+    /**
+     * El mensaje que indica que una carta fue jalada desde las cartas desechadas.
+     */
+    CARD_PULLED_FROM_DISCARDED_LISTENER = 'CARD_PULLED_FROM_DISCARDED_LISTENER',
 }

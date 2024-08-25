@@ -7,7 +7,7 @@ import {BackendUtils} from '../../../../utils/backend.utils.tsx';
 import {LocalLoadingComponent} from '../../../../components/loading/local/local-loading.component.tsx';
 import {GetCurrentPlayerResponse} from '../../../../types/services/get-current-player.ts';
 import {CardComponent} from '../../../../components/card/card.component.tsx';
-import {CardType} from '../../../../types/card.type.ts';
+import {CardType, CardWithDesignType} from '../../../../types/card.type.ts';
 import {CardComponentTypeConstants} from '../../../../utils/constants/card-component-type.constants.ts';
 import {
     changeDifferentTrips,
@@ -24,6 +24,7 @@ import {PlayerConstants} from '../../../../utils/constants/player.constants.ts';
 import {PassShiftRequest, PassShiftResponse} from '../../../../types/services/pass-shift.ts';
 import {GlobalLoadingComponent} from '../../../../components/loading/global/global-loading.component.tsx';
 import {PullFromCardDeckResponse} from '../../../../types/services/pull-from-card-deck.ts';
+import {PullFromDiscardedCardsResponse} from "../../../../types/services/pull-from-discarded-cards.type.ts";
 
 /**
  *  Componente que define el tablero del juego.
@@ -151,20 +152,25 @@ export function GameBoardComponent(props: {
      * Ejecuta las acciones respectivas para las cartas descartadas.
      */
     const discardedCardsAction = async (): Promise<void> => {
-        if (kicker) {
-            if (trips1 && trips2 && quads) {
-                setLoading(true);
-                const backendUtils: BackendUtils = new BackendUtils(() => {
+        if (player && player.status === PlayerConstants.IN_TURN_PLAYER_STATUS) {
+            const backendUtils: BackendUtils = new BackendUtils(() => {
+                setLoading(false);
+            });
+            if (kicker) {
+                if (trips1 && trips2 && quads) {
+                    setLoading(true);
+                    const res = await backendUtils.patch<PassShiftResponse, PassShiftRequest>(BackendConstants.PASS_SHIFT_URL, {
+                        kicker, quads, trips1, trips2,
+                    });
+                    if (res) setPlayerData(res.player, res.currentDesignName);
                     setLoading(false);
-                });
-                const res = await backendUtils.patch<PassShiftResponse, PassShiftRequest>(BackendConstants.PASS_SHIFT_URL, {
-                    kicker, quads, trips1, trips2,
-                });
-                if (res) setPlayerData(res.player, res.currentDesignName);
+                }
+            } else {
+                setLoading(true);
+                const res = await backendUtils.patch<PullFromDiscardedCardsResponse, unknown>(BackendConstants.PULL_FROM_DISCARDED_CARDS, {});
+                if (res) setPlayerData(res.player);
                 setLoading(false);
             }
-        } else {
-            console.log('Not implemented.');
         }
     };
 
@@ -208,6 +214,22 @@ export function GameBoardComponent(props: {
                             alt=''
                             src={props.discardedCards && props.discardedCards.cards.length > 0 ? DiscardedCardsImage : EmptyDiscardedCardsImage}
                         />
+                        {
+                            props.discardedCards && props.discardedCards.cards.length > 0
+                                ? (() => {
+                                    const lastCard: CardWithDesignType = props.discardedCards?.cards[props.discardedCards?.cards.length - 1];
+                                    return (
+                                        <CardComponent
+                                            onClick={discardedCardsAction}
+                                            designName={lastCard.cardDesignName}
+                                            suit={lastCard.suit}
+                                            type={lastCard.type}
+                                            positionClassName={'discarded-cards-card'}
+                                        />
+                                    );
+                                })()
+                                : <></>
+                        }
                     </div>
                 </div>
                 <div id='game-board-cards-container'>

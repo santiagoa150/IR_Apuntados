@@ -41,7 +41,15 @@ export function GamePage(): JSX.Element {
                 }
                 setCurrentPlayer(data.player);
             });
-            socket.on(SocketConstants.CARD_DECK_FILLED_LISTENER, ({discardedCards}: { discardedCards: DiscardedCardsType }) => {
+            socket.on(SocketConstants.CARD_DECK_FILLED_LISTENER, ({discardedCards}: {
+                discardedCards: DiscardedCardsType
+            }) => {
+                setDiscardedCards(discardedCards);
+            });
+            socket.on(SocketConstants.CARD_PULLED_FROM_DISCARDED_LISTENER, ({discardedCards}: {
+                discardedCards: DiscardedCardsType
+            }) => {
+                console.log("HOla");
                 setDiscardedCards(discardedCards);
             });
         }

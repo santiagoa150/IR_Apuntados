@@ -23,6 +23,7 @@ import { InvalidMatchStatusException } from '../match/exceptions/invalid-match-s
 import { PlayerDoesNotHaveThisCardException } from './exceptions/player-does-not-have-this-card.exception';
 import { InvalidPlayerStatusException } from './exceptions/invalid-player-status.exception';
 import { PlayerAlreadyPullCardException } from './exceptions/player-already-pull-card.exception';
+import { CardWithDesign } from '../card/card-with-design';
 
 /**
  * Los servicios asociados a los jugadores.
@@ -170,16 +171,12 @@ export class PlayerService {
 
 	/**
 	 * Permite que un usuario jale una carta desde el mazo.
-	 * @param userId El usuario que está jalando la carta del mazo.
-	 * @param gameId El juego en el que se está jalando la carta.
-	 * @param match La partida en la que se está jalando la carta.
+	 * @param {UserId} userId El usuario que está jalando la carta del mazo.
+	 * @param {Match} match La partida en la que se está jalando la carta.
 	 * @returns Retorna el jugador y la partida actualizados.
-	 * @throws {InvalidMatchStatusException} Cuando se intenta jalar del mazo en una partida que no se está jugando, ni tocando.
-	 * @throws {InvalidPlayerStatusException} Cuando un usuario que no está en turno ejecuta la acción.
 	 */
 	async pullFromCardDeck(
 		userId: UserId,
-		gameId: GameId,
 		match: Match,
 	): Promise<{
 		player: Player;
@@ -187,19 +184,48 @@ export class PlayerService {
 		filledDeck: boolean;
 	}> {
 		this.logger.log(
-			`[${this.pullFromCardDeck.name}] INIT :: user: ${userId.toString()} game: ${gameId.toString()}`,
+			`[${this.pullFromCardDeck.name}] INIT :: user: ${userId.toString()} game: ${match.gameId.toString()}`,
 		);
-		if (!match.status.is(MatchStatusConstants.PLAYING) && !match.status.is(MatchStatusConstants.TOUCHING)) {
-			throw new InvalidMatchStatusException();
-		}
 		const player: Player = await this.getActiveByUserId(userId);
-		if (!player.status.is(PlayerStatusConstants.IN_TURN)) throw new InvalidPlayerStatusException();
-		if (player.kicker) throw new PlayerAlreadyPullCardException();
+		await PlayerService.validateIfPlayerCanPullCard(player, match);
 		const pulledCard = match.pullFromDeck();
 		player.kicker = pulledCard.card;
 		await this.update(player);
 		this.logger.log(`[${this.pullFromCardDeck.name}] FINISH ::`);
 		return { player, match, filledDeck: pulledCard.filledDeck };
+	}
+
+	/**
+	 * Permite a un jugador jalar una carta desde las cartas desechadas.
+	 * @param {UserId} userId El usuario que está jalando la carta de las cartas desechadas.
+	 * @param {Match} match La partida en la que se está jalando la carta.
+	 * @returns Retorna el jugador y la partida actualizados.
+	 */
+	async pullFromDiscardedCards(userId: UserId, match: Match): Promise<{ player: Player; match: Match }> {
+		this.logger.log(`[${this.pullFromDiscardedCards.name}] INIT :: user: ${userId.toString()}`);
+		const player: Player = await this.getActiveByUserId(userId);
+		await PlayerService.validateIfPlayerCanPullCard(player, match);
+		const pulledCard: CardWithDesign = match.pullFromDiscardedCards();
+		player.kicker = pulledCard.toCard();
+		await this.update(player);
+		this.logger.log(`[${this.pullFromDiscardedCards.name}] FINISH ::`);
+		return { player, match };
+	}
+
+	/**
+	 * Función reutilizable para validar si un jugador puede jalar una carta.
+	 * @param player El usuario que se quiere validar.
+	 * @param match La partida en la que se está validando.
+	 * @throws {InvalidMatchStatusException} Cuando se intenta jalar del mazo en una partida que no se está jugando, ni tocando.
+	 * @throws {InvalidPlayerStatusException} Cuando un usuario que no está en turno ejecuta la acción.
+	 * @throws {PlayerAlreadyPullCardException} Cuando un usuario ya tiene una carta sobrante.
+	 */
+	static async validateIfPlayerCanPullCard(player: Player, match: Match): Promise<void> {
+		if (!match.status.is(MatchStatusConstants.PLAYING) && !match.status.is(MatchStatusConstants.TOUCHING)) {
+			throw new InvalidMatchStatusException();
+		}
+		if (!player.status.is(PlayerStatusConstants.IN_TURN)) throw new InvalidPlayerStatusException();
+		if (player.kicker) throw new PlayerAlreadyPullCardException();
 	}
 
 	/**

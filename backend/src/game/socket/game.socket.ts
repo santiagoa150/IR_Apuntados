@@ -138,6 +138,19 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 	}
 
 	/**
+	 * Función que notifica que una carta ha sido jalada desde las cartas desechadas.
+	 * @param {GameId} gameId El juego al que se le notificará el evento.
+	 * @param {Match} match La partida en la que se jaló la carta.
+	 */
+	async cardPulledFromDiscarded(gameId: GameId, match: Match): Promise<void> {
+		this.logger.log(`[${this.cardPulledFromDiscarded.name}] INIT ::`);
+		this.wsServer.to(gameId.toString()).emit(GameSocketConstants.CARD_PULLED_FROM_DISCARDED_LISTENER, {
+			discardedCards: await match.discardedCards.toDTO(),
+		});
+		this.logger.log(`[${this.cardPulledFromDiscarded.name}] FINISH ::`);
+	}
+
+	/**
 	 * Evento que se ejecuta cuando se inicializa el websocket.
 	 */
 	afterInit(): void {

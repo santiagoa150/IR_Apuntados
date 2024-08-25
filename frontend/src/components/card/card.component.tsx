@@ -19,7 +19,8 @@ export function CardComponent(
         isDraggable?: boolean
         position?: number
         positionType?: string
-        onDrop?: (event: React.DragEvent, position: number, positionType: string) => void
+        onClick?: () => void;
+        onDrop?: (event: React.DragEvent, position: number, positionType: string) => void;
         onDragStart?: (event: React.DragEvent, position: number, positionType: string) => void;
         onDragOver?: (event: React.DragEvent) => void;
     }
@@ -34,6 +35,7 @@ export function CardComponent(
     return (
         <img
             alt=''
+            onClick={() => props.onClick && props.onClick()}
             onDragStart={(event) => {
                 props.isDraggable && props.onDragStart && props.positionType && typeof props.position !== 'undefined' && (props.onDragStart(event, props.position, props.positionType));
             }}

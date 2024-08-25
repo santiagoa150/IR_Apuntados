@@ -5,6 +5,9 @@ import { GameReadyToStartEventHandler } from './game-ready-to-start/game-ready-t
 import { MatchStartedEventHandler } from './match-started/match-started.event-handler';
 import { ShiftChangedEventHandler } from './shift-changed/shift-changed.event-handler';
 import { CardDeckFilledEventHandler } from './card-deck-filled/card-deck-filled.event-handler';
+import {
+	CardPulledFromDiscardedEventHandler,
+} from './card-pulled-from-discarded/card-pulled-from-discarded.event-handler';
 
 /**
  * Los eventos relacionados con los procesos de los juegos.
@@ -15,5 +18,6 @@ const Events: Type<IEventHandler>[] = [
 	MatchStartedEventHandler,
 	ShiftChangedEventHandler,
 	CardDeckFilledEventHandler,
+	CardPulledFromDiscardedEventHandler,
 ];
 export default Events;

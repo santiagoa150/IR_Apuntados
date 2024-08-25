@@ -69,7 +69,11 @@ export enum BackendConstants {
     /**
      * Ruta para acceder al servicio que permite jalar una carta desde el mazo.
      */
-    PULL_FROM_CARD_DECK_URL = '/api/player/pull-from-card-deck'
+    PULL_FROM_CARD_DECK_URL = '/api/player/pull-from-card-deck',
+    /**
+     * Ruta para acceder al servicio que permite jalar una carta desde las cartas desechadas.
+     */
+    PULL_FROM_DISCARDED_CARDS = '/api/player/pull-from-discarded-cards'
 }
 
 /**
@@ -138,6 +142,10 @@ export const BackendConfigConstants: Record<BackendConstants, BackendConfigType>
         retryRequest: true,
     },
     [BackendConstants.PULL_FROM_CARD_DECK_URL]: {
+        requireAccessToken: true,
+        retryRequest: true,
+    },
+    [BackendConstants.PULL_FROM_DISCARDED_CARDS]: {
         requireAccessToken: true,
         retryRequest: true,
     }

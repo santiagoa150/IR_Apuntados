@@ -70,4 +70,12 @@ export class CardWithDesign extends Card {
 			cardDesignName: this._cardDesignName,
 		};
 	}
+
+	/**
+	 * Convierte una carta con diseño en una carta.
+	 * @returns {Card} La nueva carta.
+	 */
+	toCard(): Card {
+		return new Card(this.type, this.suit, this.value);
+	}
 }

@@ -191,6 +191,10 @@ export enum ExceptionMessagesConstants {
 	 */
 	MATCH_NOT_FOUND_ERROR = 'MATCH_NOT_FOUND_ERROR',
 	/**
+	 * Se utiliza para indicar que no hay cartas desechadas.
+	 */
+	NO_DISCARDED_CARDS_ERROR = 'NO_DISCARDED_CARDS_ERROR',
+	/**
 	 * Se utiliza cuando un usuario intenta realizar una operación con tokens
 	 * y no hay suficientes.
 	 */

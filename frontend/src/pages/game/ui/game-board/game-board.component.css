@@ -39,10 +39,19 @@
         & #game-board-discarded-cards-container, & #game-board-card-deck {
             width: 60%;
             height: max-content;
+            position: relative;
         }
 
         & #game-board-discarded-cards-image {
             width: 100%;
+        }
+
+        & .discarded-cards-card {
+            position: absolute;
+            cursor: pointer;
+            top: 50%;
+            left: 48%;
+            transform: translate(-50%, -48%);
         }
     }
 }

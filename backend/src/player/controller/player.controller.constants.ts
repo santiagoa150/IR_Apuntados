@@ -20,7 +20,11 @@ export enum PlayerControllerConstants {
 	 */
 	PASS_SHIFT_URL = 'pass-shift',
 	/**
-	 * Url del servicio para que un jugador jale una carta de las cartas desechadas.
+	 * Url del servicio para que un jugador jale una carta del mazo.
 	 */
-	PULL_FROM_CARD_DECK = 'pull-from-card-deck'
+	PULL_FROM_CARD_DECK = 'pull-from-card-deck',
+	/**
+	 * Url del servicio que permite a un jugador jalar una carda de las cartas desechadas.
+	 */
+	PULL_FROM_DISCARDED_CARDS = 'pull-from-discarded-cards',
 }

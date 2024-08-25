@@ -3,10 +3,10 @@ import { ExceptionMessagesConstants } from '../../shared/exceptions/exception-me
 import { HttpStatus } from '@nestjs/common';
 
 /**
- * Excepción lanzada para indicar que que no se encontró una partida solicitada.
+ * Excepción lanzada para indicar que no hay cartas desechadas.
  */
-export class MatchNotFoundException extends Exception {
+export class NoDiscardedCardsException extends Exception {
 	constructor() {
-		super(ExceptionMessagesConstants.MATCH_NOT_FOUND_ERROR, HttpStatus.NOT_FOUND);
+		super(ExceptionMessagesConstants.NO_DISCARDED_CARDS_ERROR, HttpStatus.BAD_REQUEST);
 	}
 }

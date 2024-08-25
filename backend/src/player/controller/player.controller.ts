@@ -25,6 +25,9 @@ import { CardWithDesign } from '../../card/card-with-design';
 import { MatchId } from '../../match/match-id';
 import { GameId } from '../../game/game-id';
 import { CardDeckFilledEvent } from '../../game/events/card-deck-filled/card-deck-filled.event';
+import {
+	CardPulledFromDiscardedEvent,
+} from '../../game/events/card-pulled-from-discarded/card-pulled-from-discarded.event';
 
 /**
  * El controlador de los jugadores.
@@ -128,14 +131,38 @@ export class PlayerController {
 		@GameDecorator() game: GameDTO,
 	): Promise<PlayerControllerResponse> {
 		const response: PlayerControllerResponse = new PlayerControllerResponse();
-		const gameId: GameId = new GameId(game.gameId);
 		const match: Match = await this.matchService.getById(new MatchId(game.currentMatch));
 		const user: User = await this.userService.getById(new UserId(userDecorator.userId));
-		const data = await this.playerService.pullFromCardDeck(user.userId, gameId, match);
+		const data = await this.playerService.pullFromCardDeck(user.userId, match);
 		await this.matchService.update(match);
-		if (data.filledDeck) this.eventBus.publish(new CardDeckFilledEvent(gameId, match));
+		if (data.filledDeck) this.eventBus.publish(new CardDeckFilledEvent(new GameId(game.gameId), match));
 		response.player = await data.player.toDTO();
 		response.currentDesignName = user.currentDesignName.toString();
+		return response;
+	}
+
+	/**
+	 * Controlador PATCH que permite que un jugador jale una carta de las cartas descartadas.
+	 * @param {UserDecoratorType} userDecorator La información básica del usuario que ejecuta la acción.
+	 * @param {GameDTO} game El juego en el que se está jalando la carta.
+	 * @returns {PlayerControllerResponse} La respuesta genérica de los controladores de los jugadores.
+	 */
+	@Patch(PlayerControllerConstants.PULL_FROM_DISCARDED_CARDS)
+	@GameAuthDecorator()
+	@ApiOkResponse({ type: PlayerControllerResponse })
+	@ApiOkResponse({ type: ExceptionResponseDTO })
+	async pullFromDiscardedCards(
+		@UserDecorator() userDecorator: UserDecoratorType,
+		@GameDecorator() game: GameDTO,
+	): Promise<PlayerControllerResponse> {
+		const response: PlayerControllerResponse = new PlayerControllerResponse();
+		const user: User = await this.userService.getById(new UserId(userDecorator.userId));
+		const match: Match = await this.matchService.getById(new MatchId(game.currentMatch));
+		const data = await this.playerService.pullFromDiscardedCards(user.userId, match);
+		await this.matchService.update(match);
+		this.eventBus.publish(new CardPulledFromDiscardedEvent(new GameId(game.gameId), match));
+		response.player = await data.player.toDTO();
+		response.currentDesignName = user.currentDesignName;
 		return response;
 	}
 }
