@@ -287,10 +287,21 @@ export enum ExceptionMessagesConstants {
 	 */
 	USER_NOT_FOUND_ERROR = 'USER_NOT_FOUND_ERROR',
 	/**
-	 * Se utiliza cuando se solicita la actualización de un usuario,
-	 * pero algo falla.
+	 * Se utiliza cuando se solicita la actualización de un usuario, pero algo falla.
 	 */
 	USER_NOT_UPDATED_ERROR = 'USER_NOT_UPDATED_ERROR',
+	/**
+	 * Se utiliza para indicar que un jugador no puede intentar ganar más veces.
+	 */
+	PLAYER_CAN_NO_LONGER_TRY_TO_WIN_ERROR = 'PLAYER_CAN_NO_LONGER_TRY_TO_WIN_ERROR',
+	/**
+	 * Se utiliza cuando las cartas de un jugador no le permiten ganar.
+	 */
+	PLAYER_CARDS_DONT_ALLOW_WINNING_ERROR = 'PLAYER_CARDS_DONT_ALLOW_WINNING_ERROR',
+	/**
+	 * Se utiliza cuando un jugador aún no ha jalado carta.
+	 */
+	PLAYER_HAS_NOT_PULLED_CARD_ERROR = 'PLAYER_HAS_NOT_PULLED_CARD_ERROR',
 	/**
 	 * Se utiliza cuando se solicita un nombre de usuario y no se envía.
 	 */

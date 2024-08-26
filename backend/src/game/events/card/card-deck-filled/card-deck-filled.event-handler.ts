@@ -1,6 +1,6 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { CardDeckFilledEvent } from './card-deck-filled.event';
-import { GameSocket } from '../../socket/game.socket';
+import { GameSocket } from '../../../socket/game.socket';
 import { Logger } from '@nestjs/common';
 
 /**

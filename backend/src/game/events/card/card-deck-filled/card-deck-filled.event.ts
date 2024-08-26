@@ -1,5 +1,5 @@
-import { GameId } from '../../game-id';
-import { Match } from '../../../match/match';
+import { GameId } from '../../../game-id';
+import { Match } from '../../../../match/match';
 
 /**
  * Evento para indicar que el mazo de cartas fue rellenado.

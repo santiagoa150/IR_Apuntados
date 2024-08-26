@@ -1,8 +1,22 @@
 #game-board-component-container {
     grid-column: 2/3;
-    grid-row: 1/2;
     display: grid;
     grid-template-columns: 20% 80%;
+    grid-template-rows: 90vh 10vh;
+
+    & #game-board-actions {
+        grid-column: 1/3;
+        grid-row: 2/3;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        & .game-board-actions-button{
+            width: 300px;
+            height: 45px;
+            margin: 0 20px 0 20px;
+        }
+    }
 
     & #game-board-cards-container {
         display: flex;

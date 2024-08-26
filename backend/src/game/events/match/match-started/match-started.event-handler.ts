@@ -1,6 +1,6 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { MatchStartedEvent } from './match-started.event';
-import { GameSocket } from '../../socket/game.socket';
+import { GameSocket } from '../../../socket/game.socket';
 import { Logger } from '@nestjs/common';
 
 /**

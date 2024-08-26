@@ -19,6 +19,11 @@ const definition: Required<SchemaDefinition<PlayerDTO>> = {
 		type: Schema.Types.Map,
 		required: false,
 	},
+	gameId: {
+		type: String,
+		required: true,
+		index: 'hashed',
+	},
 	isActive: {
 		type: Boolean,
 		required: true,
@@ -28,21 +33,12 @@ const definition: Required<SchemaDefinition<PlayerDTO>> = {
 		type: CardSchema,
 		required: false,
 	},
-	status: {
+	playerId: {
 		type: String,
 		required: true,
+		unique: true,
 	},
-	userId: {
-		type: String,
-		required: true,
-		index: 'hashed',
-	},
-	gameId: {
-		type: String,
-		required: true,
-		index: 'hashed',
-	},
-	score: {
+	position: {
 		type: Number,
 		required: false,
 	},
@@ -51,8 +47,21 @@ const definition: Required<SchemaDefinition<PlayerDTO>> = {
 		length: 4,
 		required: false,
 	},
-	position: {
+	score: {
 		type: Number,
+		required: false,
+	},
+	status: {
+		type: String,
+		required: true,
+	},
+	triedToWin: {
+		type: Boolean,
+		required: true,
+	},
+	trips1: {
+		type: [CardSchema],
+		length: 3,
 		required: false,
 	},
 	trips2: {
@@ -60,15 +69,10 @@ const definition: Required<SchemaDefinition<PlayerDTO>> = {
 		length: 3,
 		required: false,
 	},
-	trips1: {
-		type: [CardSchema],
-		length: 3,
-		required: false,
-	},
-	playerId: {
+	userId: {
 		type: String,
 		required: true,
-		unique: true,
+		index: 'hashed',
 	},
 };
 

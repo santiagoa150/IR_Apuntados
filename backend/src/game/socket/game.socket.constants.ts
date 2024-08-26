@@ -34,4 +34,12 @@ export enum GameSocketConstants {
 	 * El mensaje que indica que una carta fue jalada desde las cartas desechadas.
 	 */
 	CARD_PULLED_FROM_DISCARDED_LISTENER = 'CARD_PULLED_FROM_DISCARDED_LISTENER',
+	/**
+	 * El mensaje que indica que un jugador no pudo ganar.
+	 */
+	PLAYER_CANT_WIN_LISTENER = 'PLAYER_CANT_WIN_LISTENER',
+	/**
+	 * El mensaje que indica que una partida ha sido ganada.
+	 */
+	MATCH_WON_LISTENER = 'MATCH_WON_LISTENER'
 }

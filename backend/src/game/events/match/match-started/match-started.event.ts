@@ -1,5 +1,5 @@
-import { Game } from '../../game';
-import { Match } from '../../../match/match';
+import { Game } from '../../../game';
+import { Match } from '../../../../match/match';
 
 /**
  * Evento para indicar que una partida ha sido iniciada.

@@ -12,6 +12,10 @@ export enum MatchStatusConstants {
 	 */
 	TOUCHING = 'TOUCHING',
 	/**
+	 * El estado que representa que se están calculando los resultados de una partida.
+	 */
+	CALCULATING_RESULTS = 'CALCULATING_RESULTS',
+	/**
 	 * El estado que representa cuando se están mostrando los resultados de una partida.
 	 */
 	SHOWING_RESULTS = 'SHOWING_RESULTS',

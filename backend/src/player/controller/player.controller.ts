@@ -1,5 +1,5 @@
 import { PlayerService } from '../player.service';
-import { Body, Controller, Get, Patch } from '@nestjs/common';
+import { Body, Controller, Get, Logger, Patch } from '@nestjs/common';
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PlayerControllerConstants } from './player.controller.constants';
 import { GameAuthDecorator } from '../../security/game-auth.decorator';
@@ -14,20 +14,23 @@ import { GameDecorator } from '../../security/game.decorator';
 import { Game, GameDTO } from '../../game/game';
 import { PassShiftCard, PassShiftControllerRequest } from './requests/pass-shift.controller.request';
 import { Card } from '../../card/card';
-import { CardValueConstants } from '../../card/card-value.constants';
 import { Trips } from '../../card/trips';
 import { Quads } from '../../card/quads';
 import { Match } from '../../match/match';
 import { MatchService } from '../../match/match.service';
 import { EventBus } from '@nestjs/cqrs';
-import { ShiftChangedEvent } from '../../game/events/shift-changed/shift-changed.event';
+import { MatchShiftChangedEvent } from '../../game/events/match/match-shift-changed/match-shift-changed.event';
 import { CardWithDesign } from '../../card/card-with-design';
 import { MatchId } from '../../match/match-id';
 import { GameId } from '../../game/game-id';
-import { CardDeckFilledEvent } from '../../game/events/card-deck-filled/card-deck-filled.event';
+import { CardDeckFilledEvent } from '../../game/events/card/card-deck-filled/card-deck-filled.event';
 import {
 	CardPulledFromDiscardedEvent,
-} from '../../game/events/card-pulled-from-discarded/card-pulled-from-discarded.event';
+} from '../../game/events/card/card-pulled-from-discarded/card-pulled-from-discarded.event';
+import { WinMatchCard, WinMatchControllerRequest } from './requests/win-match.controller.request';
+import { PlayerCantWinEvent } from '../../game/events/player/player-cant-win/player-cant-win.event';
+import { WinMatchControllerResponse } from './responses/win-match.controller.response';
+import { MatchWonEvent } from '../../game/events/match/match-won/match-won.event';
 
 /**
  * El controlador de los jugadores.
@@ -35,6 +38,8 @@ import {
 @Controller(PlayerControllerConstants.CONTROLLER_PREFIX)
 @ApiTags(PlayerControllerConstants.CONTROLLER_TAG)
 export class PlayerController {
+	private readonly logger: Logger = new Logger(PlayerController.name);
+
 	/**
 	 * @param {UserService} userService Los servicios de los usuarios.
 	 * @param {PlayerService} playerService Los servicios de los jugadores.
@@ -88,7 +93,6 @@ export class PlayerController {
 			Card.fromDTO({
 				suit: c.suit,
 				type: c.type,
-				value: CardValueConstants[c.type],
 			});
 		const game: Game = Game.fromDTO(gameDTO);
 		const match: Match = await this.matchService.getById(game.currentMatch);
@@ -107,10 +111,9 @@ export class PlayerController {
 			cardDesignName: user.currentDesignName,
 			suit: body.kicker.suit,
 			type: body.kicker.type,
-			value: CardValueConstants[body.kicker.type],
 		});
 		const updatedMatch: Match = await this.matchService.passShift(match, kickerWithDesign, data.player);
-		this.eventBus.publish(new ShiftChangedEvent(game, updatedMatch, data.nextPlayer));
+		this.eventBus.publish(new MatchShiftChangedEvent(game, updatedMatch, data.nextPlayer));
 		response.player = await data.player.toDTO();
 		response.currentDesignName = user.currentDesignName;
 		return response;
@@ -163,6 +166,54 @@ export class PlayerController {
 		this.eventBus.publish(new CardPulledFromDiscardedEvent(new GameId(game.gameId), match));
 		response.player = await data.player.toDTO();
 		response.currentDesignName = user.currentDesignName;
+		return response;
+	}
+
+	/**
+	 * Controlador PATCH que permite que un jugador notifique que ha ganado la partida.
+	 * @param {PassShiftControllerRequest} body Las cartas del usuario.
+	 * @param {UserDecoratorType} userDecorator El usuario que está ejecutando la acción.
+	 * @param {GameDTO} game El juego en el que se está notificando que se ganó la partida.
+	 * @returns {DefaultResponse} La respuesta por defecto de los controladores.
+	 */
+	@Patch(PlayerControllerConstants.WIN_MATCH)
+	@GameAuthDecorator()
+	@ApiOkResponse({ type: WinMatchControllerResponse })
+	@ApiOkResponse({ type: ExceptionResponseDTO })
+	async winMatch(
+		@Body() body: WinMatchControllerRequest,
+		@UserDecorator() userDecorator: UserDecoratorType,
+		@GameDecorator() game: GameDTO,
+	): Promise<WinMatchControllerResponse> {
+		const response: WinMatchControllerResponse = new WinMatchControllerResponse();
+		const gameId: GameId = new GameId(game.gameId);
+		const match: Match = await this.matchService.getById(new MatchId(game.currentMatch));
+		const mapper = (c: WinMatchCard) =>
+			Card.fromDTO({
+				suit: c.suit,
+				type: c.type,
+			});
+		const data = await this.playerService.winMatch(
+			new UserId(userDecorator.userId),
+			match,
+			body.trips1.map((c) => mapper(c)) as Trips,
+			body.trips2.map((c) => mapper(c)) as Trips,
+			body.quads.map((c) => mapper(c)) as Quads,
+			mapper(body.kicker),
+		);
+		if (data.canWin) {
+			await this.matchService.update(data.match);
+			await this.eventBus.publish(new MatchWonEvent(gameId));
+			this.playerService
+				.updateLoserPlayers(gameId, data.player)
+				.then((data) => {
+					// TODO: Definir lógica después de actualizar los jugadores.
+					console.log(data);
+				})
+				.catch((e) => this.logger.log(`[${this.winMatch.name}] ERROR :: ${e.message}`));
+		} else await this.eventBus.publish(new PlayerCantWinEvent(gameId, data.player));
+		response.canWin = data.canWin;
+		response.player = await data.player.toDTO();
 		return response;
 	}
 }

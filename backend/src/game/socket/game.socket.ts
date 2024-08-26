@@ -151,6 +151,30 @@ export class GameSocket implements OnGatewayInit, OnGatewayConnection {
 	}
 
 	/**
+	 * Función que notifica que un jugador no pudo ganar.
+	 * @param {GameId} gameId El juego al que se le notificará el evento.
+	 * @param {Player} player El jugador que no pudo ganar.
+	 */
+	async playerCantWin(gameId: GameId, player: Player): Promise<void> {
+		this.logger.log(`[${this.playerCantWin.name}] INIT ::`);
+		this.wsServer.to(gameId.toString()).emit(GameSocketConstants.PLAYER_CANT_WIN_LISTENER, {
+			playerId: player.playerId.toString(),
+			score: player.score,
+		});
+		this.logger.log(`[${this.playerCantWin.name}] FINISH ::`);
+	}
+
+	/**
+	 * Evento para notificar que una partida ha sido gana.
+	 * @param {GameId} gameId El juego en el que se ganó la partida.
+	 */
+	async matchWon(gameId: GameId): Promise<void> {
+		this.logger.log(`[${this.matchWon.name}] INIT ::`);
+		this.wsServer.to(gameId.toString()).emit(GameSocketConstants.MATCH_WON_LISTENER);
+		this.logger.log(`[${this.matchWon.name}] FINISH ::`);
+	}
+
+	/**
 	 * Evento que se ejecuta cuando se inicializa el websocket.
 	 */
 	afterInit(): void {

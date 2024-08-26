@@ -17,10 +17,6 @@ export const definition: Required<SchemaDefinition<CardWithDesignDTO>> = {
 		type: String,
 		required: true,
 	},
-	value: {
-		type: Number,
-		required: true,
-	},
 	suit: {
 		type: String,
 		required: true,

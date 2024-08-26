@@ -10,7 +10,6 @@ import { CardSuit } from './card-suit';
 export class CardDTO {
 	@ApiProperty() type: string;
 	@ApiProperty() suit: string;
-	@ApiProperty() value: number;
 }
 
 /**
@@ -19,23 +18,18 @@ export class CardDTO {
  * @extends {DomainBase<CardDTO>}
  */
 export class Card extends DomainBase<CardDTO> {
-
 	private readonly _type: CardType;
 	private readonly _suit: CardSuit;
-	private readonly _value: number;
 
 	/**
 	 * @param {CardType} type El tipo de la carta.
 	 * @param {CardSuit} suit La pinta de la carta.
-	 * @param {number} value El valor numérico de la carta.
 	 */
-	constructor(type: CardType, suit: CardSuit, value: number) {
+	constructor(type: CardType, suit: CardSuit) {
 		super();
 		this._type = type;
 		this._suit = suit;
-		this._value = value;
 	}
-
 
 	get type(): CardType {
 		return this._type;
@@ -45,10 +39,6 @@ export class Card extends DomainBase<CardDTO> {
 		return this._suit;
 	}
 
-	get value(): number {
-		return this._value;
-	}
-
 	/**
 	 * Convierte el objeto de transferencia de la carta al modelo de dominio
 	 * @param {CardDTO} dto El objeto de transferencia.
@@ -56,11 +46,7 @@ export class Card extends DomainBase<CardDTO> {
 	 * @static
 	 */
 	static fromDTO(dto: CardDTO): Card {
-		return new Card(
-			new CardType(dto.type),
-			new CardSuit(dto.suit),
-			dto.value,
-		);
+		return new Card(new CardType(dto.type), new CardSuit(dto.suit));
 	}
 
 	/**
@@ -71,7 +57,17 @@ export class Card extends DomainBase<CardDTO> {
 		return {
 			type: this._type.toString(),
 			suit: this._suit.toString(),
-			value: this._value.valueOf(),
 		};
+	}
+
+	/**
+	 * Determina cuál es la siguiente carta a partir de un valor.
+	 * @param {number} current El valor actual de una carta.
+	 * @returns {number} La carta siguiente.
+	 */
+	static getNextValue(current: number): number {
+		let next: number = current + 1;
+		if (next > 13) next = 1;
+		return next;
 	}
 }

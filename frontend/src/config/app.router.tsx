@@ -7,6 +7,7 @@ import {WaitingGamePage} from '../pages/waiting-game/waiting-game.page.tsx';
 import {GameGuard} from './game.guard.tsx';
 import {JoinGamePage} from '../pages/join-game/join-game.page.tsx';
 import {GamePage} from '../pages/game/game.page.tsx';
+import {ShowMatchWinnerPage} from "../pages/show-match-winner/show-match-winner.page.tsx";
 
 /**
  * Constantes que definen las rutas de la aplicación.
@@ -42,6 +43,10 @@ export enum RoutesConstants {
      * Define la ruta que redirecciona e ingresa a un juego.
      */
     JOIN_GAME = '/game/join',
+    /**
+     * Define la ruta de la página que muestra el ganador de la partida.
+     */
+    SHOW_MATCH_WINNER = '/game/match-winner',
 }
 
 /**
@@ -50,6 +55,10 @@ export enum RoutesConstants {
  * @const
  */
 export const AppRouter = createBrowserRouter([
+    {
+        path: RoutesConstants.SHOW_MATCH_WINNER,
+        element: <GameGuard element={<ShowMatchWinnerPage/>}/>
+    },
     {
         path: RoutesConstants.WAITING_GAME_ROUTE,
         element: <GameGuard element={<WaitingGamePage/>}/>
@@ -77,5 +86,5 @@ export const AppRouter = createBrowserRouter([
     {
         path: RoutesConstants.ALL_ROUTES,
         element: <Navigate to={RoutesConstants.DEFAULT_ROUTE} replace/>
-    }
+    },
 ]);

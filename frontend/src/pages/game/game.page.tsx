@@ -11,6 +11,8 @@ import {GamePlayersListComponent} from './ui/game-players-list/game-players-list
 import {DiscardedCardsType} from '../../types/discarded-cards.type.ts';
 import {GameBoardComponent} from './ui/game-board/game-board.component.tsx';
 import {PlayerType} from '../../types/player.type.ts';
+import {Navigate} from 'react-router-dom';
+import {RoutesConstants} from '../../config/app.router.tsx';
 
 /**
  * Página para jugar un juego.
@@ -49,8 +51,19 @@ export function GamePage(): JSX.Element {
             socket.on(SocketConstants.CARD_PULLED_FROM_DISCARDED_LISTENER, ({discardedCards}: {
                 discardedCards: DiscardedCardsType
             }) => {
-                console.log("HOla");
                 setDiscardedCards(discardedCards);
+            });
+            socket.on(SocketConstants.PLAYER_CANT_WIN_LISTENER, async () => {
+                const backendUtils: BackendUtils = new BackendUtils();
+                const res = await backendUtils.get<GetCurrentGameDetailResponse, never>(BackendConstants.GET_CURRENT_GAME_URL);
+                if (res) {
+                    setGame(res.game);
+                    setPlayers(res.players);
+                    setDiscardedCards(res.discardedCards);
+                }
+            });
+            socket.on(SocketConstants.MATCH_WON_LISTENER, async () => {
+                setRedirect(true);
             });
         }
     }, [socket]);
@@ -79,6 +92,11 @@ export function GamePage(): JSX.Element {
         fetchData().then();
     }, []);
 
+    /**
+     * Hooks para el funcionamiento del componente
+     */
+    const [redirect, setRedirect] = useState<boolean>(false);
+
     return (
         <>
             <div className='page-container' id='game-page-container'>
@@ -89,6 +107,7 @@ export function GamePage(): JSX.Element {
                     currentPlayer={currentPlayer}
                 />
             </div>
+            {redirect ? <Navigate to={RoutesConstants.SHOW_MATCH_WINNER}/> : <></>}
         </>
     );
 }

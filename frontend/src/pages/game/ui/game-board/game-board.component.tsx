@@ -24,7 +24,11 @@ import {PlayerConstants} from '../../../../utils/constants/player.constants.ts';
 import {PassShiftRequest, PassShiftResponse} from '../../../../types/services/pass-shift.ts';
 import {GlobalLoadingComponent} from '../../../../components/loading/global/global-loading.component.tsx';
 import {PullFromCardDeckResponse} from '../../../../types/services/pull-from-card-deck.ts';
-import {PullFromDiscardedCardsResponse} from "../../../../types/services/pull-from-discarded-cards.type.ts";
+import {PullFromDiscardedCardsResponse} from '../../../../types/services/pull-from-discarded-cards.type.ts';
+import {Button} from '@mui/material';
+import {AlertComponent} from '../../../../components/alert/alert.component.tsx';
+import {AlertTypeConstants} from '../../../../utils/constants/alert.constants.ts';
+import {WinMatchRequest, WinMatchResponse} from '../../../../types/services/win-match.ts';
 
 /**
  *  Componente que define el tablero del juego.
@@ -48,6 +52,14 @@ export function GameBoardComponent(props: {
     const [kicker, setKicker] = useState<CardType | undefined>();
     const [currentDesign, setCurrentDesign] = useState<string | undefined>();
 
+
+    /**
+     * Hooks para el funcionamiento del componente.
+     */
+    const [loading, setLoading] = useState<boolean>(false);
+    const [alertType, setAlertType] = useState<AlertTypeConstants>(AlertTypeConstants.ERROR_ALERT);
+    const [alertMessage, setAlertMessage] = useState<string>('');
+
     /**
      * Función que permite guardar los datos de un jugador en los hooks.
      * @param {PlayerType} player El jugador que se guardará.
@@ -61,11 +73,6 @@ export function GameBoardComponent(props: {
         setKicker(player.kicker);
         if (design) setCurrentDesign(design);
     };
-
-    /**
-     * Hooks para el funcionamiento del componente.
-     */
-    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         async function fetchData(): Promise<void> {
@@ -185,6 +192,32 @@ export function GameBoardComponent(props: {
             });
             const res = await backendUtils.patch<PullFromCardDeckResponse, unknown>(BackendConstants.PULL_FROM_CARD_DECK_URL, {});
             if (res) setPlayerData(res.player);
+            setLoading(false);
+        }
+    };
+
+    /**
+     * Función que ejecuta la acción para saber si un usuario puede ganar o no.
+     */
+    const winMatchAction = async (): Promise<void> => {
+        if (player && trips1 && trips2 && quads && kicker) {
+            const backendUtils: BackendUtils = new BackendUtils((message) => {
+                setLoading(false);
+                setAlertType(AlertTypeConstants.ERROR_ALERT);
+                setAlertMessage(message);
+            });
+            setLoading(true);
+            const body: WinMatchRequest = {quads, trips1, trips2, kicker};
+            const res = await backendUtils.patch<WinMatchResponse, WinMatchRequest>(BackendConstants.WIN_MATCH, body);
+            if (res) {
+                if (res.canWin) {
+                    // TODO: Definir lógica de cuando puede ganar.
+                } else {
+                    setAlertType(AlertTypeConstants.WARNING_ALERT);
+                    setAlertMessage('PLAYER_CANT_WIN_MESSAGE');
+                }
+                setPlayerData(res.player);
+            }
             setLoading(false);
         }
     };
@@ -319,8 +352,27 @@ export function GameBoardComponent(props: {
                             : <LocalLoadingComponent loading={true} showBackground={false}/>
                     }
                 </div>
+                <div id='game-board-actions'>
+                    <Button
+                        onClick={winMatchAction}
+                        className='game-board-actions-button'
+                        variant='contained'
+                        disabled={
+                            player && (
+                                player.status !== PlayerConstants.IN_TURN_PLAYER_STATUS
+                                || !kicker
+                                || player.triedToWin
+                            )
+                        }
+                    > Ganar</Button>
+                </div>
             </div>
             <GlobalLoadingComponent loading={loading}/>
+            <AlertComponent
+                type={alertType}
+                rawMessage={alertMessage}
+                setRawMessage={setAlertMessage}
+            />
         </>
     );
 }

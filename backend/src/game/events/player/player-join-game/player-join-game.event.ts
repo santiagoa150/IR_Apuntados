@@ -1,11 +1,11 @@
-import { User } from '../../../user/user';
-import { Player } from '../../../player/player';
-import { Game } from '../../game';
+import { User } from '../../../../user/user';
+import { Player } from '../../../../player/player';
+import { Game } from '../../../game';
 
 /**
  * Evento que indica que un usuario ingresó a un juego.
  */
-export class JoinGameEvent {
+export class PlayerJoinGameEvent {
 
 	/**
 	 * @param {User} user El usuario que ingresó al juego.

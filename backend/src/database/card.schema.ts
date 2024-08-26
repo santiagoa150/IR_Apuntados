@@ -9,10 +9,6 @@ const definition: Required<SchemaDefinition<CardDTO>> = {
 		type: String,
 		required: true,
 	},
-	value: {
-		type: Number,
-		required: true,
-	},
 	suit: {
 		type: String,
 		required: true,

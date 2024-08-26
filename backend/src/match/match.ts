@@ -8,6 +8,7 @@ import { MatchStatus } from './match-status';
 import { CardWithDesign } from '../card/card-with-design';
 import { Card } from '../card/card';
 import { NoDiscardedCardsException } from './exceptions/no-discarded-cards.exception';
+import { PlayerId } from '../player/player-id';
 
 /**
  * El objeto de transferencia de datos de una partida.
@@ -22,6 +23,7 @@ export class MatchDTO {
 	@ApiProperty() status: string;
 	@ApiProperty({ type: DiscardedCardsDTO }) discardedCards: DiscardedCardsDTO;
 	@ApiProperty({ type: CardDeckDTO }) cardDeck: CardDeckDTO;
+	@ApiProperty() winner?: string;
 }
 
 /**
@@ -36,6 +38,9 @@ export class Match extends DomainBase<MatchDTO> {
 	private readonly _currentPlayers: number;
 	private readonly _discardedCards: DiscardedCards;
 	private readonly _cardDeck: CardDeck;
+	private _currentShift: number;
+	private _totalShifts: number;
+	private _winner?: PlayerId;
 
 	/**
 	 * @param gameId El id del juego al que pertenece la partida.
@@ -47,6 +52,7 @@ export class Match extends DomainBase<MatchDTO> {
 	 * @param totalShifts La cantidad de turnos que lleva o tuvo la partida.
 	 * @param discardedCards Las cartas desechadas.
 	 * @param cardDeck El mazo de la partida.
+	 * @param winner El ganador de la partida.
 	 */
 	constructor(
 		gameId: GameId,
@@ -58,6 +64,7 @@ export class Match extends DomainBase<MatchDTO> {
 		totalShifts: number,
 		discardedCards: DiscardedCards,
 		cardDeck: CardDeck,
+		winner?: PlayerId
 	) {
 		super();
 		this._gameId = gameId;
@@ -69,15 +76,13 @@ export class Match extends DomainBase<MatchDTO> {
 		this._totalShifts = totalShifts;
 		this._discardedCards = discardedCards;
 		this._cardDeck = cardDeck;
+		this._winner = winner;
 	}
 
-	private _currentShift: number;
 
 	get currentShift(): number {
 		return this._currentShift;
 	}
-
-	private _totalShifts: number;
 
 	get totalShifts(): number {
 		return this._totalShifts;
@@ -111,6 +116,14 @@ export class Match extends DomainBase<MatchDTO> {
 		return this._cardDeck;
 	}
 
+	get winner(): PlayerId {
+		return this._winner;
+	}
+
+	set winner(value: PlayerId) {
+		this._winner = value;
+	}
+
 	/**
 	 * Convierte el objeto de transferencia de datos de una partida en su modelo de dominio.
 	 * @param {MatchDTO} dto El objeto de transferencia de datos siendo mapeado.
@@ -127,6 +140,7 @@ export class Match extends DomainBase<MatchDTO> {
 			dto.totalShifts,
 			await DiscardedCards.fromDTO(dto.discardedCards),
 			await CardDeck.fromDTO(dto.cardDeck),
+			dto.winner ? new PlayerId(dto.winner) : undefined,
 		);
 	}
 
@@ -145,6 +159,7 @@ export class Match extends DomainBase<MatchDTO> {
 			matchId: this._matchId.toString(),
 			status: this._status.toString(),
 			totalShifts: this._totalShifts,
+			winner: this._winner?.toString(),
 		};
 	}
 

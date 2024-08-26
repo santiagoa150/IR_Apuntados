@@ -52,6 +52,10 @@ const definition: Required<SchemaDefinition<MatchDTO>> = {
 		type: Number,
 		required: true,
 	},
+	winner: {
+		type: String,
+		required: false,
+	}
 };
 
 /**

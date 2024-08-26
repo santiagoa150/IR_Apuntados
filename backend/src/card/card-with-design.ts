@@ -25,12 +25,11 @@ export class CardWithDesign extends Card {
 	/**
 	 * @param {CardType} type El tipo de la carta.
 	 * @param {CardSuit} suit La pinta de la carta.
-	 * @param {number} value El valor numérico de la carta.
 	 * @param {CardDesignId} cardDesignId El id del diseño de carta.
 	 * @param {string} cardDesignName El nombre del diseño de carta.
 	 */
-	constructor(type: CardType, suit: CardSuit, value: number, cardDesignId: CardDesignId, cardDesignName: string) {
-		super(type, suit, value);
+	constructor(type: CardType, suit: CardSuit, cardDesignId: CardDesignId, cardDesignName: string) {
+		super(type, suit);
 		this._cardDesignId = cardDesignId;
 		this._cardDesignName = cardDesignName;
 	}
@@ -53,7 +52,6 @@ export class CardWithDesign extends Card {
 		return new CardWithDesign(
 			new CardType(dto.type),
 			new CardSuit(dto.suit),
-			dto.value,
 			new CardDesignId(dto.cardDesignId),
 			dto.cardDesignName,
 		);
@@ -76,6 +74,6 @@ export class CardWithDesign extends Card {
 	 * @returns {Card} La nueva carta.
 	 */
 	toCard(): Card {
-		return new Card(this.type, this.suit, this.value);
+		return new Card(this.type, this.suit);
 	}
 }

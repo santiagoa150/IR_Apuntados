@@ -4,7 +4,7 @@ import { CardTypeConstants } from './card-type.constants';
  * Constantes que definen los valores de cada tipo de cartas.
  */
 export const CardValueConstants: Record<CardTypeConstants, number> = {
-	[CardTypeConstants.A]: 1,
+	[CardTypeConstants.A]: 10,
 	[CardTypeConstants.C2]: 2,
 	[CardTypeConstants.C3]: 3,
 	[CardTypeConstants.C4]: 4,
@@ -14,7 +14,7 @@ export const CardValueConstants: Record<CardTypeConstants, number> = {
 	[CardTypeConstants.C8]: 8,
 	[CardTypeConstants.C9]: 9,
 	[CardTypeConstants.C10]: 10,
-	[CardTypeConstants.J]: 11,
-	[CardTypeConstants.Q]: 12,
-	[CardTypeConstants.K]: 13,
+	[CardTypeConstants.J]: 10,
+	[CardTypeConstants.Q]: 10,
+	[CardTypeConstants.K]: 10,
 };

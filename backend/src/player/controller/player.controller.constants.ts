@@ -27,4 +27,8 @@ export enum PlayerControllerConstants {
 	 * Url del servicio que permite a un jugador jalar una carda de las cartas desechadas.
 	 */
 	PULL_FROM_DISCARDED_CARDS = 'pull-from-discarded-cards',
+	/**
+	 * Url del servicio que permite a un jugador indicar que ha ganado una partida.
+	 */
+	WIN_MATCH = 'win-match',
 }

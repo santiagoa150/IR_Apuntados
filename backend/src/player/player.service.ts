@@ -24,6 +24,14 @@ import { PlayerDoesNotHaveThisCardException } from './exceptions/player-does-not
 import { InvalidPlayerStatusException } from './exceptions/invalid-player-status.exception';
 import { PlayerAlreadyPullCardException } from './exceptions/player-already-pull-card.exception';
 import { CardWithDesign } from '../card/card-with-design';
+import { ExceptionMessagesConstants } from '../shared/exceptions/exception-messages.constants';
+import { PlayerCardsDontAllowWinningException } from './exceptions/player-cards-dont-allow-winning.exception';
+import { AllowedTrips } from '../card/allowed-trips';
+import { AllowedQuads } from '../card/allowed-quads';
+import { PlayerHasNotPulledCardException } from './exceptions/player-has-not-pulled-card.exception';
+import { PlayerCanNoLongerTryToWinException } from './exceptions/player-can-no-longer-try-to-win.exception';
+import * as process from 'node:process';
+import { CardValueConstants } from '../card/card-value.constants';
 
 /**
  * Los servicios asociados a los jugadores.
@@ -37,6 +45,74 @@ export class PlayerService {
 	 * base de datos de los jugadores.
 	 */
 	constructor(@Inject(DatabaseConstants.PLAYER_PROVIDER) private readonly model: Model<PlayerDocument>) {}
+
+	/**
+	 * Función reutilizable para validar si un jugador puede jalar una carta.
+	 * @param {Player} player El usuario que se quiere validar.
+	 * @param {Match} match La partida en la que se está validando.
+	 * @static
+	 * @throws {InvalidMatchStatusException} Cuando se intenta jalar del mazo en una partida que no se está jugando, ni tocando.
+	 * @throws {InvalidPlayerStatusException} Cuando un usuario que no está en turno ejecuta la acción.
+	 * @throws {PlayerAlreadyPullCardException} Cuando un usuario ya tiene una carta sobrante.
+	 */
+	static async validateIfPlayerCanPullCard(player: Player, match: Match): Promise<void> {
+		if (!match.status.is(MatchStatusConstants.PLAYING) && !match.status.is(MatchStatusConstants.TOUCHING)) {
+			throw new InvalidMatchStatusException();
+		}
+		if (!player.status.is(PlayerStatusConstants.IN_TURN)) throw new InvalidPlayerStatusException();
+		if (player.kicker) throw new PlayerAlreadyPullCardException();
+	}
+
+	/**
+	 * Función reutilizable que válida sin usuario tiene una carta.
+	 * @param {Map<string, number>} cardsMap El map de cartas del usuario.
+	 * @param {Card} card la carta que se está validando.
+	 * @param {string[]} [combination] Un arreglo opcional para guardar la combinación de cartas.
+	 * @throws {PlayerDoesNotHaveThisCardException} Cuando el jugador no tiene la carta.
+	 */
+	static validateIfPlayerHasCard(cardsMap: Map<string, number>, card: Card, combination?: string[]): void {
+		const cardIdentifier: string = card.type.toString() + card.suit.toString();
+		if (cardsMap.has(cardIdentifier)) {
+			const total: number = cardsMap.get(cardIdentifier);
+			if (total <= 0) throw new PlayerDoesNotHaveThisCardException();
+			cardsMap.set(cardIdentifier, total - 1);
+		}
+		if (combination) combination.push(`${card.type.toString()}-${card.suit.toString()}`);
+	}
+
+	/**
+	 * Función reutilizable que válida si las cartas de un jugador le permiten ganar la partida.
+	 * @param {Player} player El jugador que se est+a validando.
+	 * @param {Trips} trips1 La primera terna del jugador.
+	 * @param {Trips} trips2 La segunda terna del jugador.
+	 * @param {Quads} quads La cuarta del jugador.
+	 * @param {Card} kicker La sobrante del jugador.
+	 * @static
+	 * @throws {PlayerCardsDontAllowWinningException} Cuando cualquiera de las cartas del jugador no le permiten ganar.
+	 */
+	async validateIfCanWin(player: Player, trips1: Trips, trips2: Trips, quads: Quads, kicker: Card): Promise<void> {
+		const cardsMapCopy: Map<string, number> = new Map(player.cardsMap);
+
+		PlayerService.validateIfPlayerHasCard(cardsMapCopy, kicker);
+
+		const trips1Combination: string[] = [];
+		trips1.forEach((c) => PlayerService.validateIfPlayerHasCard(cardsMapCopy, c, trips1Combination));
+		const trips1Mapped: string = trips1Combination.sort().join(',');
+		this.logger.log(`[${this.validateIfCanWin.name}] TRIPS 1 :: ${trips1Mapped}`);
+		if (!AllowedTrips.has(trips1Mapped)) throw new PlayerCardsDontAllowWinningException();
+
+		const trips2Combination: string[] = [];
+		trips2.forEach((c) => PlayerService.validateIfPlayerHasCard(cardsMapCopy, c, trips2Combination));
+		const trips2Mapped: string = trips2Combination.sort().join(',');
+		this.logger.log(`[${this.validateIfCanWin.name}] TRIPS 2 :: ${trips2Mapped}`);
+		if (!AllowedTrips.has(trips2Mapped)) throw new PlayerCardsDontAllowWinningException();
+
+		const quadsCombination: string[] = [];
+		quads.forEach((c) => PlayerService.validateIfPlayerHasCard(cardsMapCopy, c, quadsCombination));
+		const quadsMapped: string = quadsCombination.sort().join(',');
+		this.logger.log(`[${this.validateIfCanWin.name}] QUADS :: ${quadsMapped}`);
+		if (!AllowedQuads.has(quadsMapped)) throw new PlayerCardsDontAllowWinningException();
+	}
 
 	/**
 	 * Función que permite crear un jugador.
@@ -54,6 +130,7 @@ export class PlayerService {
 			playerId: PlayerId.create(),
 			status: PlayerStatusConstants.WAITING_GAME,
 			userId: userId.toString(),
+			triedToWin: false,
 		});
 		await new this.model(await player.toDTO()).save();
 		this.logger.log(`[${this.create.name}] FINISH ::`);
@@ -97,6 +174,7 @@ export class PlayerService {
 			player.trips1 = trip1 as Trips;
 			player.trips2 = trip2 as Trips;
 			player.quads = quads as Quads;
+			player.kicker = null;
 			player.cardsMap = cardsMap;
 			await this.update(player);
 		}
@@ -138,24 +216,15 @@ export class PlayerService {
 
 		/* Las validaciones del usuario. */
 		const cardsMapCopy: Map<string, number> = new Map(player.cardsMap);
-		const validateCard = (c: Card) => {
-			const cardIdentifier: string = c.type.toString() + c.suit.toString();
-			if (cardsMapCopy.has(cardIdentifier)) {
-				const total: number = cardsMapCopy.get(cardIdentifier);
-				if (total <= 0) throw new PlayerDoesNotHaveThisCardException();
-				cardsMapCopy.set(cardIdentifier, total - 1);
-			}
-		};
-
-		/* Actualización de los datos del jugador. */
-		trips1.forEach((c) => validateCard(c));
-		trips2.forEach((c) => validateCard(c));
-		quads.forEach((c) => validateCard(c));
-		validateCard(kicker);
+		trips1.forEach((c) => PlayerService.validateIfPlayerHasCard(cardsMapCopy, c));
+		trips2.forEach((c) => PlayerService.validateIfPlayerHasCard(cardsMapCopy, c));
+		quads.forEach((c) => PlayerService.validateIfPlayerHasCard(cardsMapCopy, c));
+		PlayerService.validateIfPlayerHasCard(cardsMapCopy, kicker);
 		player.trips1 = trips1;
 		player.trips2 = trips2;
 		player.quads = quads;
 		player.kicker = null;
+		player.triedToWin = false;
 		player.changeStatus(PlayerStatusConstants.WAITING_TURN);
 
 		/* Ajusta los datos del siguiente jugador. */
@@ -213,19 +282,65 @@ export class PlayerService {
 	}
 
 	/**
-	 * Función reutilizable para validar si un jugador puede jalar una carta.
-	 * @param player El usuario que se quiere validar.
-	 * @param match La partida en la que se está validando.
-	 * @throws {InvalidMatchStatusException} Cuando se intenta jalar del mazo en una partida que no se está jugando, ni tocando.
-	 * @throws {InvalidPlayerStatusException} Cuando un usuario que no está en turno ejecuta la acción.
-	 * @throws {PlayerAlreadyPullCardException} Cuando un usuario ya tiene una carta sobrante.
+	 * Determina y realiza los procesos necesarios cuando un jugador puede ganar una partida.
+	 * @param {UserId} userId El usuario que puede ganar la partida.
+	 * @param {Match} match La partida en la que se está ganando.
+	 * @param {Trips} trips1 La primera terna del jugador.
+	 * @param {Trips} trips2 La segunda terna del jugador.
+	 * @param {Quads} quads La cuarta del jugador.
+	 * @param {Card} kicker La sobrante del jugador.
+	 * @returns Los datos actualizados.
+	 * @throws {PlayerHasNotPulledCardException} Cuando el usuario aún no ha jalado carta.
+	 * @throws {InvalidPlayerStatusException} Cuando el usuario no se encuentra en turno.
+	 * @throws {PlayerCanNoLongerTryToWinException} Cuando el jugador ya no puede intentar ganar más veces por su turno actual.
 	 */
-	static async validateIfPlayerCanPullCard(player: Player, match: Match): Promise<void> {
-		if (!match.status.is(MatchStatusConstants.PLAYING) && !match.status.is(MatchStatusConstants.TOUCHING)) {
-			throw new InvalidMatchStatusException();
-		}
+	async winMatch(
+		userId: UserId,
+		match: Match,
+		trips1: Trips,
+		trips2: Trips,
+		quads: Quads,
+		kicker: Card,
+	): Promise<{
+		canWin: boolean;
+		player: Player;
+		match: Match;
+	}> {
+		this.logger.log(`[${this.winMatch.name}] INIT :: user: ${userId.toString()}`);
+		let response: boolean = true;
+		const player: Player = await this.getActiveByUserId(userId);
+		if (!player.kicker) throw new PlayerHasNotPulledCardException();
 		if (!player.status.is(PlayerStatusConstants.IN_TURN)) throw new InvalidPlayerStatusException();
-		if (player.kicker) throw new PlayerAlreadyPullCardException();
+		if (player.triedToWin) throw new PlayerCanNoLongerTryToWinException();
+		try {
+			await this.validateIfCanWin(player, trips1, trips2, quads, kicker);
+			player.status.change(PlayerStatusConstants.WAITING_GAME);
+			player.triedToWin = false;
+			player.addPoints(-Number(process.env.APP_BONUS_POINTS));
+			if (player.score <= -51) {
+				// TODO: Definir lógica del ganador del juego.
+			}
+			match.status.change(MatchStatusConstants.CALCULATING_RESULTS);
+			match.winner = player.playerId;
+			await this.update(player);
+		} catch (e: unknown) {
+			if (
+				typeof e === 'object' &&
+				'message' in e &&
+				e.message === ExceptionMessagesConstants.PLAYER_CARDS_DONT_ALLOW_WINNING_ERROR
+			) {
+				this.logger.log(`[${this.winMatch.name}] PLAYER CANT WIN ::`);
+				player.addPoints(Number(process.env.APP_FALSE_WIN_PENALTY_POINTS));
+				player.triedToWin = true;
+				if (player.score > 101) {
+					// TODO: Eliminar jugador.
+				}
+				await this.update(player);
+				response = false;
+			} else throw e;
+		}
+		this.logger.log(`[${this.winMatch.name}] FINISH ::`);
+		return { canWin: response, player, match };
 	}
 
 	/**
@@ -237,6 +352,57 @@ export class PlayerService {
 		const { playerId, ...toUpdate } = await player.toDTO();
 		await this.model.updateOne({ playerId }, toUpdate);
 		this.logger.log(`[${this.update.name}] FINISH ::`);
+	}
+
+	/**
+	 * Función que actualiza a todos los usuarios perdedores de una partida.
+	 * @param {GameId} game El juego en el que se actualizan los jugadores.
+	 * @param {Player} winner El jugador ganador de la partida.
+	 * @returns Los datos actualizados.
+	 */
+	async updateLoserPlayers(game: GameId, winner: Player): Promise<{ losers: Player[]; gameWon: boolean }> {
+		this.logger.log(`[${this.updateLoserPlayers.name}] INIT :: game: ${game?.toString()}`);
+		const players: PlayerDTO[] = await this.model.find({
+			gameId: game.toString(),
+			playerId: { $ne: winner.playerId.toString() },
+		});
+		const losers: Player[] = [];
+		await Promise.all(
+			players.map(async (p) => {
+				const player: Player = await Player.fromDTO(p);
+				player.status.change(PlayerStatusConstants.WAITING_GAME);
+
+				const mapper = (c: Card[]): { combination: string; points: number } => {
+					const response = { points: 0, combination: '' };
+					response.combination = c
+						.map((t) => {
+							response.points += CardValueConstants[t.type.toString()];
+							return `${t.type.toString()}-${t.suit.toString()}`;
+						})
+						.sort()
+						.join(',');
+					return response;
+				};
+
+				let penaltyPoints: number = 0;
+				const trips1Data = mapper(player.trips1);
+				if (!AllowedTrips.has(trips1Data.combination)) penaltyPoints += trips1Data.points;
+				const trips2Data = mapper(player.trips2);
+				if (!AllowedTrips.has(trips2Data.combination)) penaltyPoints += trips2Data.points;
+				const quadsData = mapper(player.quads);
+				if (!AllowedQuads.has(quadsData.combination)) penaltyPoints += quadsData.points;
+
+				player.addPoints(penaltyPoints);
+				if (player.score > 101) {
+					player.status.change(PlayerStatusConstants.LOSER);
+					player.isActive = false;
+					losers.push(player);
+				}
+				await this.update(player);
+			}),
+		);
+		this.logger.log(`[${this.updateLoserPlayers.name}] FINISH ::`);
+		return { losers, gameWon: losers.length === players.length };
 	}
 
 	/**

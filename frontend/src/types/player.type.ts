@@ -9,6 +9,7 @@ export type PlayerType = {
     userId: string;
     status: string;
     isActive: boolean;
+    triedToWin: boolean;
     trips1: [CardType, CardType, CardType];
     trips2: [CardType, CardType, CardType];
     quads: [CardType, CardType, CardType, CardType];

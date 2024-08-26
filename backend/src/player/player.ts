@@ -20,6 +20,7 @@ export class PlayerDTO {
 	@ApiProperty() userId: string;
 	@ApiProperty() status: string;
 	@ApiProperty() isActive: boolean;
+	@ApiProperty() triedToWin: boolean;
 	@ApiProperty() trips1?: TripsDTO;
 	@ApiProperty() trips2?: TripsDTO;
 	@ApiProperty() quads?: QuadsDTO;
@@ -35,10 +36,19 @@ export class PlayerDTO {
  * @extends {DomainBase<PlayerDTO>}
  */
 export class Player extends DomainBase<PlayerDTO> {
-	public readonly gameId: GameId;
+	private readonly _gameId: GameId;
 	private readonly _playerId: PlayerId;
 	private readonly userId: UserId;
-	private readonly isActive: boolean;
+	private _isActive: boolean;
+	private _triedToWin: boolean;
+	private readonly _status: PlayerStatus;
+	private _position?: number;
+	private _score?: number;
+	private _trips1?: Trips;
+	private _trips2?: Trips;
+	private _quads?: Quads;
+	private _kicker?: Card;
+	private _cardsMap?: Map<string, number>;
 
 	/**
 	 * @param {PlayerId} playerId El id del jugador.
@@ -46,6 +56,7 @@ export class Player extends DomainBase<PlayerDTO> {
 	 * @param {UserId} userId El id del usuario.
 	 * @param {PlayerStatus} status El estado del jugador.
 	 * @param {boolean} isActive Bandera que determina si un jugador está activo.
+	 * @param {boolean} triedToWin Booleano que determina si el jugador ya intentó ganar en su turno o no.
 	 * @param {number} score La puntuación del jugador en una partida.
 	 * @param {number} position La posición de un jugador en una partida.
 	 * @param {Trips} trips1 La terna 1 del jugador.
@@ -60,6 +71,7 @@ export class Player extends DomainBase<PlayerDTO> {
 		userId: UserId,
 		status: PlayerStatus,
 		isActive: boolean,
+		triedToWin: boolean,
 		trips1?: Trips,
 		trips2?: Trips,
 		quads?: Quads,
@@ -70,10 +82,11 @@ export class Player extends DomainBase<PlayerDTO> {
 	) {
 		super();
 		this._playerId = playerId;
-		this.gameId = gameId;
+		this._gameId = gameId;
 		this.userId = userId;
 		this._status = status;
-		this.isActive = isActive;
+		this._isActive = isActive;
+		this._triedToWin = triedToWin;
 		this._trips1 = trips1;
 		this._trips2 = trips2;
 		this._quads = quads;
@@ -83,57 +96,65 @@ export class Player extends DomainBase<PlayerDTO> {
 		this._cardsMap = cardsMap;
 	}
 
+	get gameId(): GameId {
+		return this._gameId;
+	}
+
+	set isActive(value: boolean) {
+		this._isActive = value;
+	}
+
 	get playerId(): PlayerId {
 		return this._playerId;
 	}
-
-	private _cardsMap?: Map<string, number>;
 
 	set cardsMap(value: Map<string, number>) {
 		this._cardsMap = value;
 	}
 
-	private _trips1?: Trips;
+	get trips1(): Trips {
+		return this._trips1;
+	}
 
 	set trips1(value: Trips) {
 		this._trips1 = value;
 	}
 
-	private _trips2?: Trips;
+	get trips2(): Trips {
+		return this._trips2;
+	}
 
 	set trips2(value: Trips) {
 		this._trips2 = value;
 	}
 
-	private _quads?: Quads;
+	get quads(): Quads {
+		return this._quads;
+	}
 
 	set quads(value: Quads) {
 		this._quads = value;
 	}
 
-	private _score?: number;
+	get score(): number {
+		return this._score;
+	}
 
 	set score(value: number) {
 		this._score = value;
 	}
 
-	private _kicker?: Card;
-
 	set kicker(value: Card) {
 		this._kicker = value;
 	}
 
-	private _status: PlayerStatus;
+	get kicker(): Card {
+		return this._kicker;
+	}
 
 	get status(): PlayerStatus {
 		return this._status;
 	}
-
-	set status(value: PlayerStatus) {
-		this._status = value;
-	}
-
-	private _position?: number;
 
 	get position(): number {
 		return this._position;
@@ -143,8 +164,12 @@ export class Player extends DomainBase<PlayerDTO> {
 		this._position = value;
 	}
 
-	get kicker(): Card {
-		return this._kicker;
+	set triedToWin(value: boolean) {
+		this._triedToWin = value;
+	}
+
+	get triedToWin(): boolean {
+		return this._triedToWin;
 	}
 
 	/**
@@ -173,6 +198,7 @@ export class Player extends DomainBase<PlayerDTO> {
 			new UserId(dto.userId),
 			new PlayerStatus(dto.status),
 			dto.isActive,
+			dto.triedToWin,
 			trips1,
 			trips2,
 			quads,
@@ -202,18 +228,19 @@ export class Player extends DomainBase<PlayerDTO> {
 			: undefined;
 
 		return {
-			gameId: this.gameId.toString(),
-			isActive: this.isActive,
+			cardsMap: new Map(this._cardsMap),
+			gameId: this._gameId.toString(),
+			isActive: this._isActive,
 			kicker: this._kicker ? this._kicker.toDTO() : null,
 			playerId: this._playerId.toString(),
 			position: this._position,
 			quads,
 			score: this._score,
 			status: this._status.toString(),
+			triedToWin: this._triedToWin,
 			trips1,
 			trips2,
 			userId: this.userId.toString(),
-			cardsMap: new Map(this._cardsMap),
 		};
 	}
 
@@ -242,5 +269,13 @@ export class Player extends DomainBase<PlayerDTO> {
 		}
 		}
 		this._status.change(status);
+	}
+
+	/**
+	 * Aumenta la cantidad de puntos del jugador.
+	 * @param {number} value La cantidad de puntos.
+	 */
+	addPoints(value: number): void {
+		this._score += value;
 	}
 }

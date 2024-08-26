@@ -13,9 +13,8 @@ import { MatchId } from './match-id';
 import { CardTypeConstants } from '../card/card-type.constants';
 import { CardSuitConstants } from '../card/card-suit.constants';
 import { CardDTO } from '../card/card';
-import { CardValueConstants } from '../card/card-value.constants';
 import { EventBus } from '@nestjs/cqrs';
-import { MatchStartedEvent } from '../game/events/match-started/match-started.event';
+import { MatchStartedEvent } from '../game/events/match/match-started/match-started.event';
 import { PlayerService } from '../player/player.service';
 import { MatchNotFoundException } from './exceptions/match-not-found.exception';
 import { InvalidMatchStatusException } from './exceptions/invalid-match-status.exception';
@@ -52,7 +51,7 @@ export class MatchService {
 		const suits: CardSuitConstants[] = Object.values(CardSuitConstants);
 		return types.flatMap((type) =>
 			suits.map((suit): CardDTO => {
-				return { type, suit, value: CardValueConstants[type] };
+				return { type, suit };
 			}),
 		);
 	}

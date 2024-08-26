@@ -33,5 +33,6 @@ export const AlertMessagesConstants: Record<string, string> = {
     USER_NOT_FOUND_ERROR: '¡El usuario no existe!',
     GAME_EXCEEDS_ITS_PLAYER_COUNT_ERROR: '¡El juego ya está lleno!',
     SOMETHING_WENT_WRONG_ERROR: '¡Algo salió mal!',
-    COPY_ON_CLIP_BOARD_MESSAGE: '¡Copiado en el portapapeles!'
+    COPY_ON_CLIP_BOARD_MESSAGE: '¡Copiado en el portapapeles!',
+    PLAYER_CANT_WIN_MESSAGE: '¡Aún no puedes ganar!'
 };
